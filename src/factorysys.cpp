@@ -6,8 +6,8 @@
 std::shared_ptr<Component> FactorySys::createCRender(YAML::Node node)
 {
     std::shared_ptr<CRender> comp = std::make_shared<CRender>();
-    RenderSys* pRenderer = pOwner->getRenderer();
-    comp->setTexture(pRenderer->getTexture(node["img"].as<std::string>()));
+    comp->setTexCoords(Vec2(node["texpos"][0].as<int>(),
+                            node["texpos"][1].as<int>()));
     comp->setColor(sf::Color(node["color"][0].as<int>(),
                               node["color"][1].as<int>(),
                               node["color"][2].as<int>()));

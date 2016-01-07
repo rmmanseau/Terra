@@ -4,28 +4,25 @@
 #include "common.h"
 #include "actor.h"
 #include "grid.h"
-#include "rendersys.h"
 #include "factorysys.h"
 
+#include "prender.h"
 #include "pmovement.h"
 
 class Terrarium
 {
-    friend class FactorySys;
-    
-    ActorMap actors;
-    ProcessVec processes;
+    sf::RenderWindow window;
+    sf::Event event;
 
     FactorySys china;
     Grid grid;
-    RenderSys picasso;
+
+    ActorMap actors;
+    ProcessVec processes;
 
 public:
     void init(int width, int height);
     void update();
-
-    RenderSys* getRenderer();
-    std::shared_ptr<Grid> getGrid();
 };
 
 #endif // TERRARIUM_H

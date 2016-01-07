@@ -24,7 +24,6 @@ enum class Dir
 // Forward Declarations
 class Terrarium;
 class Grid;
-class RenderSys;
 class FactorySys;
 class Actor;
 class Component;

@@ -12,12 +12,14 @@ int main()
     Terrarium t;
     t.init(120, 50);
 
+    int i = 0;
+
     bool running = true;
     while (running)
     {
         t.update();
 
-        sf::sleep(sf::milliseconds(50));
+        sf::sleep(sf::milliseconds(30));
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
             running = false;

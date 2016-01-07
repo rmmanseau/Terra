@@ -6,7 +6,6 @@
 #include "crender.h"
 #include "cposition.h"
 #include "cmovement.h"
-#include "rendersys.h"
 
 #include "yaml-cpp/yaml.h"
 

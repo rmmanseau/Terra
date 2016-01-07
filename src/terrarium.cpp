@@ -2,14 +2,16 @@
 
 void Terrarium::init(int width, int height)
 {
-    grid = Grid(width, height);
+    window.create(sf::VideoMode(width*8, height*8, 32),
+                  "Terra",
+                  sf::Style::Close);
 
-    picasso.init(width, height, 8);
+    grid = Grid(width, height);
     china.init(*this);
 
     for (int i = 0; i < width*height; ++i)
     {
-        if ((i+1)%width == 0 || i%width == 0 || i/width == 0 || i/width == (height-1))
+        if ((i+1)%width == 0 || /*i%width == 0 ||*/ i/width == 0 || i/width == (height-1))
             china.assembleActor(actors, "Rock", Vec2(i%width, i/width));
     }
 
@@ -36,6 +38,10 @@ void Terrarium::init(int width, int height)
     china.assembleActor(actors, "Grass", Vec2(13, 11));
     china.assembleActor(actors, "Grass", Vec2(10, 12));
 
+    std::shared_ptr<PRender> prender = std::make_shared<PRender>();
+    prender->init(window, width, height, 8);
+    processes.push_back(prender);
+    
     processes.push_back(std::make_shared<PMovement>(grid));
 
     for (auto itr = actors.begin();
@@ -57,11 +63,4 @@ void Terrarium::update()
     {
         (*itr)->update(actors);
     }
-
-    picasso.update(actors);
-}
-
-RenderSys* Terrarium::getRenderer()
-{
-    return &picasso;
 }

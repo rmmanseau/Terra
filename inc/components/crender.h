@@ -7,24 +7,25 @@
 
 class CRender : public Component
 {
-    sf::Sprite sprite;
+    Vec2 texCoords;
+    sf::Color color;
 
 public:
-    inline sf::Sprite getSprite()
+    inline void setTexCoords(Vec2 tex)
     {
-        return sprite;
+        texCoords = tex;
     }
-    inline void setTexture(sf::Texture& texture)
+    inline void setColor(sf::Color _color)
     {
-        sprite.setTexture(texture);
+        color = _color;
     }
-    inline void setColor(sf::Color color)
+    inline Vec2 getTexCoords()
     {
-        sprite.setColor(color);
+        return texCoords;
     }
-    inline void setSpritePos(Vec2 pos)
+    inline sf::Color getColor()
     {
-        sprite.setPosition(sf::Vector2f(pos.x, pos.y));
+        return color;
     }
 };
 
