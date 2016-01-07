@@ -1,0 +1,21 @@
+Rock:
+    CRender:
+        img: rock
+        color: [180, 170, 170]
+    CPosition:
+        pos: [0, 0]
+
+Grass:
+    CRender:
+        img: grass
+        color: [30, 100, 50]
+    CPosition:
+        pos: [0, 0]
+
+DumbBug:
+    CRender:
+        img: dumbbug
+        color: [213, 183, 128]
+    CPosition:
+        pos: [0, 0]
+    CMovement:
