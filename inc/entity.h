@@ -1,20 +1,20 @@
-#ifndef ACTOR_H
-#define ACTOR_H
+#ifndef ENTITY_H
+#define ENTITY_H
 
 #include "common.h"
 #include "component.h"
 #include <unordered_map>
 #include <string>
 
-class Actor
+class Entity
 {
-    ActorId id;
+    EntityId id;
     ComponentMap components;
 
 public:
-    Actor(ActorId _id);
+    Entity(EntityId _id);
 
-    ActorId getId();
+    EntityId getId();
 
     void addComponent(std::shared_ptr<Component> component);
 
@@ -34,4 +34,4 @@ public:
     }
 };
 
-#endif // ACTOR_H
+#endif // ENTITY_H

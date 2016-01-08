@@ -6,11 +6,11 @@
 #include <unordered_map>
 #include <memory>
 #include <typeindex>
+#include <stdexcept>
 
 // Enums
 enum class Dir
 {
-    none,
     n,
     ne,
     e,
@@ -21,22 +21,21 @@ enum class Dir
     nw
 };
 
+
 // Forward Declarations
 class Terrarium;
 class Grid;
 class FactorySys;
-class Actor;
+class Entity;
 class Component;
 class Process;
 
 // Id Typedefs
-typedef unsigned long ActorId;
-typedef std::string ComponentId;
+typedef unsigned long EntityId;
 
 // Map Typedefs
 typedef std::vector<std::shared_ptr<Process> > ProcessVec;
-typedef std::unordered_map<ActorId, Actor> ActorMap;
+typedef std::unordered_map<EntityId, Entity> EntityMap;
 typedef std::unordered_map<std::type_index, std::shared_ptr<Component> > ComponentMap;
-typedef std::unordered_map<std::string, sf::Texture> TextureMap;
 
 #endif // COMMON_H

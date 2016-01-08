@@ -11,22 +11,17 @@ class CRender : public Component
     sf::Color color;
 
 public:
-    inline void setTexCoords(Vec2 tex)
-    {
-        texCoords = tex;
-    }
-    inline void setColor(sf::Color _color)
-    {
-        color = _color;
-    }
-    inline Vec2 getTexCoords()
-    {
-        return texCoords;
-    }
-    inline sf::Color getColor()
-    {
-        return color;
-    }
+    bool init(YAML::Node node);
+
+    void setTexCoords(Vec2 tex);
+    void setColor(sf::Color _color);
+    Vec2 getTexCoords();
+    sf::Color getColor();
 };
+
+inline std::shared_ptr<Component> createCRender()
+{
+    return std::make_shared<CRender>();
+}
 
 #endif // CRENDER_H

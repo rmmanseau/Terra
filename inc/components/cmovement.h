@@ -3,34 +3,23 @@
 
 #include "common.h"
 #include "component.h"
+#include "vec2.h"
 
 #include <cstdlib>
 
 class CMovement : public Component
 {
+    Dir direction;
 
 public:
-    Vec2 getDisplacement()
-    {
-        Vec2 displacement;
+    bool init(YAML::Node node);
 
-        switch (rand() % 4)
-        {
-            case 0:
-                displacement = Vec2(1, 0);
-                break;
-            case 1:
-                displacement = Vec2(0, 1);
-                break;
-            case 2:
-                displacement = Vec2(-1, 0);
-                break;
-            case 3:
-                displacement = Vec2(0, -1);
-                break; 
-        }
-        return displacement;
-    }
+    Vec2 getDisplacement();
 };
+
+inline std::shared_ptr<Component> createCMovement()
+{
+    return std::make_shared<CMovement>();
+}
 
 #endif // CMOVEMENT_H

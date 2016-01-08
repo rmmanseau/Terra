@@ -13,7 +13,7 @@ class SpriteMap : public sf::Drawable, public sf::Transformable
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 public:
-    bool init(int _tileSize, const std::string& fileName);
+    SpriteMap(int _tileSize, const std::string& fileName);
     void addSprite(Vec2 position, Vec2 texCoords, const sf::Color& color);
     void clearSprites();
 };

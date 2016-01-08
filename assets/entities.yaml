@@ -1,0 +1,32 @@
+#   Component Catalouge
+#
+#   CRender:
+#       texpos: [0, 0]          #tile position on sprite sheet           
+#       color: [255, 255, 255]  #base rgb color applied to sprite
+#
+#   CPosition:
+#       pos: [0, 0] #inital position (usually overridden in code)
+#
+#   CMovement:
+
+Rock:
+    CRender:
+        texpos: [0, 0]
+        color: [180, 170, 170]
+    CPosition:
+        pos: [0, 0]
+
+Grass:
+    CRender:
+        texpos: [1, 0]
+        color: [96,135,73]
+    CPosition:
+        pos: [0, 0]
+
+DumbBug:
+    CRender:
+        texpos: [0, 1]
+        color: [213, 183, 128]
+    CPosition:
+        pos: [0, 0]
+    CMovement:

@@ -3,7 +3,7 @@
 
 #include "common.h"
 #include "process.h"
-#include "actor.h"
+#include "entity.h"
 #include "spritemap.h"
 #include "background.h"
 
@@ -15,8 +15,8 @@ class PRender : public Process
     Background background;
 
 public:
-    bool init(sf::RenderWindow& window, int width, int height, int tileSize);
-    virtual void update(ActorMap& actors);
+    PRender(sf::RenderWindow& window, int width, int height, int tileSize);
+    virtual void update(EntityMap& entities);
 };
 
 #endif // PRENDER_H

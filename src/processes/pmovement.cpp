@@ -1,6 +1,6 @@
 #include "pmovement.h"
 
-#include "actor.h"
+#include "entity.h"
 #include "cposition.h"
 #include "cmovement.h"
 
@@ -8,12 +8,12 @@ PMovement::PMovement(Grid& grid)
     : pGrid(grid)
 {}
 
-void PMovement::update(ActorMap& actors)
+void PMovement::update(EntityMap& entities)
 {
-    for (auto itr = actors.begin();
-        itr != actors.end(); ++itr)
+    for (auto itr = entities.begin();
+        itr != entities.end(); ++itr)
     {
-        Actor& current = itr->second;
+        Entity& current = itr->second;
         
         std::shared_ptr<CMovement> move = current.getComponent<CMovement>().lock();
         std::shared_ptr<CPosition> pos = current.getComponent<CPosition>().lock();

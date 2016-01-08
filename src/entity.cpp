@@ -1,14 +1,14 @@
-#include "actor.h"
+#include "entity.h"
 
-Actor::Actor(ActorId _id)
+Entity::Entity(EntityId _id)
     : id(_id) {}
 
-ActorId Actor::getId()
+EntityId Entity::getId()
 {
     return id;
 }
 
-void Actor::addComponent(std::shared_ptr<Component> component)
+void Entity::addComponent(std::shared_ptr<Component> component)
 {
     if (component != nullptr)
     {

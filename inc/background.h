@@ -11,7 +11,8 @@ class Background : public sf::Drawable
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 public:
-    bool init(int width, int height, const std::string& fileName, const sf::Color& color);
+    Background(int width, int height, const std::string& fileName, const sf::Color& color);
+    // bool init(int width, int height, const std::string& fileName, const sf::Color& color);
 };
 
 #endif // BACKGROUND_H

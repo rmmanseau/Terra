@@ -2,27 +2,29 @@
 #define TERRARIUM_H
 
 #include "common.h"
-#include "actor.h"
+#include "entity.h"
 #include "grid.h"
-#include "factorysys.h"
-
-#include "prender.h"
-#include "pmovement.h"
+#include "factory.h"
 
 class Terrarium
 {
     sf::RenderWindow window;
     sf::Event event;
 
-    FactorySys china;
+    Factory china;
     Grid grid;
 
-    ActorMap actors;
+    EntityMap entities;
     ProcessVec processes;
 
 public:
-    void init(int width, int height);
+    Terrarium(int width, int height);
     void update();
+
+    sf::RenderWindow* getWindowPtr();
+    sf::Event* getEventPtr();
+    Grid* getGridPtr();
+    Factory* getFactoryPtr();
 };
 
 #endif // TERRARIUM_H

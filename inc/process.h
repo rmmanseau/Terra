@@ -5,7 +5,8 @@
 
 struct Process
 {
-    virtual void update(ActorMap& actors) = 0;
+    virtual void update(EntityMap& entities) = 0;
+    virtual ~Process() {}
 };
 
 #endif // PROCESS_H

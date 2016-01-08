@@ -11,7 +11,7 @@ class PMovement : public Process
 
 public:
     PMovement(Grid& grid);
-    virtual void update(ActorMap& actors);
+    virtual void update(EntityMap& entities);
 };
 
 #endif // PMOVEMENT_H

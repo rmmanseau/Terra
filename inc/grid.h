@@ -7,17 +7,17 @@
 
 class Grid 
 {
-    std::vector<ActorId> g;
+    std::vector<EntityId> g;
     int width;
     int height;
 
-    ActorId at(Vec2 v);
+    Grid() {}
+    EntityId at(Vec2 v);
 
 public:
-    Grid();
     Grid(int w, int h);
 
-    ActorId getIdAt(Vec2 v);
+    EntityId getIdAt(Vec2 v);
     void setIdAt(Vec2 v, int id);
     void erase(Vec2 v);
     bool inside(Vec2 v);

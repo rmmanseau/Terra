@@ -10,17 +10,15 @@ class CPosition : public Component
     Vec2 pos;
 
 public:
-    CPosition()
-        : pos(Vec2(0, 0)) {}
+    bool init(YAML::Node node);
 
-    void setPos(Vec2 _pos)
-    {
-        pos = _pos;
-    }
-    Vec2 getPos()
-    {
-        return pos;
-    }
+    void setPos(Vec2 _pos);
+    Vec2 getPos();
 };
+
+inline std::shared_ptr<Component> createCPosition()
+{
+    return std::make_shared<CPosition>();
+}
 
 #endif // CPOSITION_H

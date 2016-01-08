@@ -9,7 +9,7 @@ set (GCC_FLAGS "-std=c++11")
 add_definitions(${GCC_FLAGS})
 
 # Project header files
-include_directories(inc inc/components inc/processes assets/)
+include_directories(inc inc/components inc/processes)
 
 # Project Source Files
 file(GLOB_RECURSE SOURCES "src/*.cpp")

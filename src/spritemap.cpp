@@ -8,14 +8,13 @@ void SpriteMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
     target.draw(vertices, states);
 }
 
-bool SpriteMap::init(int _tileSize, const std::string& fileName)
+SpriteMap::SpriteMap(int _tileSize, const std::string& fileName)
 {
     if (!spriteSheet.loadFromFile(fileName))
-        return false;
+        throw std::invalid_argument(fileName + " could not be found.");
 
     tileSize = _tileSize;
     vertices.setPrimitiveType(sf::Quads);
-    return true;
 }
 
 void SpriteMap::addSprite(Vec2 pos, Vec2 tex, const sf::Color& color)
@@ -35,15 +34,32 @@ void SpriteMap::addSprite(Vec2 pos, Vec2 tex, const sf::Color& color)
     quad[2].texCoords = sf::Vector2f(tex.x + tileSize, tex.y + tileSize);
     quad[3].texCoords = sf::Vector2f(tex.x, tex.y + tileSize);
 
-    quad[0].color = color;
+    quad[0].color = color * sf::Color(200, 200, 200);
     quad[1].color = color;
-    quad[2].color = color;
-    quad[3].color = color;
+    quad[2].color = color * sf::Color(150, 150, 150);
+    quad[3].color = color * sf::Color(50,50,50);
 
+    sf::Vertex quad2[4];
+
+    quad2[0].position = sf::Vector2f(200, 200);
+    quad2[1].position = sf::Vector2f(300, 200);
+    quad2[2].position = sf::Vector2f(300, 300);
+    quad2[3].position = sf::Vector2f(200, 300);
+    
+    quad2[0].color = sf::Color::White * sf::Color(200, 200, 200);
+    quad2[1].color = sf::Color::White;
+    quad2[2].color = sf::Color::White * sf::Color(150, 150, 150);
+    quad2[3].color = sf::Color::White * sf::Color(50, 50, 50);
+    
     vertices.append(quad[0]);
     vertices.append(quad[1]);
     vertices.append(quad[2]);
     vertices.append(quad[3]);
+
+    vertices.append(quad2[0]);
+    vertices.append(quad2[1]);
+    vertices.append(quad2[2]);
+    vertices.append(quad2[3]);
 }
 
 void SpriteMap::clearSprites()
