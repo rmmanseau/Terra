@@ -13,8 +13,6 @@ class CRender : public Component
 public:
     bool init(YAML::Node node);
 
-    void setTexCoords(Vec2 tex);
-    void setColor(sf::Color _color);
     Vec2 getTexCoords();
     sf::Color getColor();
 };

@@ -5,7 +5,7 @@
 
 #include "cposition.h"
 
-Terrarium::Terrarium(int width, int height)
+Terrarium::Terrarium(int width, int height, int tileSize)
     : grid(width, height)
     , china(*this)
 {
@@ -38,21 +38,10 @@ Terrarium::Terrarium(int width, int height)
     china.assembleEntity(entities, "Grass", Vec2(13, 11));
     china.assembleEntity(entities, "Grass", Vec2(10, 12));
 
-    processes.push_back(std::make_shared<PRender>(window, width, height, 8));
+    processes.push_back(std::make_shared<PRender>(window, width, height, tileSize));
     processes.push_back(std::make_shared<PMovement>(grid));
 
-    for (auto itr = entities.begin();
-         itr != entities.end(); ++itr)
-    {
-        Entity& current = itr->second;
-        std::shared_ptr<CPosition> pos = current.getComponent<CPosition>().lock();
-        if (pos)
-        {
-            grid.setIdAt(pos->getPos(), current.getId());
-        }
-    }
-
-    window.create(sf::VideoMode(width*8, height*8, 32),
+    window.create(sf::VideoMode(width*tileSize, height*tileSize, 32),
               "Terra",
               sf::Style::Close);
 }

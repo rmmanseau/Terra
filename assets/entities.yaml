@@ -7,12 +7,12 @@
 #   CPosition:
 #       pos: [0, 0] #inital position (usually overridden in code)
 #
-#   CMovement:
+#   CTranslate:
 
 Rock:
     CRender:
         texpos: [0, 0]
-        color: [180, 170, 170]
+        color: [180, 170, 190]
     CPosition:
         pos: [0, 0]
 
@@ -26,7 +26,7 @@ Grass:
 DumbBug:
     CRender:
         texpos: [0, 1]
-        color: [213, 183, 128]
+        color: [213, 183, 148]
     CPosition:
         pos: [0, 0]
-    CMovement:
+    CTranslate:

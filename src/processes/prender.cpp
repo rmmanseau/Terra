@@ -23,7 +23,7 @@ void PRender::update(EntityMap& entities)
         
         if (pos && render)
         {
-            sprites.addSprite(pos->getPos(), render->getTexCoords(), render->getColor());
+            sprites.addSprite(pos->getPos().floor(), render->getTexCoords(), render->getColor());
         }
     }
 

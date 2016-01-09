@@ -5,13 +5,15 @@
 
 struct Vec2
 {
-    int x;
-    int y;
+    double x;
+    double y;
 
     Vec2() : x(0) , y(0)
     {}
-    Vec2(int _x, int _y) : x(_x) , y(_y)
+    Vec2(double _x, double _y) : x(_x) , y(_y)
     {}
+
+    Vec2 floor();
 };
 
 inline Vec2 operator + (Vec2 u, Vec2 v)
@@ -29,7 +31,7 @@ inline Vec2 operator += (Vec2 &u, Vec2 v)
 
     return u;
 }
-inline Vec2 operator * (Vec2 u, int s)
+inline Vec2 operator * (Vec2 u, double s)
 {
     Vec2 result;
     result.x = u.x * s;
@@ -37,12 +39,16 @@ inline Vec2 operator * (Vec2 u, int s)
 
     return result;
 }
-inline Vec2 operator *= (Vec2 &u, int s)
+inline Vec2 operator *= (Vec2 &u, double s)
 {
     u.x *= s;
     u.y *= s;
 
     return u;
+}
+inline Vec2 Vec2::floor()
+{
+    return Vec2((int)x, (int)y);
 }
 inline bool operator < (const Vec2 &u, const Vec2 &v)
 {

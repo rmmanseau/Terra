@@ -18,7 +18,7 @@ class Terrarium
     ProcessVec processes;
 
 public:
-    Terrarium(int width, int height);
+    Terrarium(int width, int height, int tileSize);
     void update();
 
     sf::RenderWindow* getWindowPtr();

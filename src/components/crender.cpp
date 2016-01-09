@@ -10,14 +10,6 @@ bool CRender::init(YAML::Node node)
     return true;
 }
 
-void CRender::setTexCoords(Vec2 tex)
-{
-    texCoords = tex;
-}
-void CRender::setColor(sf::Color _color)
-{
-    color = _color;
-}
 Vec2 CRender::getTexCoords()
 {
     return texCoords;

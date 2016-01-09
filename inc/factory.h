@@ -14,6 +14,7 @@ typedef std::unordered_map<std::string, YAML::Node> YAMLNodeMap;
 class Factory
 {
     Terrarium* pOwner;
+    Grid* pGrid;
     EntityId nextId;
 
     YAMLNodeMap blueprints;
@@ -23,7 +24,6 @@ class Factory
 
 public:
     Factory(Terrarium& owner);
-    // void init(Terrarium& owner);
     void assembleEntity(EntityMap& entities, std::string entityName, Vec2 pos);
 };
 

@@ -3,12 +3,13 @@
 
 #include "crender.h"
 #include "cposition.h"
-#include "cmovement.h"
+#include "ctranslate.h"
 
 #include <string>
 
 Factory::Factory(Terrarium& owner)
     : pOwner(&owner)
+    , pGrid(pOwner->getGridPtr())
     , nextId(1)
 {
     YAML::Node entitySheet = YAML::LoadFile("../assets/entities.yaml");
@@ -22,7 +23,7 @@ Factory::Factory(Terrarium& owner)
 
     componentCreatorFunctions.insert(std::make_pair("CRender", &createCRender));
     componentCreatorFunctions.insert(std::make_pair("CPosition", &createCPosition));
-    componentCreatorFunctions.insert(std::make_pair("CMovement", &createCMovement));
+    componentCreatorFunctions.insert(std::make_pair("CTranslate", &createCTranslate));
 }
 
 void Factory::assembleEntity(EntityMap& entities, std::string entityName, Vec2 pos)
@@ -78,6 +79,7 @@ void Factory::assembleEntity(EntityMap& entities, std::string entityName, Vec2 p
     if (position)
     {
         position->setPos(pos);
+        pGrid->setIdAt(pos, entity.getId());
     }
 
     entities.insert(std::make_pair(entity.getId(), entity));
