@@ -2,8 +2,15 @@
 
 bool CPosition::init(YAML::Node node)
 {
-    pos = Vec2(node["pos"][0].as<int>(),
-               node["pos"][1].as<int>());
+    try
+    {
+        pos = Vec2(node["pos"][0].as<int>(),
+                   node["pos"][1].as<int>());
+    }
+    catch (...)
+    {
+        return false;
+    }
     return true;
 }
 

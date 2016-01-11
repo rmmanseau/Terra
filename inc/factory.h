@@ -2,6 +2,7 @@
 #define FACTORY_H
 
 #include "common.h"
+#include "entity.h"
 #include "component.h"
 #include "vec2.h"
 
@@ -13,8 +14,10 @@ typedef std::unordered_map<std::string, YAML::Node> YAMLNodeMap;
 
 class Factory
 {
-    Terrarium* pOwner;
-    Grid* pGrid;
+    Grid& rGrid;
+    ProcessVec& rProcesses;
+    EntityMap& rEntities;
+
     EntityId nextId;
 
     YAMLNodeMap blueprints;
@@ -24,7 +27,7 @@ class Factory
 
 public:
     Factory(Terrarium& owner);
-    void assembleEntity(EntityMap& entities, std::string entityName, Vec2 pos);
+    void assembleEntity(std::string entityName, Vec2 pos);
 };
 
 #endif // FACTORY_H

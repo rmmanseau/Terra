@@ -1,15 +1,19 @@
 #include "factory.h"
 #include "terrarium.h"
+#include "process.h"
 
 #include "crender.h"
 #include "cposition.h"
 #include "ctranslate.h"
+#include "calive.h"
+#include "cmovement.h"
 
 #include <string>
 
 Factory::Factory(Terrarium& owner)
-    : pOwner(&owner)
-    , pGrid(pOwner->getGridPtr())
+    : rGrid(owner.getGrid())
+    , rEntities(owner.getEntities())
+    , rProcesses(owner.getProcesses())
     , nextId(1)
 {
     YAML::Node entitySheet = YAML::LoadFile("../assets/entities.yaml");
@@ -24,9 +28,11 @@ Factory::Factory(Terrarium& owner)
     componentCreatorFunctions.insert(std::make_pair("CRender", &createCRender));
     componentCreatorFunctions.insert(std::make_pair("CPosition", &createCPosition));
     componentCreatorFunctions.insert(std::make_pair("CTranslate", &createCTranslate));
+    componentCreatorFunctions.insert(std::make_pair("CAlive", &createCAlive));
+    componentCreatorFunctions.insert(std::make_pair("CMovement", &createCMovement));
 }
 
-void Factory::assembleEntity(EntityMap& entities, std::string entityName, Vec2 pos)
+void Factory::assembleEntity(std::string entityName, Vec2 pos)
 {
     auto blueprint = blueprints.find(entityName);
     YAML::Node components;
@@ -41,7 +47,8 @@ void Factory::assembleEntity(EntityMap& entities, std::string entityName, Vec2 p
                   << "Terminating assembly process" << std::endl;
     }
 
-    Entity entity(newId());
+    EntityId id = newId();
+    Entity entity(id);
 
     for (YAML::const_iterator itr = components.begin();
          itr != components.end(); ++itr)
@@ -62,14 +69,18 @@ void Factory::assembleEntity(EntityMap& entities, std::string entityName, Vec2 p
             }
             else
             {
-                std::cout << "Failed to assemble \"" << componentName << "\" component." << std::endl
+                std::cout << "Failed to assemble \"" << componentName
+                          << "\" component for " << entityName
+                          << std::endl
                           << "Terminating incomplete entity." << std::endl;
                 return;
             }
         }
         else
         {
-            std::cout << "Failed to find \"" << componentName << "\" component." << std::endl
+            std::cout << "Failed to find \"" << componentName
+                      << "\" component for " << entityName
+                      << std::endl
                       << "Terminating incomplete entity." << std::endl;
             return;
         }
@@ -79,8 +90,13 @@ void Factory::assembleEntity(EntityMap& entities, std::string entityName, Vec2 p
     if (position)
     {
         position->setPos(pos);
-        pGrid->setIdAt(pos, entity.getId());
+        rGrid.setIdAt(pos, id);
     }
+    
+    rEntities.insert(std::make_pair(id, entity));
 
-    entities.insert(std::make_pair(entity.getId(), entity));
+    for (auto itr = rProcesses.begin(); itr != rProcesses.end(); ++itr)
+    {
+        (*itr)->registerEntity(entity);
+    }
 }

@@ -24,7 +24,8 @@ int main()
         {
             t.update();
 
-            sf::sleep(sf::milliseconds(40));
+            std::cout << i++ << std::endl;
+            // sf::sleep(sf::millisegit conds(50));
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
                 running = false;

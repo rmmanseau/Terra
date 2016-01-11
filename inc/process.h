@@ -5,7 +5,8 @@
 
 struct Process
 {
-    virtual void update(EntityMap& entities) = 0;
+    virtual void registerEntity(Entity& entity) = 0;
+    virtual void update() = 0;
     virtual ~Process() {}
 };
 

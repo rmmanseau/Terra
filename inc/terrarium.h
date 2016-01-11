@@ -21,10 +21,12 @@ public:
     Terrarium(int width, int height, int tileSize);
     void update();
 
-    sf::RenderWindow* getWindowPtr();
-    sf::Event* getEventPtr();
-    Grid* getGridPtr();
-    Factory* getFactoryPtr();
+    sf::RenderWindow& getWindow();
+    sf::Event& getEvent();
+    Grid& getGrid();
+    Factory& getFactory();
+    EntityMap& getEntities();
+    ProcessVec& getProcesses();
 };
 
 #endif // TERRARIUM_H

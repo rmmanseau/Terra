@@ -1,37 +1,49 @@
 #include "pmovement.h"
 
-#include "entity.h"
-#include "cposition.h"
-#include "ctranslate.h"
-
-PMovement::PMovement(Grid& grid)
-    : pGrid(grid)
+PMovement::PMovement()
 {}
 
-void PMovement::update(EntityMap& entities)
+PMovement::Node::Node(EntityId id, std::weak_ptr<CTranslate> translate,
+                      std::weak_ptr<CMovement> movement)
+    : id(id)
+    , invalid(false)
+    , translate(translate)
+    , movement(movement)
+{}
+
+void PMovement::removeInvalidNodes()
 {
-    for (auto itr = entities.begin();
-        itr != entities.end(); ++itr)
-    {
-        Entity& current = itr->second;
-        
-        std::shared_ptr<CTranslate> move = current.getComponent<CTranslate>().lock();
-        std::shared_ptr<CPosition> pos = current.getComponent<CPosition>().lock();
+    nodes.erase(std::remove_if(nodes.begin(), nodes.end(),
+                               [](Node& node) { return node.invalid; }),
+                nodes.end());
+}
 
-        if (move && pos)
+void PMovement::registerEntity(Entity& entity)
+{
+    std::weak_ptr<CTranslate> translate = entity.getComponent<CTranslate>();
+    std::weak_ptr<CMovement> movement = entity.getComponent<CMovement>();
+
+    if (translate.lock() && movement.lock())
+        nodes.push_back(Node(entity.getId(), translate, movement));
+}
+
+void PMovement::update()
+{
+    for (auto itr = nodes.begin();
+        itr != nodes.end(); ++itr)
+    {        
+        std::shared_ptr<CTranslate> translate = itr->translate.lock();
+        std::shared_ptr<CMovement> movement = itr->movement.lock();
+
+        if (translate && movement)
         {
-            Vec2 newPos = pos->getPos() + move->getDisplacement();
-
-            if (pos->getPos().floor() == newPos.floor())
-            {
-                pos->setPos(newPos);
-            }
-            else if (pGrid.empty(newPos.floor()) && pGrid.inside(newPos.floor()))
-            {
-                pGrid.erase(pos->getPos().floor());
-                pGrid.setIdAt(newPos.floor(), current.getId());
-                pos->setPos(newPos);
-            }
+            translate->setDirection(movement->getUpdatedDirection());
+            translate->setVelocity(movement->getUpdatedVelocity());
+        }
+        else
+        {
+            itr->invalid = true;
         }
     }
+    removeInvalidNodes();
 }

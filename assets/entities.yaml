@@ -1,13 +1,28 @@
 #   Component Catalouge
 #
 #   CRender:
-#       texpos: [0, 0]          #tile position on sprite sheet           
-#       color: [255, 255, 255]  #base rgb color applied to sprite
+#       texpos: [0, 0]          #-tile position on sprite sheet           
+#       color: [255, 255, 255]  #-base rgb color applied to sprite
 #
 #   CPosition:
-#       pos: [0, 0] #inital position (usually overridden in code)
+#       pos: [0, 0] #-inital position (usually overridden in code)
 #
 #   CTranslate:
+#
+#   CAlive:
+#       health: 100             #-base health
+#       health_variance: 50     #-max initial variance above/below base health
+#       health_max: 200         #-maximum reachable health
+#       energy: 100
+#       energy_variance: 50
+#       energy_max: 200
+#
+#   CMovement:
+#       direction: 0    #-initial direction (0 = n, 1 = ne, 2 = e, etc).
+#                       # must be between 0 and 7
+#       velocity: 1     #-initial velcity in tiles. (must be positive).
+#       turn_angle: 2   #-how far direction can turn in one update.
+#                       # must be between 0 and 4 (0 cant turn, 4 can turn 180 degrees)
 
 Rock:
     CRender:
@@ -30,3 +45,14 @@ DumbBug:
     CPosition:
         pos: [0, 0]
     CTranslate:
+    CMovement:
+        direction: 0
+        velocity: 1
+        turn_angle: 2
+    CAlive:
+        health: 90
+        health_variance: 10
+        health_max: 100
+        energy: 500
+        energy_variance: 100
+        energy_max: 700

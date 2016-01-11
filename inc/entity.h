@@ -12,6 +12,7 @@ class Entity
     ComponentMap components;
 
 public:
+    Entity() {}
     Entity(EntityId _id);
 
     EntityId getId();

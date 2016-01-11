@@ -27,8 +27,6 @@ void CTranslate::setVelocity(double v){
 }
 
 Vec2 CTranslate::getDisplacement()
-{
-    direction = (Dir)(((int)direction+(rand() % 3 - 1) + 8) % 8);
-    
+{    
     return dirMap.at(direction) * velocity;
 }

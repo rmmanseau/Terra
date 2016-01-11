@@ -16,7 +16,7 @@ class CTranslate : public Component
     double velocity;
 
 public:
-    bool init(YAML::Node node);
+    virtual bool init(YAML::Node node);
 
     void setDirection(Dir d);
     void setVelocity(double v);
