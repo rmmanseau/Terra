@@ -16,6 +16,11 @@ struct Vec2
     Vec2 floor();
 };
 
+inline Vec2 Vec2::floor()
+{
+    return Vec2((int)x, (int)y);
+}
+
 inline Vec2 operator + (Vec2 u, Vec2 v)
 {
     Vec2 result;
@@ -45,10 +50,6 @@ inline Vec2 operator *= (Vec2 &u, double s)
     u.y *= s;
 
     return u;
-}
-inline Vec2 Vec2::floor()
-{
-    return Vec2((int)x, (int)y);
 }
 inline bool operator < (const Vec2 &u, const Vec2 &v)
 {

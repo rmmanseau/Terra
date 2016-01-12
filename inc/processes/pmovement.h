@@ -12,12 +12,11 @@ class PMovement : public Process
 {
     struct Node
     {
-        EntityId id;
         bool invalid;
         std::weak_ptr<CTranslate> translate;
         std::weak_ptr<CMovement> movement;
 
-        Node(EntityId id, std::weak_ptr<CTranslate> translate,
+        Node(std::weak_ptr<CTranslate> translate,
              std::weak_ptr<CMovement> movement);
     };
 

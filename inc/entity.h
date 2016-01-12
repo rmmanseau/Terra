@@ -9,13 +9,15 @@
 class Entity
 {
     EntityId id;
+    EntityType type;
     ComponentMap components;
 
 public:
-    Entity() {}
-    Entity(EntityId _id);
+    // Entity() {}
+    Entity(EntityId id, EntityType type);
 
     EntityId getId();
+    EntityType getType();
 
     void addComponent(std::shared_ptr<Component> component);
 

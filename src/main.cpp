@@ -15,7 +15,7 @@ int main()
         
         srand(time(0));
 
-        Terrarium t(120, 50, 8);
+        Terrarium t(120, 50, 12);
         
         int i = 0;
 
@@ -25,7 +25,7 @@ int main()
             t.update();
 
             std::cout << i++ << std::endl;
-            // sf::sleep(sf::millisegit conds(50));
+            // sf::sleep(sf::milliseconds(50));
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
                 running = false;

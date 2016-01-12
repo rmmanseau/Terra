@@ -3,14 +3,13 @@
 PRender::PRender(sf::RenderWindow& window, int width, int height, int tileSize)
     : background(width*tileSize, height*tileSize,
                  "../assets/textures/dirt.png", sf::Color(133, 87, 35))
-    , sprites(tileSize, "../assets/textures/sprite_sheet_8.png")
+    , sprites(tileSize, "../assets/textures/sprite_sheet_12.png")
     , rWindow(window)
 {}
 
-PRender::Node::Node(EntityId id, std::weak_ptr<CPosition> position,
+PRender::Node::Node(std::weak_ptr<CPosition> position,
                     std::weak_ptr<CRender> render)
-    : id(id)
-    , invalid(false)
+    : invalid(false)
     , position(position)
     , render(render)
 {}
@@ -28,7 +27,7 @@ void PRender::registerEntity(Entity& entity)
     std::weak_ptr<CRender> render = entity.getComponent<CRender>();
 
     if (position.lock() && render.lock())
-        nodes.push_back(Node(entity.getId(), position, render));
+        nodes.push_back(Node(position, render));
 }
 
 void PRender::update()

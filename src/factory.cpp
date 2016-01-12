@@ -7,8 +7,11 @@
 #include "ctranslate.h"
 #include "calive.h"
 #include "cmovement.h"
+#include "csurroundings.h"
 
 #include <string>
+
+#define ROOT_DIR "../"
 
 Factory::Factory(Terrarium& owner)
     : rGrid(owner.getGrid())
@@ -16,25 +19,30 @@ Factory::Factory(Terrarium& owner)
     , rProcesses(owner.getProcesses())
     , nextId(1)
 {
-    YAML::Node entitySheet = YAML::LoadFile("../assets/entities.yaml");
-
-    for (YAML::const_iterator itr = entitySheet.begin();
-         itr != entitySheet.end(); ++itr)
-    {
-        blueprints.insert(std::make_pair(itr->first.as<std::string>(),
-                                         itr->second));
-    }
-
+    entityTypes.insert(std::make_pair("Rock", EntityType::Rock));
+    entityTypes.insert(std::make_pair("Grass", EntityType::Grass));
+    entityTypes.insert(std::make_pair("DumbBug", EntityType::DumbBug));
+    
     componentCreatorFunctions.insert(std::make_pair("CRender", &createCRender));
     componentCreatorFunctions.insert(std::make_pair("CPosition", &createCPosition));
     componentCreatorFunctions.insert(std::make_pair("CTranslate", &createCTranslate));
     componentCreatorFunctions.insert(std::make_pair("CAlive", &createCAlive));
     componentCreatorFunctions.insert(std::make_pair("CMovement", &createCMovement));
+    componentCreatorFunctions.insert(std::make_pair("CSurroundings", &createCSurroundings));
+    
+    YAML::Node entitySheet = YAML::LoadFile((std::string)ROOT_DIR + "assets/entities.yaml");
+    for (YAML::const_iterator itr = entitySheet.begin();
+         itr != entitySheet.end(); ++itr)
+    {
+        EntityType type = entityTypes[itr->first.as<std::string>()];
+        YAML::Node node = itr->second;
+        blueprints.insert(std::make_pair(type, node));
+    }
 }
 
-void Factory::assembleEntity(std::string entityName, Vec2 pos)
+void Factory::assembleEntity(EntityType type, Vec2 pos)
 {
-    auto blueprint = blueprints.find(entityName);
+    auto blueprint = blueprints.find(type);
     YAML::Node components;
 
     if (blueprint != blueprints.end())
@@ -43,12 +51,12 @@ void Factory::assembleEntity(std::string entityName, Vec2 pos)
     }
     else
     {
-        std::cout << "Failed to find blueprints for \"" << entityName << "\" Entity" << std::endl
+        std::cout << "Failed to find blueprints for entity type " << (int)type << std::endl
                   << "Terminating assembly process" << std::endl;
     }
 
     EntityId id = newId();
-    Entity entity(id);
+    Entity entity(id, type);
 
     for (YAML::const_iterator itr = components.begin();
          itr != components.end(); ++itr)
@@ -70,7 +78,7 @@ void Factory::assembleEntity(std::string entityName, Vec2 pos)
             else
             {
                 std::cout << "Failed to assemble \"" << componentName
-                          << "\" component for " << entityName
+                          << "\" component for entity type " << (int)type
                           << std::endl
                           << "Terminating incomplete entity." << std::endl;
                 return;
@@ -79,7 +87,7 @@ void Factory::assembleEntity(std::string entityName, Vec2 pos)
         else
         {
             std::cout << "Failed to find \"" << componentName
-                      << "\" component for " << entityName
+                      << "\" component for entity type " << (int)type
                       << std::endl
                       << "Terminating incomplete entity." << std::endl;
             return;
@@ -90,7 +98,7 @@ void Factory::assembleEntity(std::string entityName, Vec2 pos)
     if (position)
     {
         position->setPos(pos);
-        rGrid.setIdAt(pos, id);
+        rGrid.setInfoAt(pos, id, type);
     }
     
     rEntities.insert(std::make_pair(id, entity));

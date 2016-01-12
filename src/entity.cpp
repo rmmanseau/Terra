@@ -1,11 +1,15 @@
 #include "entity.h"
 
-Entity::Entity(EntityId _id)
-    : id(_id) {}
+Entity::Entity(EntityId id, EntityType type)
+    : id(id), type(type) {}
 
 EntityId Entity::getId()
 {
     return id;
+}
+EntityType Entity::getType()
+{
+    return type;
 }
 
 void Entity::addComponent(std::shared_ptr<Component> component)

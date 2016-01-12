@@ -14,12 +14,11 @@ class PRender : public Process
 {
     struct Node
     {
-        EntityId id;
         bool invalid;
         std::weak_ptr<CPosition> position;
         std::weak_ptr<CRender> render;
 
-        Node(EntityId id, std::weak_ptr<CPosition> position,
+        Node(std::weak_ptr<CPosition> position,
              std::weak_ptr<CRender> render);
     };
 

@@ -14,12 +14,13 @@ class PTranslate : public Process
     struct Node
     {
         EntityId id;
+        EntityType type;
         bool invalid;
         std::weak_ptr<CPosition> position;
         std::weak_ptr<CTranslate> translate;
 
-        Node(EntityId id, std::weak_ptr<CPosition> position,
-             std::weak_ptr<CTranslate> translate);
+        Node(EntityId id, EntityType type, std::weak_ptr<CPosition> position,
+                                           std::weak_ptr<CTranslate> translate);
     };
 
     std::vector<Node> nodes;

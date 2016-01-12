@@ -21,6 +21,14 @@ enum class Dir
     nw
 };
 
+enum class EntityType
+{
+    Null,
+    Empty,
+    Rock,
+    Grass,
+    DumbBug
+};
 
 // Forward Declarations
 class Terrarium;

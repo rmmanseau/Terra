@@ -1,0 +1,37 @@
+#ifndef CLASS_GUARD
+#define CLASS_GUARD
+
+#include "common.h"
+#include "process.h"
+// Project Includes
+
+// Library Includes
+
+#include "entity.h"
+// Component Includes
+
+class PROCESS_NAME : public Process
+{
+    struct Node
+    {
+        bool invalid;
+        std::weak_ptr<COMPONENT_TYPE> component;
+
+        Node(std::weak_ptr<COMPONENT_TYPE> component);
+    };
+
+    std::vector<Node> nodes;
+    // Terrarium References Here
+
+    // Other Data Here
+
+    void removeInvalidNodes();
+
+public:
+    PROCESS_NAME( /* Pass References Here */ );
+
+    virtual void registerEntity(Entity& entity);
+    virtual void update();
+};
+
+#endif // CLASS_GUARD

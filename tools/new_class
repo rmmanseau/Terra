@@ -1,2 +1,0 @@
-echo -e "#ifndef ${1^^}_H\n#define ${1^^}_H\n\n\n\n#endif // ${1^^}_H"> ../inc/$1.h
-echo "#include \"$1.h\"" > ../src/$1.cpp

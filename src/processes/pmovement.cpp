@@ -3,10 +3,9 @@
 PMovement::PMovement()
 {}
 
-PMovement::Node::Node(EntityId id, std::weak_ptr<CTranslate> translate,
+PMovement::Node::Node(std::weak_ptr<CTranslate> translate,
                       std::weak_ptr<CMovement> movement)
-    : id(id)
-    , invalid(false)
+    : invalid(false)
     , translate(translate)
     , movement(movement)
 {}
@@ -24,7 +23,7 @@ void PMovement::registerEntity(Entity& entity)
     std::weak_ptr<CMovement> movement = entity.getComponent<CMovement>();
 
     if (translate.lock() && movement.lock())
-        nodes.push_back(Node(entity.getId(), translate, movement));
+        nodes.push_back(Node(translate, movement));
 }
 
 void PMovement::update()

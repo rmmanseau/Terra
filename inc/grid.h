@@ -7,18 +7,27 @@
 
 class Grid 
 {
-    std::vector<EntityId> g;
+    struct GridInfo
+    {
+        EntityId id;
+        EntityType type;
+
+        GridInfo();
+    };
+
+    std::vector<GridInfo> g;
     int width;
     int height;
 
     Grid() {}
-    EntityId at(Vec2 v);
+    GridInfo& at(Vec2 v);
 
 public:
     Grid(int w, int h);
 
     EntityId getIdAt(Vec2 v);
-    void setIdAt(Vec2 v, int id);
+    EntityType getTypeAt(Vec2 v);
+    void setInfoAt(Vec2 v, EntityId id, EntityType type);
     void erase(Vec2 v);
     bool inside(Vec2 v);
     bool empty(Vec2 v);

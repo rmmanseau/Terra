@@ -6,11 +6,13 @@
 #include "component.h"
 #include "vec2.h"
 
+#include <map>
 #include "yaml-cpp/yaml.h"
 
 typedef std::shared_ptr<Component> (*componentCreatorFunction)();
 typedef std::unordered_map<std::string, componentCreatorFunction> FunctionMap;
-typedef std::unordered_map<std::string, YAML::Node> YAMLNodeMap;
+typedef std::unordered_map<std::string, EntityType> EntityTypeMap;
+typedef std::map<EntityType, YAML::Node> YAMLNodeMap;
 
 class Factory
 {
@@ -22,12 +24,13 @@ class Factory
 
     YAMLNodeMap blueprints;
     FunctionMap componentCreatorFunctions;
+    EntityTypeMap entityTypes;
 
     inline int newId() {return nextId++;}
 
 public:
     Factory(Terrarium& owner);
-    void assembleEntity(std::string entityName, Vec2 pos);
+    void assembleEntity(EntityType type, Vec2 pos);
 };
 
 #endif // FACTORY_H

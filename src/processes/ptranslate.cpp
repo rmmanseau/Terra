@@ -4,9 +4,10 @@ PTranslate::PTranslate(Grid& grid)
     : rGrid(grid)
 {}
 
-PTranslate::Node::Node(EntityId id, std::weak_ptr<CPosition> position,
-                      std::weak_ptr<CTranslate> translate)
+PTranslate::Node::Node(EntityId id, EntityType type, std::weak_ptr<CPosition> position,
+                                                     std::weak_ptr<CTranslate> translate)
     : id(id)
+    , type(type)
     , invalid(false)
     , position(position)
     , translate(translate)
@@ -25,7 +26,8 @@ void PTranslate::registerEntity(Entity& entity)
     std::weak_ptr<CTranslate> translate = entity.getComponent<CTranslate>();
 
     if (position.lock() && translate.lock())
-        nodes.push_back(Node(entity.getId(), position, translate));
+        nodes.push_back(Node(entity.getId(), entity.getType(), 
+                             position, translate));
 }
 
 void PTranslate::update()
@@ -47,7 +49,7 @@ void PTranslate::update()
             else if (rGrid.empty(newPos.floor()) && rGrid.inside(newPos.floor()))
             {
                 rGrid.erase(position->getPos().floor());
-                rGrid.setIdAt(newPos.floor(), itr->id);
+                rGrid.setInfoAt(newPos.floor(), itr->id, itr->type);
                 position->setPos(newPos);
             }
         }

@@ -33,8 +33,9 @@ Rock:
 
 Grass:
     CRender:
-        texpos: [1, 0]
-        color: [96,135,73]
+        texpos: [4, 0]
+        color: [96, 135, 73]
+        # color: [77, 170, 80]
     CPosition:
         pos: [0, 0]
 
@@ -42,13 +43,15 @@ DumbBug:
     CRender:
         texpos: [0, 1]
         color: [213, 183, 148]
+        # color: [224, 96, 0]
     CPosition:
         pos: [0, 0]
     CTranslate:
     CMovement:
         direction: 0
         velocity: 1
-        turn_angle: 2
+        turn_angle: 1
+    CSurroundings:
     CAlive:
         health: 90
         health_variance: 10
