@@ -8,6 +8,8 @@
 #include "calive.h"
 #include "cmovement.h"
 #include "csurroundings.h"
+#include "cspawn.h"
+#include "cplantbrain.h"
 
 #include <string>
 
@@ -15,8 +17,8 @@
 
 Factory::Factory(Terrarium& owner)
     : rGrid(owner.getGrid())
-    , rEntities(owner.getEntities())
     , rProcesses(owner.getProcesses())
+    , rEntities(owner.getEntities())
     , nextId(1)
 {
     entityTypes.insert(std::make_pair("Rock", EntityType::Rock));
@@ -29,6 +31,8 @@ Factory::Factory(Terrarium& owner)
     componentCreatorFunctions.insert(std::make_pair("CAlive", &createCAlive));
     componentCreatorFunctions.insert(std::make_pair("CMovement", &createCMovement));
     componentCreatorFunctions.insert(std::make_pair("CSurroundings", &createCSurroundings));
+    componentCreatorFunctions.insert(std::make_pair("CSpawn", &createCSpawn));
+    componentCreatorFunctions.insert(std::make_pair("CPlantBrain", &createCPlantBrain));
     
     YAML::Node entitySheet = YAML::LoadFile((std::string)ROOT_DIR + "assets/entities.yaml");
     for (YAML::const_iterator itr = entitySheet.begin();
@@ -102,9 +106,31 @@ void Factory::assembleEntity(EntityType type, Vec2 pos)
     }
     
     rEntities.insert(std::make_pair(id, entity));
+    newEntities.push_back(id);
+}
 
-    for (auto itr = rProcesses.begin(); itr != rProcesses.end(); ++itr)
+void Factory::disassembleEntity(EntityId id)
+{
+    Entity& entity = rEntities.at(id);
+    std::shared_ptr<CPosition> position = entity.getComponent<CPosition>().lock();
+
+    deadEntities.push_back(id);
+    rGrid.erase(position->getPos());
+}
+
+void Factory::update()
+{
+    for (auto e = deadEntities.begin(); e != deadEntities.end(); ++e)
     {
-        (*itr)->registerEntity(entity);
+        rEntities.erase(*e);
     }
+
+    for (auto e = newEntities.begin(); e != newEntities.end(); ++e)
+    {
+        for (auto p = rProcesses.begin(); p != rProcesses.end(); ++p)
+        {
+            (*p)->registerEntity(rEntities.at(*e));
+        }
+    }
+    newEntities.clear();
 }

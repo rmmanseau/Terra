@@ -1,4 +1,5 @@
 #include "calive.h"
+#include "helpers.h"
 
 #include <cstdlib>
 
@@ -20,19 +21,21 @@ bool CAlive::init(YAML::Node node)
         return false;
     }
 
-    updateHealth((rand() % healthVar*2) - healthVar);
-    updateEnergy((rand() % energyVar*2) - energyVar);
+    if (healthVar > 0)
+        updateHealth((rand() % healthVar*2) - healthVar);
+    if (energyVar > 0)
+        updateEnergy((rand() % energyVar*2) - energyVar);
 
     return true;
 }
 
 void CAlive::updateEnergy(int amount)
 {
-    energy += amount;
+    energy = clamp(energy + amount, 0, energyMax);
 }
 void CAlive::updateHealth(int amount)
 {
-    health += amount;
+    health = clamp(health + amount, 0, healthMax);
 }
 int CAlive::getEnergy()
 {

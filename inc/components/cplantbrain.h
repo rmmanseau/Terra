@@ -4,9 +4,14 @@
 #include "common.h"
 #include "component.h"
 
-class CPlantBrain : public Component
+struct CPlantBrain : public Component
 {
-    
+    virtual bool init(YAML::Node node);
 };
 
-#endif CPLANTBRAIN_H
+inline std::shared_ptr<Component> createCPlantBrain()
+{
+    return std::make_shared<CPlantBrain>();
+}
+
+#endif // CPLANTBRAIN_H

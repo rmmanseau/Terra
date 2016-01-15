@@ -48,7 +48,6 @@ void PSurroundings::update()
         {
             for (int i = 0; i < 8; ++i)
             {
-
                 Vec2 surroundingPos = position->getPos().floor() + dirVec2s[i];
                 EntityId id = rGrid.getIdAt(surroundingPos);
                 EntityType type = rGrid.getTypeAt(surroundingPos);

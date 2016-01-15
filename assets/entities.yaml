@@ -23,6 +23,10 @@
 #       velocity: 1     #-initial velcity in tiles. (must be positive).
 #       turn_angle: 2   #-how far direction can turn in one update.
 #                       # must be between 0 and 4 (0 cant turn, 4 can turn 180 degrees)
+#   CSpawn:
+#       type: 3                 # (0 Null) (1 Empty) (2 Rock) (3 Grass) etc
+#       energy_required: 100    # How much energy required to spawn new entity
+#       energy_cost: 90         # How much energy it costs to spawn new entity
 
 Rock:
     CRender:
@@ -38,6 +42,19 @@ Grass:
         # color: [77, 170, 80]
     CPosition:
         pos: [0, 0]
+    CSurroundings:
+    CAlive:
+        health: 15
+        health_variance: 5
+        health_max: 20
+        energy: 10
+        energy_variance: 0
+        energy_max: 50
+    CSpawn:
+        type: 3
+        energy_required: 50
+        energy_cost: 40
+    CPlantBrain:
 
 DumbBug:
     CRender:

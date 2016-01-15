@@ -14,6 +14,7 @@ public:
 
     void setInfo(int dir, EntityId id, EntityType type);
     int numberOf(EntityType type);
+    int numberFull();
 };
 
 inline std::shared_ptr<Component> createCSurroundings()

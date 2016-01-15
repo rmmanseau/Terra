@@ -21,6 +21,8 @@ class Factory
     EntityMap& rEntities;
 
     EntityId nextId;
+    std::vector<EntityId> newEntities;
+    std::vector<EntityId> deadEntities;
 
     YAMLNodeMap blueprints;
     FunctionMap componentCreatorFunctions;
@@ -31,6 +33,9 @@ class Factory
 public:
     Factory(Terrarium& owner);
     void assembleEntity(EntityType type, Vec2 pos);
+    void disassembleEntity(EntityId id);
+
+    void update();
 };
 
 #endif // FACTORY_H

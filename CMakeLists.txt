@@ -3,7 +3,7 @@ project(Terra)
 
 set (SFML_LIBS sfml-graphics sfml-window sfml-system sfml-audio)
 set (YAML_LIBS yaml-cpp)
-set (GCC_FLAGS "-std=c++11")
+set (GCC_FLAGS "-std=c++11 -Wall -Wextra -pedantic")
 
 # Add flags
 add_definitions(${GCC_FLAGS})

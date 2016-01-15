@@ -4,15 +4,21 @@
 #include "ptranslate.h"
 #include "pmovement.h"
 #include "psurroundings.h"
+#include "pspawn.h"
+#include "pplantbrain.h"
+#include "palive.h"
 
 Terrarium::Terrarium(int width, int height, int tileSize)
-    : grid(width, height)
-    , china(*this)
+    : china(*this)
+    , grid(width, height)
 {
     processes.push_back(std::make_shared<PRender>(window, width, height, tileSize));
     processes.push_back(std::make_shared<PTranslate>(grid));
-    processes.push_back(std::make_shared<PMovement>());
     processes.push_back(std::make_shared<PSurroundings>(grid));
+    processes.push_back(std::make_shared<PPlantBrain>());
+    processes.push_back(std::make_shared<PMovement>());
+    processes.push_back(std::make_shared<PSpawn>(grid, china));
+    processes.push_back(std::make_shared<PAlive>(china));
     
     for (int i = 0; i < width*height; ++i)
     {
@@ -56,6 +62,7 @@ Terrarium::Terrarium(int width, int height, int tileSize)
 void Terrarium::update()
 {
     // std::cout << entities.size() << std::endl;
+    china.update();
 
     for (auto itr = processes.begin();
          itr != processes.end(); ++itr)

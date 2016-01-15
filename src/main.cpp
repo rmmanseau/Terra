@@ -15,17 +15,22 @@ int main()
         
         srand(time(0));
 
-        Terrarium t(120, 50, 12);
+        Terrarium t(50, 50, 12);
         
-        int i = 0;
+        sf::Clock gameClock;
 
         bool running = true;
         while (running)
         {
             t.update();
 
-            std::cout << i++ << std::endl;
-            // sf::sleep(sf::milliseconds(50));
+            int elapsed = gameClock.restart().asMilliseconds();
+            int sleep = 2 - elapsed;
+            
+            std::cout << "elapsed: " << elapsed << " sleep: " << sleep << std::endl;
+
+            sf::sleep(sf::milliseconds(0));
+            gameClock.restart();
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
                 running = false;

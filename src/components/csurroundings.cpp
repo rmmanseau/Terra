@@ -27,3 +27,8 @@ int CSurroundings::numberOf(EntityType type)
     }
     return amount;
 }
+
+int CSurroundings::numberFull()
+{
+    return 8 - numberOf(EntityType::Empty);
+}
