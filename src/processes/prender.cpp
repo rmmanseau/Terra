@@ -1,55 +1,42 @@
 #include "prender.h"
 
 PRender::PRender(sf::RenderWindow& window, int width, int height, int tileSize)
-    : background(width*tileSize, height*tileSize,
-                 "../assets/textures/dirt.png", sf::Color(133, 87, 35))
-    , sprites(tileSize, "../assets/textures/sprite_sheet_12.png")
-    , rWindow(window)
+    : rWindow(window)
+    , sprites(tileSize, "assets/textures/sprite_sheet_12.png")
+    , background(width*tileSize, height*tileSize,
+                 "assets/textures/dirt.png", sf::Color(133, 87, 35))
 {}
-
-PRender::Node::Node(std::weak_ptr<CPosition> position,
-                    std::weak_ptr<CRender> render)
-    : invalid(false)
-    , position(position)
-    , render(render)
-{}
-
-void PRender::removeInvalidNodes()
-{
-    nodes.erase(std::remove_if(nodes.begin(), nodes.end(),
-                               [](Node& node) { return node.invalid; }),
-                nodes.end());
-}
 
 void PRender::registerEntity(Entity& entity)
 {
-    std::weak_ptr<CPosition> position = entity.getComponent<CPosition>();
-    std::weak_ptr<CRender> render = entity.getComponent<CRender>();
+    Node node;
+    node.id = entity.getId();
 
-    if (position.lock() && render.lock())
-        nodes.push_back(Node(position, render));
+    if (
+        (node.position = entity.getComponent<CPosition>()) &&
+        (node.render = entity.getComponent<CRender>())
+       )
+    {
+        nodes.push_back(node);
+    }
+}
+
+void PRender::unregisterEntity(EntityId id)
+{
+    nodes.erase(std::remove_if(nodes.begin(), nodes.end(),
+                               [&id](Node& node){ return node.id == id; }),
+                nodes.end());
 }
 
 void PRender::update()
 {
-    for (auto itr = nodes.begin();
-         itr != nodes.end(); ++itr)
+    for (auto node = nodes.begin();
+         node != nodes.end(); ++node)
     {
-        std::shared_ptr<CPosition> position = itr->position.lock();
-        std::shared_ptr<CRender> render = itr->render.lock();
-        
-        if (position && render)
-        {
-            sprites.addSprite(position->getPos().floor(),
-                              render->getTexCoords(),
-                              render->getColor());
-        }
-        else
-        {
-            itr->invalid = true;
-        }
+        sprites.addSprite(node->position->getPos().floor(),
+                          node->render->getTexCoords(),
+                          node->render->getColor());
     }
-    removeInvalidNodes();
 
     rWindow.draw(background);
     rWindow.draw(sprites);

@@ -1,5 +1,7 @@
 #include "spritemap.h"
 
+#define ROOT_DIR "../"
+
 void SpriteMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.transform *= getTransform();
@@ -10,7 +12,7 @@ void SpriteMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 SpriteMap::SpriteMap(int _tileSize, const std::string& fileName)
 {
-    if (!spriteSheet.loadFromFile(fileName))
+    if (!spriteSheet.loadFromFile(ROOT_DIR + fileName))
         throw std::invalid_argument(fileName + " could not be found.");
 
     tileSize = _tileSize;

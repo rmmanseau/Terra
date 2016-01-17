@@ -6,6 +6,7 @@
 struct Process
 {
     virtual void registerEntity(Entity& entity) = 0;
+    virtual void unregisterEntity(EntityId id) = 0;
     virtual void update() = 0;
     virtual ~Process() {}
 };

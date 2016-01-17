@@ -14,12 +14,10 @@ class PRender : public Process
 {
     struct Node
     {
-        bool invalid;
-        std::weak_ptr<CPosition> position;
-        std::weak_ptr<CRender> render;
+        EntityId id;
 
-        Node(std::weak_ptr<CPosition> position,
-             std::weak_ptr<CRender> render);
+        std::shared_ptr<CPosition> position;
+        std::shared_ptr<CRender> render;
     };
 
     std::vector<Node> nodes;
@@ -28,12 +26,11 @@ class PRender : public Process
     SpriteMap sprites;
     Background background;
 
-    void removeInvalidNodes();
-
 public:
     PRender(sf::RenderWindow& window, int width, int height, int tileSize);
 
     virtual void registerEntity(Entity& entity);
+    virtual void unregisterEntity(EntityId id);
     virtual void update();
 };
 

@@ -13,22 +13,20 @@ class PSpawn : public Process
 {
     struct Node
     {
-        bool invalid;
-        std::weak_ptr<CSpawn> spawn;
+        EntityId id;
 
-        Node(std::weak_ptr<CSpawn> spawn);
+        std::shared_ptr<CSpawn> spawn;
     };
 
     std::vector<Node> nodes;
     Factory& rFactory;
     Grid& rGrid;
 
-    void removeInvalidNodes();
-
 public:
     PSpawn(Grid& grid, Factory& factory);
 
     virtual void registerEntity(Entity& entity);
+    virtual void unregisterEntity(EntityId id);
     virtual void update();
 };
 

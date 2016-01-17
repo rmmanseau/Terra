@@ -22,17 +22,17 @@ public:
     void addComponent(std::shared_ptr<Component> component);
 
     template <typename T>
-    std::weak_ptr<T> getComponent()
+    std::shared_ptr<T> getComponent()
     {
         std::type_index index(typeid(T));
         if (components.count(std::type_index(typeid(T))) != 0)
         {
-            std::weak_ptr<T> weak = std::static_pointer_cast<T>(components[index]);
-            return weak;
+            std::shared_ptr<T> ptr = std::static_pointer_cast<T>(components[index]);
+            return ptr;
         }
         else
         {
-            return std::weak_ptr<T>();
+            return std::shared_ptr<T>();
         }
     }
 };

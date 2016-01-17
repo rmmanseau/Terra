@@ -3,46 +3,33 @@
 PMovement::PMovement()
 {}
 
-PMovement::Node::Node(std::weak_ptr<CTranslate> translate,
-                      std::weak_ptr<CMovement> movement)
-    : invalid(false)
-    , translate(translate)
-    , movement(movement)
-{}
-
-void PMovement::removeInvalidNodes()
-{
-    nodes.erase(std::remove_if(nodes.begin(), nodes.end(),
-                               [](Node& node) { return node.invalid; }),
-                nodes.end());
-}
-
 void PMovement::registerEntity(Entity& entity)
 {
-    std::weak_ptr<CTranslate> translate = entity.getComponent<CTranslate>();
-    std::weak_ptr<CMovement> movement = entity.getComponent<CMovement>();
+    Node node;
+    node.id = entity.getId();
 
-    if (translate.lock() && movement.lock())
-        nodes.push_back(Node(translate, movement));
+    if (
+        (node.translate = entity.getComponent<CTranslate>()) &&
+        (node.movement = entity.getComponent<CMovement>())
+       )
+    {
+        nodes.push_back(node);
+    }
+}
+
+void PMovement::unregisterEntity(EntityId id)
+{
+    nodes.erase(std::remove_if(nodes.begin(), nodes.end(),
+                               [&id](Node& node){ return node.id == id; }),
+                nodes.end());
 }
 
 void PMovement::update()
 {
-    for (auto itr = nodes.begin();
-        itr != nodes.end(); ++itr)
+    for (auto node = nodes.begin();
+        node != nodes.end(); ++node)
     {        
-        std::shared_ptr<CTranslate> translate = itr->translate.lock();
-        std::shared_ptr<CMovement> movement = itr->movement.lock();
-
-        if (translate && movement)
-        {
-            translate->setDirection(movement->getUpdatedDirection());
-            translate->setVelocity(movement->getUpdatedVelocity());
-        }
-        else
-        {
-            itr->invalid = true;
-        }
+        node->translate->setDirection(node->movement->getUpdatedDirection());
+        node->translate->setVelocity(node->movement->getUpdatedVelocity());
     }
-    removeInvalidNodes();
 }

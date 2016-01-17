@@ -11,6 +11,8 @@
 #include "cspawn.h"
 #include "cplantbrain.h"
 
+#include "psurroundings.h"
+
 #include <string>
 
 #define ROOT_DIR "../"
@@ -105,7 +107,7 @@ void Factory::assembleEntity(EntityType type, Vec2 pos)
         }
     }
 
-    std::shared_ptr<CPosition> position = entity.getComponent<CPosition>().lock();
+    std::shared_ptr<CPosition> position = entity.getComponent<CPosition>();
     if (position)
     {
         position->setPos(pos);
@@ -119,7 +121,7 @@ void Factory::assembleEntity(EntityType type, Vec2 pos)
 void Factory::disassembleEntity(EntityId id)
 {
     Entity& entity = rEntities.at(id);
-    std::shared_ptr<CPosition> position = entity.getComponent<CPosition>().lock();
+    std::shared_ptr<CPosition> position = entity.getComponent<CPosition>();
 
     deadEntities.push_back(id);
     rGrid.erase(position->getPos());
@@ -127,10 +129,16 @@ void Factory::disassembleEntity(EntityId id)
 
 void Factory::update()
 {
-    for (auto e = deadEntities.begin(); e != deadEntities.end(); ++e)
+    for (auto deadId = deadEntities.begin(); deadId != deadEntities.end(); ++deadId)
     {
-        rEntities.erase(*e);
+        for (auto p = rProcesses.begin(); p != rProcesses.end(); ++p)
+        {
+            (*p)->unregisterEntity(*deadId);
+        }
+
+        rEntities.erase(*deadId);
     }
+    deadEntities.clear();
 
     for (auto e = newEntities.begin(); e != newEntities.end(); ++e)
     {

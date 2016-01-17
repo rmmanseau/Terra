@@ -15,28 +15,22 @@ class PPlantBrain : public Process
 {
     struct Node
     {
-        bool invalid;
-        std::weak_ptr<CPlantBrain> plantBrain;
-        std::weak_ptr<CPosition> position;
-        std::weak_ptr<CAlive> alive;
-        std::weak_ptr<CSurroundings> surroundings;
-        std::weak_ptr<CSpawn> spawn;
+        EntityId id;
 
-        Node(std::weak_ptr<CPlantBrain> plantBrain,
-             std::weak_ptr<CPosition> position,
-             std::weak_ptr<CAlive> alive,
-             std::weak_ptr<CSurroundings> surroundings,
-             std::weak_ptr<CSpawn> spawn);
+        std::shared_ptr<CPlantBrain> plantBrain;
+        std::shared_ptr<CPosition> position;
+        std::shared_ptr<CAlive> alive;
+        std::shared_ptr<CSurroundings> surroundings;
+        std::shared_ptr<CSpawn> spawn;
     };
 
     std::vector<Node> nodes;
-
-    void removeInvalidNodes();
 
 public:
     PPlantBrain();
 
     virtual void registerEntity(Entity& entity);
+    virtual void unregisterEntity(EntityId id);
     virtual void update();
 };
 

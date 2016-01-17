@@ -4,48 +4,38 @@ PAlive::PAlive(Factory& factory)
     : rFactory(factory)
 {}
 
-PAlive::Node::Node(EntityId id, std::weak_ptr<CAlive> alive)
-    : invalid(false)
-    , id(id)
-    , alive(alive)
-{}
-
-void PAlive::removeInvalidNodes()
-{
-    nodes.erase(std::remove_if(nodes.begin(), nodes.end(),
-                               [](Node& node) { return node.invalid; }),
-                nodes.end());
-}
 
 void PAlive::registerEntity(Entity& entity)
 {
-    std::weak_ptr<CAlive> alive = entity.getComponent<CAlive>();
+    Node node;
+    node.id = entity.getId();
 
-    if (alive.lock())
-        nodes.push_back(Node(entity.getId(), alive));
+    if (
+        (node.alive = entity.getComponent<CAlive>())
+       )
+    {
+        nodes.push_back(node);
+    }
+}
+
+void PAlive::unregisterEntity(EntityId id)
+{
+    nodes.erase(std::remove_if(nodes.begin(), nodes.end(),
+                               [&id](Node& node){ return node.id == id; }),
+                nodes.end());
 }
 
 void PAlive::update()
 {
-    for (auto itr = nodes.begin();
-         itr != nodes.end(); ++itr)
+    for (auto node = nodes.begin();
+         node != nodes.end(); ++node)
     {        
-        std::shared_ptr<CAlive> alive = itr->alive.lock();
-
-        if (alive)
+        if (node->alive->getHealth() == 0)
         {
-            if (alive->getHealth() == 0)
-            {
-                rFactory.disassembleEntity(itr->id);
-            }
+            rFactory.disassembleEntity(node->id);
+        }
 
-            if (alive->getEnergy() == 0)
-                alive->updateHealth(-1);
-        }
-        else
-        {
-            itr->invalid = true;
-        }
+        if (node->alive->getEnergy() == 0)
+            node->alive->updateHealth(-1);
     }
-    removeInvalidNodes();
 }

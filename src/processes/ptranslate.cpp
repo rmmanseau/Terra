@@ -4,59 +4,43 @@ PTranslate::PTranslate(Grid& grid)
     : rGrid(grid)
 {}
 
-PTranslate::Node::Node(EntityId id, EntityType type, std::weak_ptr<CPosition> position,
-                                                     std::weak_ptr<CTranslate> translate)
-    : id(id)
-    , type(type)
-    , invalid(false)
-    , position(position)
-    , translate(translate)
-{}
-
-void PTranslate::removeInvalidNodes()
-{
-    nodes.erase(std::remove_if(nodes.begin(), nodes.end(),
-                               [](Node& node) { return node.invalid; }),
-                nodes.end());
-}
-
 void PTranslate::registerEntity(Entity& entity)
 {
-    std::weak_ptr<CPosition> position = entity.getComponent<CPosition>();
-    std::weak_ptr<CTranslate> translate = entity.getComponent<CTranslate>();
+    Node node;
+    node.id = entity.getId();
 
-    if (position.lock() && translate.lock())
-        nodes.push_back(Node(entity.getId(), entity.getType(), 
-                             position, translate));
+    if (
+        (node.position = entity.getComponent<CPosition>()) &&
+        (node.translate = entity.getComponent<CTranslate>())
+       )
+    {
+        nodes.push_back(node);
+    }
+}
+
+void PTranslate::unregisterEntity(EntityId id)
+{
+    nodes.erase(std::remove_if(nodes.begin(), nodes.end(),
+                               [&id](Node& node){ return node.id == id; }),
+                nodes.end());
 }
 
 void PTranslate::update()
 {
-    for (auto itr = nodes.begin();
-        itr != nodes.end(); ++itr)
+    for (auto node = nodes.begin();
+        node != nodes.end(); ++node)
     {        
-        std::shared_ptr<CPosition> position = itr->position.lock();
-        std::shared_ptr<CTranslate> translate = itr->translate.lock();
+        Vec2 newPos = node->position->getPos() + node->translate->getDisplacement();
 
-        if (translate && position)
+        if (node->position->getPos().floor() == newPos.floor())
         {
-            Vec2 newPos = position->getPos() + translate->getDisplacement();
-
-            if (position->getPos().floor() == newPos.floor())
-            {
-                position->setPos(newPos);
-            }
-            else if (rGrid.empty(newPos.floor()) && rGrid.inside(newPos.floor()))
-            {
-                rGrid.erase(position->getPos().floor());
-                rGrid.setInfoAt(newPos.floor(), itr->id, itr->type);
-                position->setPos(newPos);
-            }
+            node->position->setPos(newPos);
         }
-        else
+        else if (rGrid.empty(newPos.floor()) && rGrid.inside(newPos.floor()))
         {
-            itr->invalid = true;
+            rGrid.erase(node->position->getPos().floor());
+            rGrid.setInfoAt(newPos.floor(), node->id, node->type);
+            node->position->setPos(newPos);
         }
     }
-    removeInvalidNodes();
 }

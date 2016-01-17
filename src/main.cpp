@@ -29,11 +29,11 @@ int main()
             t.update();
 
             int elapsed = gameClock.restart().asMicroseconds();
-            int sleep = 10000 - elapsed;
+            int sleep = 5000 - elapsed;
             
             std::cout << "elapsed: " << elapsed << " sleep: " << sleep << std::endl;
 
-            sf::sleep(sf::microseconds(sleep));
+            sf::sleep(sf::microseconds(0));
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
                 running = false;

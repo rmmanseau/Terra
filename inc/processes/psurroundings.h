@@ -13,12 +13,10 @@ class PSurroundings : public Process
 {
     struct Node
     {
-        bool invalid;
-        std::weak_ptr<CPosition> position;
-        std::weak_ptr<CSurroundings> surroundings;
+        EntityId id;
 
-        Node(std::weak_ptr<CPosition> position,
-             std::weak_ptr<CSurroundings> surroundings);
+        std::shared_ptr<CPosition> position;
+        std::shared_ptr<CSurroundings> surroundings;
     };
 
     std::vector<Node> nodes;
@@ -26,12 +24,11 @@ class PSurroundings : public Process
 
     std::vector<Vec2> dirVec2s;
 
-    void removeInvalidNodes();
-
 public:
     PSurroundings(Grid& grid);
 
     virtual void registerEntity(Entity& entity);
+    virtual void unregisterEntity(EntityId id);
     virtual void update();
 };
 

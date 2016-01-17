@@ -15,23 +15,19 @@ class PTranslate : public Process
     {
         EntityId id;
         EntityType type;
-        bool invalid;
-        std::weak_ptr<CPosition> position;
-        std::weak_ptr<CTranslate> translate;
 
-        Node(EntityId id, EntityType type, std::weak_ptr<CPosition> position,
-                                           std::weak_ptr<CTranslate> translate);
+        std::shared_ptr<CPosition> position;
+        std::shared_ptr<CTranslate> translate;
     };
 
     std::vector<Node> nodes;
     Grid& rGrid;
 
-    void removeInvalidNodes();
-
 public:
     PTranslate(Grid& grid);
 
     virtual void registerEntity(Entity& entity);
+    virtual void unregisterEntity(EntityId id);
     virtual void update();
 };
 

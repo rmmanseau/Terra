@@ -1,8 +1,10 @@
 #include "background.h"
 
+#define ROOT_DIR "../"
+
 Background::Background(int width, int height, const std::string& fileName, const sf::Color& color)
 {
-    if (!texture.loadFromFile(fileName))
+    if (!texture.loadFromFile(ROOT_DIR + fileName))
         throw std::invalid_argument(fileName + " could not be found.");
 
     texture.setRepeated(true);

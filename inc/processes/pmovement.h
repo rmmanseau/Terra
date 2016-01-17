@@ -12,22 +12,19 @@ class PMovement : public Process
 {
     struct Node
     {
-        bool invalid;
-        std::weak_ptr<CTranslate> translate;
-        std::weak_ptr<CMovement> movement;
+        EntityId id;
 
-        Node(std::weak_ptr<CTranslate> translate,
-             std::weak_ptr<CMovement> movement);
+        std::shared_ptr<CTranslate> translate;
+        std::shared_ptr<CMovement> movement;
     };
 
     std::vector<Node> nodes;
-
-    void removeInvalidNodes();
 
 public:
     PMovement();
 
     virtual void registerEntity(Entity& entity);
+    virtual void unregisterEntity(EntityId id);
     virtual void update();
 };
 

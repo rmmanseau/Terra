@@ -5,45 +5,35 @@ PSpawn::PSpawn(Grid& grid, Factory& factory)
     , rGrid(grid)
 {}
 
-PSpawn::Node::Node(std::weak_ptr<CSpawn> spawn)
-    : invalid(false)
-    , spawn(spawn)
-{}
-
-void PSpawn::removeInvalidNodes()
-{
-    nodes.erase(std::remove_if(nodes.begin(), nodes.end(),
-                               [](Node& node) { return node.invalid; }),
-                nodes.end());
-}
-
 void PSpawn::registerEntity(Entity& entity)
 {
-    std::weak_ptr<CSpawn> spawn = entity.getComponent<CSpawn>();
+    Node node;
+    node.id = entity.getId();
 
-    if (spawn.lock())
-        nodes.push_back(Node(spawn));
+    if (
+        (node.spawn = entity.getComponent<CSpawn>())
+       )
+    {
+        nodes.push_back(node);
+    }
+}
+
+void PSpawn::unregisterEntity(EntityId id)
+{
+    nodes.erase(std::remove_if(nodes.begin(), nodes.end(),
+                               [&id](Node& node){ return node.id == id; }),
+                nodes.end());
 }
 
 void PSpawn::update()
 {
-    for (auto itr = nodes.begin();
-         itr != nodes.end(); ++itr)
+    for (auto node = nodes.begin();
+         node != nodes.end(); ++node)
     {        
-        std::shared_ptr<CSpawn> spawn = itr->spawn.lock();
-
-        if (spawn)
+        if (node->spawn->active && rGrid.empty(node->spawn->pos))
         {
-            if (spawn->active && rGrid.empty(spawn->pos))
-            {
-                rFactory.assembleEntity(spawn->type, spawn->pos);
-            }
-            spawn->active = false;
+            rFactory.assembleEntity(node->spawn->type, node->spawn->pos);
         }
-        else
-        {
-            itr->invalid = true;
-        }
+        node->spawn->active = false;
     }
-    removeInvalidNodes();
 }
