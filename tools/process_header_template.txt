@@ -14,10 +14,9 @@ class PROCESS_NAME : public Process
 {
     struct Node
     {
-        bool invalid;
-        std::weak_ptr<COMPONENT_TYPE> component;
+        EntityId id;
 
-        Node(std::weak_ptr<COMPONENT_TYPE> component);
+        std::shared_ptr<COMPONENT_TYPE> component;
     };
 
     std::vector<Node> nodes;
@@ -25,12 +24,11 @@ class PROCESS_NAME : public Process
 
     // Other Data Here
 
-    void removeInvalidNodes();
-
 public:
     PROCESS_NAME( /* Pass References Here */ );
 
     virtual void registerEntity(Entity& entity);
+    virtual void unregisterEntity(EntityId id);
     virtual void update();
 };
 

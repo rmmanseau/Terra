@@ -3,43 +3,34 @@
 PROCESS_NAME::PROCESS_NAME()
 {}
 
-PROCESS_NAME::Node::Node(std::weak_ptr<COMPONENT_TYPE> _component_)
-    : invalid(false)
-    , _component_(_component_)
-{}
-
-void PROCESS_NAME::removeInvalidNodes()
-{
-    nodes.erase(std::remove_if(nodes.begin(), nodes.end(),
-                               [](Node& node) { return node.invalid; }),
-                nodes.end());
-}
-
 void PROCESS_NAME::registerEntity(Entity& entity)
 {
-    std::weak_ptr<COMPONENT_TYPE> _component_ = entity.getComponent<COMPONENT_TYPE>();
+    Node node;
+    node.id = entity.getId();
 
-    if (_component_.lock())
-        nodes.push_back(Node(_component_));
+    if (
+        (node.component = entity.getComponent<COMPONENT_TYPE>())
+       )
+    {
+        nodes.push_back(node);
+    }
+}
+
+void PROCESS_NAME::unregisterEntity(EntityId id)
+{
+    nodes.erase(std::remove_if(nodes.begin(), nodes.end(),
+                               [&id](Node& node){ return node.id == id; }),
+                nodes.end());
 }
 
 void PROCESS_NAME::update()
 {
-    for (auto itr = nodes.begin();
-         itr != nodes.end(); ++itr)
+    for (auto node = nodes.begin();
+         node != nodes.end(); ++node)
     {        
-        std::shared_ptr<COMPONENT_TYPE> _component_ = itr->_component_.lock();
-
-        if (_component_)
-        {
-            // Do stuff here ...
-        }
-        else
-        {
-            itr->invalid = true;
-        }
+        // Do stuff here ...
+        // node->component->doStuff();
     }
-    removeInvalidNodes();
-
+ 
     // Do stuff here ...
 }
