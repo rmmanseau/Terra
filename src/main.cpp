@@ -8,6 +8,8 @@
 
 #include "yaml-cpp/yaml.h"
 
+#include "cposition.h"
+
 int main()
 {
     try
@@ -15,22 +17,23 @@ int main()
         
         srand(time(0));
 
-        Terrarium t(50, 50, 12);
+        Terrarium t(70, 35, 12);
         
         sf::Clock gameClock;
 
         bool running = true;
         while (running)
         {
+            gameClock.restart();
+            
             t.update();
 
-            int elapsed = gameClock.restart().asMilliseconds();
-            int sleep = 2 - elapsed;
+            int elapsed = gameClock.restart().asMicroseconds();
+            int sleep = 10000 - elapsed;
             
             std::cout << "elapsed: " << elapsed << " sleep: " << sleep << std::endl;
 
-            sf::sleep(sf::milliseconds(0));
-            gameClock.restart();
+            sf::sleep(sf::microseconds(sleep));
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
                 running = false;

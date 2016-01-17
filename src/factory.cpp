@@ -46,6 +46,12 @@ Factory::Factory(Terrarium& owner)
 
 void Factory::assembleEntity(EntityType type, Vec2 pos)
 {
+    if (!rGrid.inside(pos))
+    {
+        std::cout << "Attempted to assemble entity outside grid boundries." << std::endl
+                  << "Terminating assembly process" << std::endl;
+    }
+
     auto blueprint = blueprints.find(type);
     YAML::Node components;
 
@@ -57,6 +63,7 @@ void Factory::assembleEntity(EntityType type, Vec2 pos)
     {
         std::cout << "Failed to find blueprints for entity type " << (int)type << std::endl
                   << "Terminating assembly process" << std::endl;
+        return;
     }
 
     EntityId id = newId();
