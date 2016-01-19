@@ -7,6 +7,8 @@
 
 class CRender : public Component
 {
+    INC_FACTORY_REGISTER(CRender);
+
     Vec2 texCoords;
     sf::Color color;
 
@@ -16,10 +18,5 @@ public:
     Vec2 getTexCoords();
     sf::Color getColor();
 };
-
-inline std::shared_ptr<Component> createCRender()
-{
-    return std::make_shared<CRender>();
-}
 
 #endif // CRENDER_H

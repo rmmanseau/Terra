@@ -7,6 +7,8 @@
 
 class CPosition : public Component
 {
+    INC_FACTORY_REGISTER(CPosition);
+
     Vec2 pos;
 
 public:
@@ -15,10 +17,5 @@ public:
     void setPos(Vec2 _pos);
     Vec2 getPos();
 };
-
-inline std::shared_ptr<Component> createCPosition()
-{
-    return std::make_shared<CPosition>();
-}
 
 #endif // CPOSITION_H

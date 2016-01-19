@@ -1,5 +1,7 @@
 #include "cmovement.h"
 
+SRC_FACTORY_REGISTER(CMovement);
+
 bool CMovement::init(YAML::Node node)
 {
     try

@@ -1,5 +1,7 @@
 #include "ctranslate.h"
 
+SRC_FACTORY_REGISTER(CTranslate);
+
 const std::map<Dir, Vec2> CTranslate::dirMap = {
     {Dir::n,  Vec2(0,     -1)},
     {Dir::ne, Vec2(.707,  -.707)},

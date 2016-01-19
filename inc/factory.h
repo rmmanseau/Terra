@@ -9,13 +9,23 @@
 #include <map>
 #include "yaml-cpp/yaml.h"
 
-typedef std::shared_ptr<Component> (*componentCreatorFunction)();
-typedef std::unordered_map<std::string, componentCreatorFunction> FunctionMap;
-typedef std::unordered_map<std::string, EntityType> EntityTypeMap;
-typedef std::map<EntityType, YAML::Node> YAMLNodeMap;
+template <typename T>
+std::shared_ptr<Component> createComponent()
+{
+    return std::make_shared<T>();
+}
+
+template <typename T>
+struct ComponentRegister;
 
 class Factory
 {
+    template <typename T> friend class ComponentRegister;
+
+    typedef std::unordered_map<std::string, std::shared_ptr<Component>(*)()> FunctionMap;
+    typedef std::unordered_map<std::string, EntityType> EntityTypeMap;
+    typedef std::map<EntityType, YAML::Node> YAMLNodeMap;
+    
     Grid& rGrid;
     ProcessVec& rProcesses;
     EntityMap& rEntities;
@@ -25,17 +35,29 @@ class Factory
     std::vector<EntityId> deadEntities;
 
     YAMLNodeMap blueprints;
-    FunctionMap componentCreatorFunctions;
     EntityTypeMap entityTypes;
+    
+    static FunctionMap* componentCreators;
 
-    inline int newId() {return nextId++;}
+    std::shared_ptr<Component> assembleComponent(const std::string& name, const YAML::Node& initNode);
+    int newId();
+    static FunctionMap* getComponentCreators();
 
 public:
     Factory(Terrarium& owner);
+
     void assembleEntity(EntityType type, Vec2 pos);
     void disassembleEntity(EntityId id);
-
     void update();
+};
+
+template <typename T>
+struct ComponentRegister
+{
+    ComponentRegister(std::string const& name)
+    {
+        Factory::getComponentCreators()->insert(std::make_pair(name, &createComponent<T>));
+    }
 };
 
 #endif // FACTORY_H

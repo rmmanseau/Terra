@@ -6,12 +6,9 @@
 
 struct CPlantBrain : public Component
 {
+    INC_FACTORY_REGISTER(CPlantBrain);
+ 
     virtual bool init(YAML::Node node);
 };
-
-inline std::shared_ptr<Component> createCPlantBrain()
-{
-    return std::make_shared<CPlantBrain>();
-}
 
 #endif // CPLANTBRAIN_H

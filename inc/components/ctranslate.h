@@ -10,6 +10,8 @@
 
 class CTranslate : public Component
 {
+    INC_FACTORY_REGISTER(CTranslate);
+
     static const std::map<Dir, Vec2> dirMap;
 
     Dir direction;
@@ -22,10 +24,5 @@ public:
     void setVelocity(double v);
     Vec2 getDisplacement();
 };
-
-inline std::shared_ptr<Component> createCTranslate()
-{
-    return std::make_shared<CTranslate>();
-}
 
 #endif // CTRANSLATE_H

@@ -9,6 +9,8 @@
 
 class COMPONENT_NAME : public Component
 {
+    INC_FACTORY_REGISTER(COMPONENT_NAME);
+
     // Data Here
 
 public:
@@ -16,10 +18,5 @@ public:
 
     // Functions Here
 };
-
-inline std::shared_ptr<Component> createCOMPONENT_NAME()
-{
-    return std::make_shared<COMPONENT_NAME>();
-}
 
 #endif // CLASS_GUARD

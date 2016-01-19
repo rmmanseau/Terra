@@ -3,6 +3,8 @@
 
 #include <cstdlib>
 
+SRC_FACTORY_REGISTER(CAlive);
+
 bool CAlive::init(YAML::Node node)
 {
     int healthVar, energyVar;

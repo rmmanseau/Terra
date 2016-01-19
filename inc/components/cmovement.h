@@ -6,6 +6,8 @@
 
 class CMovement : public Component
 {
+    INC_FACTORY_REGISTER(CMovement);
+
     Dir direction;
     int velocity;
     int turnAngle;
@@ -16,10 +18,5 @@ public:
     Dir getUpdatedDirection();
     int getUpdatedVelocity();
 };
-
-inline std::shared_ptr<Component> createCMovement()
-{
-    return std::make_shared<CMovement>();
-}
 
 #endif // CMOVEMENT_H

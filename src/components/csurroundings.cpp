@@ -1,5 +1,7 @@
 #include "csurroundings.h"
 
+SRC_FACTORY_REGISTER(CSurroundings);
+
 bool CSurroundings::init(YAML::Node node)
 {
     for (int i = 0; i < 8; ++i)

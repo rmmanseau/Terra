@@ -7,6 +7,8 @@
 
 struct CSpawn : public Component
 {
+    INC_FACTORY_REGISTER(CSpawn);
+ 
     bool active;
 
     int energyCost;
@@ -16,10 +18,5 @@ struct CSpawn : public Component
 
     virtual bool init(YAML::Node node);
 };
-
-inline std::shared_ptr<Component> createCSpawn()
-{
-    return std::make_shared<CSpawn>();
-}
 
 #endif // CSPAWN_H

@@ -1,5 +1,7 @@
 #include "cposition.h"
 
+SRC_FACTORY_REGISTER(CPosition);
+
 bool CPosition::init(YAML::Node node)
 {
     try

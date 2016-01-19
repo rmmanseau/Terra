@@ -6,6 +6,8 @@
 
 class CSurroundings : public Component
 {
+    INC_FACTORY_REGISTER(CSurroundings);
+
     std::vector<EntityId> ids;
     std::vector<EntityType> types;
 
@@ -16,10 +18,5 @@ public:
     int numberOf(EntityType type);
     int numberFull();
 };
-
-inline std::shared_ptr<Component> createCSurroundings()
-{
-    return std::make_shared<CSurroundings>();
-}
 
 #endif // CSURROUNDINGS_H

@@ -1,5 +1,7 @@
 #include "cspawn.h"
 
+SRC_FACTORY_REGISTER(CSpawn);
+
 bool CSpawn::init(YAML::Node node)
 {
     try

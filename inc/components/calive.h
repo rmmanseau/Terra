@@ -6,6 +6,8 @@
 
 class CAlive : public Component
 {
+    INC_FACTORY_REGISTER(CAlive);
+
     int energy;
     int energyMax;
     int health;
@@ -19,10 +21,5 @@ public:
     int getEnergy();
     int getHealth();
 };
-
-inline std::shared_ptr<Component> createCAlive()
-{
-    return std::make_shared<CAlive>();
-}
 
 #endif // CALIVE_H

@@ -1,5 +1,7 @@
 #include "crender.h"
 
+SRC_FACTORY_REGISTER(CRender);
+
 bool CRender::init(YAML::Node node)
 {
     try
