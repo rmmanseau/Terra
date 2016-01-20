@@ -1,7 +1,9 @@
 #include "factory.h"
+#include "globals.h"
 #include "terrarium.h"
 #include "process.h"
 #include "cposition.h"
+
 
 #include <string>
 
@@ -12,16 +14,12 @@ Factory::Factory(Terrarium& owner)
     , rProcesses(owner.getProcesses())
     , rEntities(owner.getEntities())
     , nextId(1)
-{
-    entityTypes.insert(std::make_pair("Rock", EntityType::Rock));
-    entityTypes.insert(std::make_pair("Grass", EntityType::Grass));
-    entityTypes.insert(std::make_pair("DumbBug", EntityType::DumbBug));
-    
+{   
     YAML::Node entitySheet = YAML::LoadFile((std::string)ROOT_DIR + "assets/entities.yaml");
     for (YAML::const_iterator itr = entitySheet.begin();
          itr != entitySheet.end(); ++itr)
     {
-        EntityType type = entityTypes[itr->first.as<std::string>()];
+        EntityType type = G_EntityNameTypeMap[itr->first.as<std::string>()];
         YAML::Node node = itr->second;
         blueprints.insert(std::make_pair(type, node));
     }
@@ -100,8 +98,8 @@ void Factory::assembleEntity(EntityType type, Vec2i pos)
     std::shared_ptr<CPosition> position = entity.getComponent<CPosition>();
     if (position)
     {
-        position->pos = (Vec2f)pos;
-        rGrid.setInfoAt(pos, id, type);
+        position->pos = pos;
+        rGrid.setInfoAt(pos, id, EntityType::Reserved);
     }
     
     rEntities.insert(std::make_pair(id, entity));
@@ -110,31 +108,47 @@ void Factory::assembleEntity(EntityType type, Vec2i pos)
 
 void Factory::disassembleEntity(EntityId id)
 {
-    Entity& entity = rEntities.at(id);
-    std::shared_ptr<CPosition> position = entity.getComponent<CPosition>();
-
     deadEntities.push_back(id);
-    rGrid.erase(position->pos.floor());
 }
 
 void Factory::update()
 {
-    for (auto deadId = deadEntities.begin(); deadId != deadEntities.end(); ++deadId)
+    // Remove Dead Entities
+    for (auto itr = deadEntities.begin(); itr != deadEntities.end(); ++itr)
     {
-        for (auto p = rProcesses.begin(); p != rProcesses.end(); ++p)
+        EntityId id = *itr;
+        Entity& entity = rEntities.at(id);
+
+        std::shared_ptr<CPosition> position = entity.getComponent<CPosition>();
+        if (position)
         {
-            (*p)->unregisterEntity(*deadId);
+            rGrid.erase(position->pos.floor());
         }
 
-        rEntities.erase(*deadId);
+        for (auto p = rProcesses.begin(); p != rProcesses.end(); ++p)
+        {
+            (*p)->unregisterEntity(id);
+        }
+
+        rEntities.erase(id);
     }
     deadEntities.clear();
 
-    for (auto e = newEntities.begin(); e != newEntities.end(); ++e)
+    // Add New Entities
+    for (auto itr = newEntities.begin(); itr != newEntities.end(); ++itr)
     {
+        EntityId id = *itr;
+        Entity& entity = rEntities.at(id);
+
+        std::shared_ptr<CPosition> position = entity.getComponent<CPosition>();
+        if (position)
+        {
+            rGrid.setInfoAt(position->pos.floor(), id, entity.getType());
+        }
+
         for (auto p = rProcesses.begin(); p != rProcesses.end(); ++p)
         {
-            (*p)->registerEntity(rEntities.at(*e));
+            (*p)->registerEntity(entity);
         }
     }
     newEntities.clear();

@@ -9,6 +9,7 @@ class CSpawn : public Component
 {
     INC_FACTORY_REGISTER(CSpawn);
     
+
 public:
     bool active;
 
@@ -16,6 +17,7 @@ public:
     int energyRequired;
     Vec2i pos;
     EntityType type;
+    std::vector<EntityType> canSpawnOn;
 
     virtual bool init(YAML::Node node);
 };

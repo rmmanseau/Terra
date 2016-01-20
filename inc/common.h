@@ -24,10 +24,12 @@ enum class Dir
 enum class EntityType
 {
     Null,
+    Reserved,
     Empty,
     Rock,
     Grass,
-    DumbBug
+    DumbBug,
+    DumbBugEgg
 };
 
 // Forward Declarations

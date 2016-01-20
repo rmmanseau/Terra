@@ -18,5 +18,6 @@ std::map<std::string, EntityType> G_EntityNameTypeMap =
     {"Empty", EntityType::Empty},
     {"Rock", EntityType::Rock},
     {"Grass", EntityType::Grass},
-    {"DumbBug", EntityType::DumbBug}
+    {"DumbBug", EntityType::DumbBug},
+    {"DumbBugEgg", EntityType::DumbBugEgg}
 };

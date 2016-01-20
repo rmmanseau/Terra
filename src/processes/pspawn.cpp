@@ -1,8 +1,10 @@
 #include "pspawn.h"
+#include "helpers.h"
 
-PSpawn::PSpawn(Grid& grid, Factory& factory)
+PSpawn::PSpawn(Grid& grid, Factory& factory, EntityMap& entities)
     : rFactory(factory)
     , rGrid(grid)
+    , rEntities(entities)
 {}
 
 void PSpawn::registerEntity(Entity& entity)
@@ -31,8 +33,16 @@ void PSpawn::update()
     for (auto node = nodes.begin();
          node != nodes.end(); ++node)
     {        
-        if (node->spawn->active && rGrid.empty(node->spawn->pos))
+        if (node->spawn->active &&
+            vectorContains(node->spawn->canSpawnOn,
+                           rGrid.getTypeAt(node->spawn->pos)))
         {
+            if (rGrid.getTypeAt(node->spawn->pos) != EntityType::Empty)
+            {
+                EntityId id = rGrid.getIdAt(node->spawn->pos);
+                rEntities.at(id).getComponent<CAlive>()->kill();
+            }
+
             rFactory.assembleEntity(node->spawn->type, node->spawn->pos);
             node->alive->updateEnergy(-(node->spawn->energyCost));
         }

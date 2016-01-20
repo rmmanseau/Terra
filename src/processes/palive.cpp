@@ -33,7 +33,7 @@ void PAlive::update()
         if (node->alive->energy == 0)
             node->alive->updateHealth(-1);
         
-        if (node->alive->health == 0)
+        if (node->alive->health <= 0)
         {
             rFactory.disassembleEntity(node->id);
         }

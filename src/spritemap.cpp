@@ -19,7 +19,7 @@ SpriteMap::SpriteMap(int _tileSize, const std::string& fileName)
     vertices.setPrimitiveType(sf::Quads);
 }
 
-void SpriteMap::addSprite(Vec2i pos, Vec2i tex, const sf::Color& color)
+void SpriteMap::addSprite(Vec2f pos, Vec2i tex, const sf::Color& color)
 {
     pos *= tileSize;
     tex *= tileSize;

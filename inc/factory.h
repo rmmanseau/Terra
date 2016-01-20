@@ -23,7 +23,6 @@ class Factory
     template <typename T> friend class ComponentRegister;
 
     typedef std::unordered_map<std::string, std::shared_ptr<Component>(*)()> FunctionMap;
-    typedef std::unordered_map<std::string, EntityType> EntityTypeMap;
     typedef std::map<EntityType, YAML::Node> YAMLNodeMap;
     
     Grid& rGrid;
@@ -34,9 +33,7 @@ class Factory
     std::vector<EntityId> newEntities;
     std::vector<EntityId> deadEntities;
 
-    YAMLNodeMap blueprints;
-    EntityTypeMap entityTypes;
-    
+    YAMLNodeMap blueprints;    
     static FunctionMap* componentCreators;
 
     std::shared_ptr<Component> assembleComponent(const std::string& name, const YAML::Node& initNode);

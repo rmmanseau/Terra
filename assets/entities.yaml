@@ -61,7 +61,9 @@ Grass:
         energy_variance: 0
         energy_max: 50
     CSpawn:
-        type: 3
+        type: Grass
+        can_spawn_on:
+            - Empty
         energy_required: 50
         energy_cost: 40
 
@@ -76,19 +78,43 @@ DumbBug:
         color: [213, 183, 148]
     CMovement:
         direction: 3
-        velocity: 0.4
+        velocity: 0.5
         turn_angle: 2
     CSpawn:
-        type: 4
-        energy_required: 350
-        energy_cost: 300
+        type: DumbBugEgg
+        can_spawn_on:
+            - Empty
+            - Grass
+        energy_required: 250
+        energy_cost: 220
     CEat:
         food:
-            3: 20
+            Grass: 20
     CAlive:
         health: 10
         health_variance: 0
         health_max: 10
-        energy: 100
+        energy: 180
         energy_variance: 50
-        energy_max: 350
+        energy_max: 250
+
+DumbBugEgg:
+    CEggBrain:
+    CAlive:
+        health: 10
+        health_variance: 0
+        health_max: 10
+        energy: 20
+        energy_variance: 20
+        energy_max: 150
+    CPosition:
+        pos: [0, 0]
+    CRender:
+        texpos: [0, 2]
+        color: [250, 128, 114]
+    CSpawn:
+        type: DumbBug
+        can_spawn_on:
+            - DumbBugEgg
+        energy_required: 150
+        energy_cost: 150

@@ -1,4 +1,5 @@
 #include "ceat.h"
+#include "globals.h"
 
 SRC_FACTORY_REGISTER(CEat);
 
@@ -10,7 +11,8 @@ bool CEat::init(YAML::Node node)
         for (YAML::const_iterator itr = foodNode.begin();
              itr != foodNode.end(); ++itr)
         {
-            EntityType type = (EntityType)itr->first.as<int>();
+            EntityType type = G_EntityNameTypeMap[itr->first.as<std::string>()];
+            
             food.push_back(type);
             energyFromFood.insert(std::make_pair(type, itr->second.as<int>()));
         }

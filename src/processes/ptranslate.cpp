@@ -19,6 +19,7 @@ void PTranslate::registerEntity(Entity& entity)
 {
     Node node;
     node.id = entity.getId();
+    node.type = entity.getType();
 
     if (
         (node.position = entity.getComponent<CPosition>()) &&
@@ -42,7 +43,7 @@ void PTranslate::update()
         node != nodes.end(); ++node)
     {        
         Vec2f displacement = dirMap.at(node->translate->direction)
-                            * node->translate->velocity;
+                              * node->translate->velocity;
 
         Vec2f newPos = node->position->pos + displacement;
         
