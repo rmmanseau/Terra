@@ -30,12 +30,12 @@ void PAlive::update()
     for (auto node = nodes.begin();
          node != nodes.end(); ++node)
     {        
-        if (node->alive->getHealth() == 0)
+        if (node->alive->energy == 0)
+            node->alive->updateHealth(-1);
+        
+        if (node->alive->health == 0)
         {
             rFactory.disassembleEntity(node->id);
         }
-
-        if (node->alive->getEnergy() == 0)
-            node->alive->updateHealth(-1);
     }
 }

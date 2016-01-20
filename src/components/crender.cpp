@@ -6,8 +6,8 @@ bool CRender::init(YAML::Node node)
 {
     try
     {
-    texCoords = Vec2(node["texpos"][0].as<int>(),
-                     node["texpos"][1].as<int>());
+    texCoords = Vec2i(node["texpos"][0].as<int>(),
+                      node["texpos"][1].as<int>());
     color = sf::Color(node["color"][0].as<int>(),
                       node["color"][1].as<int>(),
                       node["color"][2].as<int>());
@@ -19,7 +19,7 @@ bool CRender::init(YAML::Node node)
     return true;
 }
 
-Vec2 CRender::getTexCoords()
+Vec2i CRender::getTexCoords()
 {
     return texCoords;
 }

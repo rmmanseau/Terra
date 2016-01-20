@@ -39,11 +39,7 @@ void CAlive::updateHealth(int amount)
 {
     health = clamp(health + amount, 0, healthMax);
 }
-int CAlive::getEnergy()
+void CAlive::kill()
 {
-    return energy;
-}
-int CAlive::getHealth()
-{
-    return health;
+    health = 0;
 }

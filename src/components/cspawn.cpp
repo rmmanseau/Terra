@@ -11,7 +11,7 @@ bool CSpawn::init(YAML::Node node)
         energyRequired = node["energy_required"].as<int>();
         type = (EntityType)node["type"].as<int>();
 
-        pos = Vec2(0, 0);
+        pos = Vec2i(0, 0);
     }
     catch (...)
     {

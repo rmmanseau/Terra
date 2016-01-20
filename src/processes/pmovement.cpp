@@ -28,8 +28,12 @@ void PMovement::update()
 {
     for (auto node = nodes.begin();
         node != nodes.end(); ++node)
-    {        
-        node->translate->setDirection(node->movement->getUpdatedDirection());
-        node->translate->setVelocity(node->movement->getUpdatedVelocity());
+    {
+        if (node->movement->active)
+        {
+            node->translate->direction = node->movement->getUpdatedDirection();
+            node->translate->velocity = node->movement->getUpdatedVelocity();
+        }
+        node->movement->active = false;
     }
 }

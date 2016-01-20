@@ -23,6 +23,8 @@ class PTranslate : public Process
     std::vector<Node> nodes;
     Grid& rGrid;
 
+    static const std::map<Dir, Vec2f> dirMap;
+
 public:
     PTranslate(Grid& grid);
 

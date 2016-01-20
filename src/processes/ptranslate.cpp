@@ -1,5 +1,16 @@
 #include "ptranslate.h"
 
+const std::map<Dir, Vec2f> PTranslate::dirMap = {
+    {Dir::n,  Vec2f(0,     -1)},
+    {Dir::ne, Vec2f(.707,  -.707)},
+    {Dir::e,  Vec2f(1,      0)},
+    {Dir::se, Vec2f(.707,   .707)},
+    {Dir::s,  Vec2f(0,      1)},
+    {Dir::sw, Vec2f(-.707,  .707)},
+    {Dir::w,  Vec2f(-1,     0)},
+    {Dir::nw, Vec2f(-.707, -.707)}
+};
+
 PTranslate::PTranslate(Grid& grid)
     : rGrid(grid)
 {}
@@ -30,17 +41,22 @@ void PTranslate::update()
     for (auto node = nodes.begin();
         node != nodes.end(); ++node)
     {        
-        Vec2 newPos = node->position->getPos() + node->translate->getDisplacement();
+        Vec2f displacement = dirMap.at(node->translate->direction)
+                            * node->translate->velocity;
 
-        if (node->position->getPos().floor() == newPos.floor())
+        Vec2f newPos = node->position->pos + displacement;
+        
+        node->translate->velocity = 0;
+
+        if (node->position->pos.floor() == newPos.floor())
         {
-            node->position->setPos(newPos);
+            node->position->pos = newPos;
         }
         else if (rGrid.empty(newPos.floor()) && rGrid.inside(newPos.floor()))
         {
-            rGrid.erase(node->position->getPos().floor());
+            rGrid.erase(node->position->pos.floor());
             rGrid.setInfoAt(newPos.floor(), node->id, node->type);
-            node->position->setPos(newPos);
+            node->position->pos = newPos;
         }
     }
 }

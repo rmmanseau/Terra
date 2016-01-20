@@ -9,13 +9,13 @@ class CRender : public Component
 {
     INC_FACTORY_REGISTER(CRender);
 
-    Vec2 texCoords;
+    Vec2i texCoords;
     sf::Color color;
 
 public:
     virtual bool init(YAML::Node node);
 
-    Vec2 getTexCoords();
+    Vec2i getTexCoords();
     sf::Color getColor();
 };
 

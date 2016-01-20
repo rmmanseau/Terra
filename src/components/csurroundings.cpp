@@ -30,7 +30,60 @@ int CSurroundings::numberOf(EntityType type)
     return amount;
 }
 
+int CSurroundings::numberOf(std::vector<EntityType> otherTypes)
+{
+    int amount = 0;
+    for (int i = 0; i < types.size(); ++i)
+    {
+        for (int j = 0; j < otherTypes.size(); ++j)
+        {
+            if (types[i] == otherTypes[j])
+            {
+                ++amount;
+                break;
+            }
+        }
+    }
+
+    return amount;
+}
+
 int CSurroundings::numberFull()
 {
     return 8 - numberOf(EntityType::Empty);
+}
+
+Dir CSurroundings::directionTowards(EntityType type)
+{
+    std::vector<Dir> validDirs;
+    for (int i = 0; i < types.size(); ++i)
+    {
+        if (types[i] == type)
+            validDirs.push_back((Dir)i);
+    }
+    return validDirs.at(rand() % validDirs.size());
+}
+
+Dir CSurroundings::directionTowards(std::vector<EntityType> otherTypes)
+{
+    std::vector<Dir> validDirs;
+    for (int i = 0; i < types.size(); ++i)
+    {
+        for (int j = 0; j < otherTypes.size(); ++j)
+        {
+            if (types[i] == otherTypes[j])
+                validDirs.push_back((Dir)i);
+        }
+    }
+    return validDirs.at(rand() % validDirs.size());
+}
+
+EntityId CSurroundings::idAt(Dir dir)
+{
+    return ids.at((int)dir);
+}
+
+EntityType CSurroundings::typeAt(Dir dir)
+{
+    return types.at((int)dir);
 }

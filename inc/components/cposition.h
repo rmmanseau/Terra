@@ -9,13 +9,10 @@ class CPosition : public Component
 {
     INC_FACTORY_REGISTER(CPosition);
 
-    Vec2 pos;
-
 public:
-    virtual bool init(YAML::Node node);
+    Vec2f pos;
 
-    void setPos(Vec2 _pos);
-    Vec2 getPos();
+    virtual bool init(YAML::Node node);
 };
 
 #endif // CPOSITION_H

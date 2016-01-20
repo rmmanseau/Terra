@@ -16,7 +16,12 @@ public:
 
     void setInfo(int dir, EntityId id, EntityType type);
     int numberOf(EntityType type);
+    int numberOf(std::vector<EntityType> otherTypes);
     int numberFull();
+    Dir directionTowards(EntityType type);
+    Dir directionTowards(std::vector<EntityType> otherTypes);
+    EntityId idAt(Dir dir);
+    EntityType typeAt(Dir dir);
 };
 
 #endif // CSURROUNDINGS_H

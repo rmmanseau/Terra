@@ -2,6 +2,7 @@
 #define HELPERS_H
 
 #include "vec2.h"
+#include "common.h"
 
 #include <cstdlib>
 
@@ -13,12 +14,11 @@ T clamp(T x, T lower, T upper)
     return x;
 }
 
-inline Vec2 randomAdjacentTile(Vec2 tile)
+inline Vec2i randomAdjacentTile(Vec2i tile)
 {
-    Vec2 random(rand()%3 - 1, rand()%3 - 1);
+    Vec2i random(rand()%3 - 1, rand()%3 - 1);
     return tile + random;
 }
-
 
 #endif // HELPERS_H
 

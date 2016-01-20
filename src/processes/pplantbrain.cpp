@@ -37,11 +37,10 @@ void PPlantBrain::update()
         int surroundingEntities = node->surroundings->numberFull();
         if (surroundingEntities != 7 && surroundingEntities != 6)
         {
-            if (node->alive->getEnergy() >= node->spawn->energyRequired && surroundingEntities <= 4)
+            if (node->alive->energy >= node->spawn->energyRequired && surroundingEntities <= 4)
             {
                 node->spawn->active = true;
-                node->spawn->pos = randomAdjacentTile(node->position->getPos());
-                node->alive->updateEnergy(-(node->spawn->energyCost));
+                node->spawn->pos = randomAdjacentTile(node->position->pos.floor());
             }
 
             if      (surroundingEntities <= 0)

@@ -8,6 +8,7 @@
 
 #include "entity.h"
 #include "cspawn.h"
+#include "calive.h"
 
 class PSpawn : public Process
 {
@@ -16,6 +17,7 @@ class PSpawn : public Process
         EntityId id;
 
         std::shared_ptr<CSpawn> spawn;
+        std::shared_ptr<CAlive> alive;
     };
 
     std::vector<Node> nodes;

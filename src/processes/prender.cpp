@@ -33,7 +33,7 @@ void PRender::update()
     for (auto node = nodes.begin();
          node != nodes.end(); ++node)
     {
-        sprites.addSprite(node->position->getPos().floor(),
+        sprites.addSprite(node->position->pos.floor(),
                           node->render->getTexCoords(),
                           node->render->getColor());
     }

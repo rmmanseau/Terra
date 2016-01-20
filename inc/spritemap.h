@@ -14,7 +14,7 @@ class SpriteMap : public sf::Drawable, public sf::Transformable
 
 public:
     SpriteMap(int _tileSize, const std::string& fileName);
-    void addSprite(Vec2 position, Vec2 texCoords, const sf::Color& color);
+    void addSprite(Vec2i position, Vec2i texCoords, const sf::Color& color);
     void clearSprites();
 };
 

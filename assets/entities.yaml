@@ -27,6 +27,15 @@
 #       type: 3                 # (0 Null) (1 Empty) (2 Rock) (3 Grass) etc
 #       energy_required: 100    # How much energy required to spawn new entity
 #       energy_cost: 90         # How much energy it costs to spawn new entity
+#
+#   CEat:
+#       food:
+#           - Grass: 40
+#           - Flower: 20
+#           - etc...
+#       
+#
+#
 
 Rock:
     CRender:
@@ -36,13 +45,14 @@ Rock:
         pos: [0, 0]
 
 Grass:
+    CPlantBrain:
+    CSurroundings:
     CRender:
         texpos: [4, 0]
         color: [96, 135, 73]
         # color: [77, 170, 80]
     CPosition:
         pos: [0, 0]
-    CSurroundings:
     CAlive:
         health: 15
         health_variance: 5
@@ -54,25 +64,31 @@ Grass:
         type: 3
         energy_required: 50
         energy_cost: 40
-    CPlantBrain:
 
 DumbBug:
+    CDumbBrain:
+    CSurroundings:
+    CTranslate:
+    CPosition:
+        pos: [0, 0]
     CRender:
         texpos: [0, 1]
         color: [213, 183, 148]
-        # color: [224, 96, 0]
-    CPosition:
-        pos: [0, 0]
-    CTranslate:
     CMovement:
-        direction: 0
+        direction: 3
         velocity: 1
-        turn_angle: 1
-    CSurroundings:
+        turn_angle: 4
+    CSpawn:
+        type: 4
+        energy_required: 350
+        energy_cost: 300
+    CEat:
+        food:
+            3: 20
     CAlive:
-        health: 90
-        health_variance: 10
-        health_max: 100
-        energy: 500
-        energy_variance: 100
-        energy_max: 700
+        health: 10
+        health_variance: 0
+        health_max: 10
+        energy: 100
+        energy_variance: 50
+        energy_max: 350

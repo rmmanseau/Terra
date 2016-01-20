@@ -11,7 +11,8 @@ void PSpawn::registerEntity(Entity& entity)
     node.id = entity.getId();
 
     if (
-        (node.spawn = entity.getComponent<CSpawn>())
+        (node.spawn = entity.getComponent<CSpawn>()) &&
+        (node.alive = entity.getComponent<CAlive>())
        )
     {
         nodes.push_back(node);
@@ -33,6 +34,7 @@ void PSpawn::update()
         if (node->spawn->active && rGrid.empty(node->spawn->pos))
         {
             rFactory.assembleEntity(node->spawn->type, node->spawn->pos);
+            node->alive->updateEnergy(-(node->spawn->energyCost));
         }
         node->spawn->active = false;
     }

@@ -15,6 +15,8 @@ class CMovement : public Component
 public:
     virtual bool init(YAML::Node node);
 
+    bool active;
+
     Dir getUpdatedDirection();
     int getUpdatedVelocity();
 };

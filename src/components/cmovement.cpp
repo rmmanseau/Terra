@@ -18,6 +18,8 @@ bool CMovement::init(YAML::Node node)
         turnAngle = node["turn_angle"].as<int>();
         if (turnAngle < 0 || turnAngle > 4)
             throw std::range_error("turn_angle must be between 0 and 4");
+
+        active = false;
     }
     catch (std::range_error& re)
     {

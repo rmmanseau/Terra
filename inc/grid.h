@@ -20,17 +20,17 @@ class Grid
     int height;
 
     Grid() {}
-    GridInfo& at(Vec2 v);
+    GridInfo& at(Vec2i v);
 
 public:
     Grid(int w, int h);
 
-    EntityId getIdAt(Vec2 v);
-    EntityType getTypeAt(Vec2 v);
-    void setInfoAt(Vec2 v, EntityId id, EntityType type);
-    void erase(Vec2 v);
-    bool inside(Vec2 v);
-    bool empty(Vec2 v);
+    EntityId getIdAt(Vec2i v);
+    EntityType getTypeAt(Vec2i v);
+    void setInfoAt(Vec2i v, EntityId id, EntityType type);
+    void erase(Vec2i v);
+    bool inside(Vec2i v);
+    bool empty(Vec2i v);
 };
 
 #endif // GRID_H

@@ -54,12 +54,12 @@ std::shared_ptr<Component> Factory::assembleComponent(const std::string& name, c
     return comp;
 }
 
-void Factory::assembleEntity(EntityType type, Vec2 pos)
+void Factory::assembleEntity(EntityType type, Vec2i pos)
 {
     if (!rGrid.inside(pos))
     {
-        std::cout << "Attempted to assemble entity outside grid boundries." << std::endl
-                  << "Terminating assembly process" << std::endl;
+        std::cout << "Attempted to assemble entity outside grid boundries." << std::endl;
+        return;
     }
 
     auto blueprint = blueprints.find(type);
@@ -71,8 +71,7 @@ void Factory::assembleEntity(EntityType type, Vec2 pos)
     }
     else
     {
-        std::cout << "Failed to find blueprints for entity type " << (int)type << std::endl
-                  << "Terminating assembly process" << std::endl;
+        std::cout << "Failed to find blueprints for entity type " << (int)type << std::endl;
         return;
     }
 
@@ -91,12 +90,17 @@ void Factory::assembleEntity(EntityType type, Vec2 pos)
         {
             entity.addComponent(component);
         }
+        else
+        {
+            std::cout << "Terminating assembly process" << std::endl;
+            return;
+        }
     }
 
     std::shared_ptr<CPosition> position = entity.getComponent<CPosition>();
     if (position)
     {
-        position->setPos(pos);
+        position->pos = (Vec2f)pos;
         rGrid.setInfoAt(pos, id, type);
     }
     
@@ -110,7 +114,7 @@ void Factory::disassembleEntity(EntityId id)
     std::shared_ptr<CPosition> position = entity.getComponent<CPosition>();
 
     deadEntities.push_back(id);
-    rGrid.erase(position->getPos());
+    rGrid.erase(position->pos.floor());
 }
 
 void Factory::update()

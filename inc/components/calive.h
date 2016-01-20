@@ -8,18 +8,17 @@ class CAlive : public Component
 {
     INC_FACTORY_REGISTER(CAlive);
 
+public:
     int energy;
     int energyMax;
     int health;
     int healthMax;
 
-public:
     virtual bool init(YAML::Node node);
 
     void updateEnergy(int amount);
     void updateHealth(int amount);
-    int getEnergy();
-    int getHealth();
+    void kill();
 };
 
 #endif // CALIVE_H

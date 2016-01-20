@@ -4,10 +4,11 @@
 #include "common.h"
 #include "component.h"
 
-struct CPlantBrain : public Component
+class CPlantBrain : public Component
 {
     INC_FACTORY_REGISTER(CPlantBrain);
- 
+
+public: 
     virtual bool init(YAML::Node node);
 };
 

@@ -12,17 +12,17 @@ Grid::Grid(int w, int h)
         g.push_back(GridInfo());
 }
 
-Grid::GridInfo& Grid::at(Vec2 v)
+Grid::GridInfo& Grid::at(Vec2i v)
 {
     return g[v.y*width + v.x];
 }
 
-bool Grid::inside(Vec2 v)
+bool Grid::inside(Vec2i v)
 {
     return v.x >= 0 && v.y >= 0 && v.x < width && v.y < height;
 }
 
-EntityId Grid::getIdAt(Vec2 v)
+EntityId Grid::getIdAt(Vec2i v)
 {
     if (inside(v))
         return at(v).id;
@@ -30,7 +30,7 @@ EntityId Grid::getIdAt(Vec2 v)
         return -1;
 }
 
-EntityType Grid::getTypeAt(Vec2 v)
+EntityType Grid::getTypeAt(Vec2i v)
 {
     if (inside(v))
         return at(v).type;
@@ -38,7 +38,7 @@ EntityType Grid::getTypeAt(Vec2 v)
         return EntityType::Null;
 }
 
-void Grid::setInfoAt(Vec2 v, EntityId id, EntityType type)
+void Grid::setInfoAt(Vec2i v, EntityId id, EntityType type)
 {
     if (inside(v))
     {
@@ -47,12 +47,12 @@ void Grid::setInfoAt(Vec2 v, EntityId id, EntityType type)
     }
 }
 
-void Grid::erase(Vec2 v)
+void Grid::erase(Vec2i v)
 {
     setInfoAt(v, -1, EntityType::Empty);
 }
 
-bool Grid::empty(Vec2 v)
+bool Grid::empty(Vec2i v)
 {
     return at(v).type == EntityType::Empty;
 }

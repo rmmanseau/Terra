@@ -11,18 +11,12 @@
 class CTranslate : public Component
 {
     INC_FACTORY_REGISTER(CTranslate);
-
-    static const std::map<Dir, Vec2> dirMap;
-
+    
+public:
     Dir direction;
     double velocity;
 
-public:
     virtual bool init(YAML::Node node);
-
-    void setDirection(Dir d);
-    void setVelocity(double v);
-    Vec2 getDisplacement();
 };
 
 #endif // CTRANSLATE_H

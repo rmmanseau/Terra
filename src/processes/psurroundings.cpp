@@ -3,14 +3,14 @@
 PSurroundings::PSurroundings(Grid& grid)
     : rGrid(grid)
 {
-    dirVec2s.push_back(Vec2( 0, -1)); // N
-    dirVec2s.push_back(Vec2( 1, -1)); // NE
-    dirVec2s.push_back(Vec2( 1,  0)); // E
-    dirVec2s.push_back(Vec2( 1,  1)); // SE
-    dirVec2s.push_back(Vec2( 0,  1)); // S
-    dirVec2s.push_back(Vec2(-1,  1)); // SW
-    dirVec2s.push_back(Vec2(-1,  0)); // W
-    dirVec2s.push_back(Vec2(-1, -1)); // NW
+    dirVec2s.push_back(Vec2i( 0, -1)); // N
+    dirVec2s.push_back(Vec2i( 1, -1)); // NE
+    dirVec2s.push_back(Vec2i( 1,  0)); // E
+    dirVec2s.push_back(Vec2i( 1,  1)); // SE
+    dirVec2s.push_back(Vec2i( 0,  1)); // S
+    dirVec2s.push_back(Vec2i(-1,  1)); // SW
+    dirVec2s.push_back(Vec2i(-1,  0)); // W
+    dirVec2s.push_back(Vec2i(-1, -1)); // NW
 }
 
 void PSurroundings::registerEntity(Entity& entity)
@@ -41,7 +41,7 @@ void PSurroundings::update()
     {   
         for (int i = 0; i < 8; ++i)
         {
-            Vec2 surroundingPos = node->position->getPos().floor() + dirVec2s[i];
+            Vec2i surroundingPos = node->position->pos.floor() + dirVec2s[i];
             EntityId id = rGrid.getIdAt(surroundingPos);
             EntityType type = rGrid.getTypeAt(surroundingPos);
             node->surroundings->setInfo(i, id, type);

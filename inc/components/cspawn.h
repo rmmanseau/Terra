@@ -5,15 +5,16 @@
 #include "component.h"
 #include "vec2.h"
 
-struct CSpawn : public Component
+class CSpawn : public Component
 {
     INC_FACTORY_REGISTER(CSpawn);
- 
+    
+public:
     bool active;
 
     int energyCost;
     int energyRequired;
-    Vec2 pos;
+    Vec2i pos;
     EntityType type;
 
     virtual bool init(YAML::Node node);

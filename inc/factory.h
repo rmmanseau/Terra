@@ -46,7 +46,7 @@ class Factory
 public:
     Factory(Terrarium& owner);
 
-    void assembleEntity(EntityType type, Vec2 pos);
+    void assembleEntity(EntityType type, Vec2i pos);
     void disassembleEntity(EntityId id);
     void update();
 };

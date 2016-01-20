@@ -3,55 +3,77 @@
 
 #include <SFML/Graphics.hpp>
 
+template <typename T>
 struct Vec2
 {
-    double x;
-    double y;
+    T x;
+    T y;
 
     Vec2() : x(0) , y(0)
     {}
-    Vec2(double _x, double _y) : x(_x) , y(_y)
+    Vec2(T _x, T _y) : x(_x) , y(_y)
     {}
 
-    Vec2 floor();
+    template <typename U>
+    Vec2(const Vec2<U>& v)
+    {
+        x = (U)v.x;
+        y = (U)v.y;
+    }
+
+    Vec2<int> floor();
 };
 
-inline Vec2 Vec2::floor()
+typedef Vec2<int> Vec2i;
+typedef Vec2<double> Vec2f;
+
+template <>
+inline Vec2<int> Vec2<double>::floor()
 {
-    return Vec2((int)x, (int)y);
+    return Vec2i((int)x, (int)y);
 }
 
-inline Vec2 operator + (Vec2 u, Vec2 v)
+
+template <typename T>
+inline Vec2<T> operator + (Vec2<T> u, Vec2<T> v)
 {
-    Vec2 result;
+    Vec2<T> result;
     result.x = u.x + v.x;
     result.y = u.y + v.y;
 
     return result;
 }
-inline Vec2 operator += (Vec2 &u, Vec2 v)
+
+template <typename T>
+inline Vec2<T> operator += (Vec2<T> &u, Vec2<T> v)
 {
     u.x += v.x;
     u.y += v.y;
 
     return u;
 }
-inline Vec2 operator * (Vec2 u, double s)
+
+template <typename T, typename S>
+inline Vec2<T> operator * (Vec2<T> u, S s)
 {
-    Vec2 result;
+    Vec2<T> result;
     result.x = u.x * s;
     result.y = u.y * s;
 
     return result;
 }
-inline Vec2 operator *= (Vec2 &u, double s)
+
+template <typename T, typename S>
+inline Vec2<T> operator *= (Vec2<T> &u, S s)
 {
     u.x *= s;
     u.y *= s;
 
     return u;
 }
-inline bool operator < (const Vec2 &u, const Vec2 &v)
+
+template <typename T>
+inline bool operator < (const Vec2<T> &u, const Vec2<T> &v)
 {
     if (u.x < v.x)
         return true;
@@ -65,7 +87,9 @@ inline bool operator < (const Vec2 &u, const Vec2 &v)
             return false;
     }
 }
-inline bool operator == (const Vec2 &u, const Vec2 &v)
+
+template <typename T>
+inline bool operator == (const Vec2<T> &u, const Vec2<T> &v)
 {
     return (u.x == v.x && u.y == v.y);
 }

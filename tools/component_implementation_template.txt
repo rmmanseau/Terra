@@ -1,6 +1,6 @@
 #include "class_file.h"
 
-SRC_FACTORY_REGISTER(COMPONENT_NAME)
+SRC_FACTORY_REGISTER(COMPONENT_NAME);
 
 bool COMPONENT_NAME::init(YAML::Node node)
 {
