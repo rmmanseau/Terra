@@ -49,8 +49,8 @@ Grass:
     CSurroundings:
     CRender:
         texpos: [4, 0]
-        color: [96, 135, 73]
-        # color: [77, 170, 80]
+        # color: [96, 135, 73]
+        color: [77, 170, 80]
     CPosition:
         pos: [0, 0]
     CAlive:
@@ -76,8 +76,8 @@ DumbBug:
         color: [213, 183, 148]
     CMovement:
         direction: 3
-        velocity: 1
-        turn_angle: 4
+        velocity: 0.4
+        turn_angle: 2
     CSpawn:
         type: 4
         energy_required: 350

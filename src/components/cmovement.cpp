@@ -11,7 +11,7 @@ bool CMovement::init(YAML::Node node)
             throw std::range_error("direction must be between 0 and 7");
         direction = (Dir)dirInt;
 
-        velocity  = node["velocity"].as<float>();
+        velocity  = node["velocity"].as<double>();
         if (velocity <= 0)
             throw std::range_error("velocity must be greater than 0");
 
@@ -43,7 +43,7 @@ Dir CMovement::getUpdatedDirection()
     return direction;
 }
 
-int CMovement::getUpdatedVelocity()
+double CMovement::getUpdatedVelocity()
 {
     return velocity;
 }

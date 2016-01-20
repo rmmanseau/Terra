@@ -9,7 +9,7 @@ class CMovement : public Component
     INC_FACTORY_REGISTER(CMovement);
 
     Dir direction;
-    int velocity;
+    double velocity;
     int turnAngle;
 
 public:
@@ -18,7 +18,7 @@ public:
     bool active;
 
     Dir getUpdatedDirection();
-    int getUpdatedVelocity();
+    double getUpdatedVelocity();
 };
 
 #endif // CMOVEMENT_H
