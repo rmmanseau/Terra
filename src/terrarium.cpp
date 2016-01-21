@@ -66,14 +66,14 @@ Terrarium::Terrarium(int width, int height, int tileSize)
               sf::Style::Close);
 }
 
-void Terrarium::update()
+void Terrarium::update(int timeStep)
 {
     china.update();
 
     for (auto itr = processes.begin();
          itr != processes.end(); ++itr)
     {
-        (*itr)->update();
+        (*itr)->update(timeStep);
     }
 }
 

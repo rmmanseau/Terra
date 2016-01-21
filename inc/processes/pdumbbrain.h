@@ -36,7 +36,7 @@ public:
 
     virtual void registerEntity(Entity& entity);
     virtual void unregisterEntity(EntityId id);
-    virtual void update();
+    virtual void update(int timeStep);
 };
 
 #endif // PDUMBBRAIN_H

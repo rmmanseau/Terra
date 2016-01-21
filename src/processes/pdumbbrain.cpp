@@ -32,7 +32,7 @@ void PDumbBrain::unregisterEntity(EntityId id)
                 nodes.end());
 }
 
-void PDumbBrain::update()
+void PDumbBrain::update(int timeStep)
 {
     for (auto node = nodes.begin();
          node != nodes.end(); ++node)

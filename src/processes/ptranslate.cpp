@@ -37,7 +37,7 @@ void PTranslate::unregisterEntity(EntityId id)
                 nodes.end());
 }
 
-void PTranslate::update()
+void PTranslate::update(int timeStep)
 {
     for (auto node = nodes.begin();
         node != nodes.end(); ++node)

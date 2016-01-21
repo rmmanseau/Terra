@@ -34,7 +34,7 @@ void PSurroundings::unregisterEntity(EntityId id)
                 nodes.end());
 }
 
-void PSurroundings::update()
+void PSurroundings::update(int timeStep)
 {
     for (auto node = nodes.begin();
          node != nodes.end(); ++node)

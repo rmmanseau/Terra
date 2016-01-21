@@ -29,7 +29,7 @@ void PPlantBrain::unregisterEntity(EntityId id)
                 nodes.end());
 }
 
-void PPlantBrain::update()
+void PPlantBrain::update(int timeStep)
 {
     for (auto node = nodes.begin();
          node != nodes.end(); ++node)

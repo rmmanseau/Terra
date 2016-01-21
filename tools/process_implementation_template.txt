@@ -23,7 +23,7 @@ void PROCESS_NAME::unregisterEntity(EntityId id)
                 nodes.end());
 }
 
-void PROCESS_NAME::update()
+void PROCESS_NAME::update(int timeStep)
 {
     for (auto node = nodes.begin();
          node != nodes.end(); ++node)

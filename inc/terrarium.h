@@ -19,7 +19,7 @@ class Terrarium
 
 public:
     Terrarium(int width, int height, int tileSize);
-    void update();
+    void update(int timeStep);
 
     sf::RenderWindow& getWindow();
     sf::Event& getEvent();

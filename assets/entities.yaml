@@ -49,8 +49,8 @@ Grass:
     CSurroundings:
     CRender:
         texpos: [5, 0]
-        # color: [96, 135, 73]
-        color: [77, 170, 180]
+        color: [96, 155, 73]
+        # color: [77, 170, 180]
     CPosition:
         pos: [0, 0]
     CAlive:

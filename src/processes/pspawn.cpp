@@ -28,7 +28,7 @@ void PSpawn::unregisterEntity(EntityId id)
                 nodes.end());
 }
 
-void PSpawn::update()
+void PSpawn::update(int timeStep)
 {
     for (auto node = nodes.begin();
          node != nodes.end(); ++node)

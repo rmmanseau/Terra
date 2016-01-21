@@ -25,7 +25,7 @@ void PAlive::unregisterEntity(EntityId id)
                 nodes.end());
 }
 
-void PAlive::update()
+void PAlive::update(int timeStep)
 {
     for (auto node = nodes.begin();
          node != nodes.end(); ++node)

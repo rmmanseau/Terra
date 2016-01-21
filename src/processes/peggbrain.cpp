@@ -26,7 +26,7 @@ void PEggBrain::unregisterEntity(EntityId id)
                 nodes.end());
 }
 
-void PEggBrain::update()
+void PEggBrain::update(int timeStep)
 {
     for (auto node = nodes.begin();
          node != nodes.end(); ++node)

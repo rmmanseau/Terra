@@ -26,12 +26,15 @@ class PRender : public Process
     SpriteMap sprites;
     Background background;
 
+    int timeSinceLastDraw;
+    int timeBetweenDraws;
+
 public:
     PRender(sf::RenderWindow& window, int width, int height, int tileSize);
 
     virtual void registerEntity(Entity& entity);
     virtual void unregisterEntity(EntityId id);
-    virtual void update();
+    virtual void update(int timeStep);
 };
 
 #endif // PRENDER_H

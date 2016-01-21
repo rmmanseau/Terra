@@ -26,7 +26,7 @@ void PEat::unregisterEntity(EntityId id)
                 nodes.end());
 }
 
-void PEat::update()
+void PEat::update(int timeStep)
 {
     for (auto node = nodes.begin();
          node != nodes.end(); ++node)

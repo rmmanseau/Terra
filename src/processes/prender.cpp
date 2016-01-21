@@ -5,6 +5,8 @@ PRender::PRender(sf::RenderWindow& window, int width, int height, int tileSize)
     , sprites(tileSize, "assets/textures/sprite_sheet_12.png")
     , background(width*tileSize, height*tileSize,
                  "assets/textures/dirt.png", sf::Color(133, 87, 35))
+    , timeSinceLastDraw(0)
+    , timeBetweenDraws((1./60) * 1000000)
 {}
 
 void PRender::registerEntity(Entity& entity)
@@ -28,19 +30,26 @@ void PRender::unregisterEntity(EntityId id)
                 nodes.end());
 }
 
-void PRender::update()
+void PRender::update(int timeStep)
 {
-    for (auto node = nodes.begin();
-         node != nodes.end(); ++node)
+    timeSinceLastDraw += timeStep;
+
+    if (timeSinceLastDraw >= timeBetweenDraws)
     {
-        sprites.addSprite(node->position->pos.floor(),
-                          node->render->getTexCoords(),
-                          node->render->getColor());
+          timeSinceLastDraw -= timeBetweenDraws;
+
+         for (auto node = nodes.begin();
+              node != nodes.end(); ++node)
+         {
+             sprites.addSprite(node->position->pos.floor(),
+                               node->render->getTexCoords(),
+                               node->render->getColor());
+         }
+
+         rWindow.draw(background);
+         rWindow.draw(sprites);
+         rWindow.display();
+
+         sprites.clearSprites();
     }
-
-    rWindow.draw(background);
-    rWindow.draw(sprites);
-    rWindow.display();
-
-    sprites.clearSprites();
 }
