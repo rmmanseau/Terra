@@ -28,7 +28,7 @@ Terrarium::Terrarium(int width, int height, int tileSize)
     
     for (int i = 0; i < width*height; ++i)
     {
-        if ((i+1)%width == 0 || /*i%width == 0 ||*/ i/width == 0 || i/width == (height-1))
+        if ((i+1)%width == 0 || i%width == 0 || i/width == 0 || i/width == (height-1))
             china.assembleEntity(EntityType::Rock, Vec2i(i%width, i/width));
     }
 

@@ -48,9 +48,9 @@ Grass:
     CPlantBrain:
     CSurroundings:
     CRender:
-        texpos: [4, 0]
+        texpos: [5, 0]
         # color: [96, 135, 73]
-        color: [77, 170, 80]
+        color: [77, 170, 180]
     CPosition:
         pos: [0, 0]
     CAlive:

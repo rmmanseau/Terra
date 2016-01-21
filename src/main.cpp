@@ -16,7 +16,10 @@ int main()
     {
         srand(time(0));
 
-        Terrarium t(120, 50, 12);
+        // Random spikes in cycle time are probably due to cache misses
+        // good luck future me.
+
+        Terrarium t(40, 40, 12);
         
         sf::Clock gameClock;
 
@@ -28,11 +31,11 @@ int main()
             t.update();
 
             int elapsed = gameClock.restart().asMicroseconds();
-            int sleep = 1000 - elapsed;
+            int sleep = 10000 - elapsed;
             
             std::cout << "elapsed: " << elapsed << " sleep: " << sleep << std::endl;
 
-            sf::sleep(sf::microseconds(sleep));
+            // sf::sleep(sf::microseconds(0));
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
                 running = false;

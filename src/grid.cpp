@@ -54,5 +54,8 @@ void Grid::erase(Vec2i v)
 
 bool Grid::empty(Vec2i v)
 {
-    return at(v).type == EntityType::Empty;
+    if (inside(v))
+        return at(v).type == EntityType::Empty;
+    else
+        return false;
 }

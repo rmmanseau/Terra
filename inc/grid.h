@@ -28,8 +28,8 @@ public:
     EntityId getIdAt(Vec2i v);
     EntityType getTypeAt(Vec2i v);
     void setInfoAt(Vec2i v, EntityId id, EntityType type);
-    void erase(Vec2i v);
     bool inside(Vec2i v);
+    void erase(Vec2i v);
     bool empty(Vec2i v);
 };
 
