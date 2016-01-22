@@ -6,6 +6,8 @@
 #include "grid.h"
 #include "factory.h"
 
+#include "yaml-cpp/yaml.h"
+
 class Terrarium
 {
     sf::RenderWindow window;
@@ -18,7 +20,7 @@ class Terrarium
     ProcessVec processes;
 
 public:
-    Terrarium(int width, int height, int tileSize);
+    Terrarium(YAML::Node config);
     void update(int timeStep);
 
     sf::RenderWindow& getWindow();

@@ -16,11 +16,10 @@ int main()
     {
         srand(time(0));
 
-        // Random spikes in cycle time are probably due to cache misses
-        // good luck future me.
+        YAML::Node terraConfig = YAML::LoadFile("../assets/terrarium.yaml");
 
-        Terrarium t(120, 60, 12);
-        
+        Terrarium t(terraConfig);
+
         sf::Clock gameClock;
         sf::Clock sleepClock;
 
@@ -35,7 +34,7 @@ int main()
             t.update(timeStep);
             elapsed = sleepClock.restart().asMicroseconds();
 
-            int sleep = 1000 - elapsed;
+            int sleep = 200 - elapsed;
             
             std::cout << "elapsed: " << elapsed << " sleep: " << sleep << std::endl;
 

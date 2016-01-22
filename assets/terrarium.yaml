@@ -1,0 +1,8 @@
+
+width: 40
+height: 40
+tile_size: 12
+sprite_sheet: assets/textures/sprite_sheet_12.png
+dirt_texture: assets/textures/dirt.png
+dirt_color: [143, 97, 45]
+# dirt_color: [133, 87, 35]

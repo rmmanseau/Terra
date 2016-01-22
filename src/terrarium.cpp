@@ -11,11 +11,29 @@
 #include "peat.h"
 #include "palive.h"
 
-Terrarium::Terrarium(int width, int height, int tileSize)
+Terrarium::Terrarium(YAML::Node config)
     : china(*this)
-    , grid(width, height)
 {
-    processes.push_back(std::make_shared<PRender>(window, width, height, tileSize));
+    // Pull values from config
+    int width = config["width"].as<int>();
+    int height = config["height"].as<int>();
+    int tileSize = config["tile_size"].as<int>();
+
+    std::string spriteSheetPath = config["sprite_sheet"].as<std::string>();
+    std::string dirtTexturePath = config["dirt_texture"].as<std::string>();
+    sf::Color dirtColor = sf::Color(config["dirt_color"][0].as<int>(),
+                                    config["dirt_color"][1].as<int>(),
+                                    config["dirt_color"][2].as<int>());
+
+    // Init grid and window
+    grid = Grid(width, height);
+    window.create(sf::VideoMode(width*tileSize, height*tileSize, 32),
+              "Terra",
+              sf::Style::Close);
+
+    // Init processes
+    processes.push_back(std::make_shared<PRender>(window, tileSize, spriteSheetPath,
+                                                  dirtTexturePath, dirtColor));
     processes.push_back(std::make_shared<PTranslate>(grid));
     processes.push_back(std::make_shared<PSurroundings>(grid));
     processes.push_back(std::make_shared<PEggBrain>());
@@ -26,6 +44,7 @@ Terrarium::Terrarium(int width, int height, int tileSize)
     processes.push_back(std::make_shared<PEat>(entities));
     processes.push_back(std::make_shared<PAlive>(china));
     
+    // Assemble Initial entities
     for (int i = 0; i < width*height; ++i)
     {
         if ((i+1)%width == 0 || i%width == 0 || i/width == 0 || i/width == (height-1))
@@ -60,10 +79,6 @@ Terrarium::Terrarium(int width, int height, int tileSize)
     china.assembleEntity(EntityType::Rock, Vec2i(20, 30));
     china.assembleEntity(EntityType::Rock, Vec2i(20, 31));
     china.assembleEntity(EntityType::Rock, Vec2i(22, 31));
-
-    window.create(sf::VideoMode(width*tileSize, height*tileSize, 32),
-              "Terra",
-              sf::Style::Close);
 }
 
 void Terrarium::update(int timeStep)

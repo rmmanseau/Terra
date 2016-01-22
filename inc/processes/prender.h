@@ -30,7 +30,8 @@ class PRender : public Process
     int timeBetweenDraws;
 
 public:
-    PRender(sf::RenderWindow& window, int width, int height, int tileSize);
+    PRender(sf::RenderWindow& window, int tileSize, const std::string& spriteSheetPath,
+            const std::string& dirtTexturePath, sf::Color dirtColor);
 
     virtual void registerEntity(Entity& entity);
     virtual void unregisterEntity(EntityId id);

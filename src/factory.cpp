@@ -4,7 +4,6 @@
 #include "process.h"
 #include "cposition.h"
 
-
 #include <string>
 
 #define ROOT_DIR "../"

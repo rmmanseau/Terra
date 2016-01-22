@@ -1,12 +1,12 @@
 #include "prender.h"
 
-PRender::PRender(sf::RenderWindow& window, int width, int height, int tileSize)
+PRender::PRender(sf::RenderWindow& window, int tileSize, const std::string& spriteSheetPath,
+                 const std::string& dirtTexturePath, sf::Color dirtColor)
     : rWindow(window)
-    , sprites(tileSize, "assets/textures/sprite_sheet_12.png")
-    , background(width*tileSize, height*tileSize,
-                 "assets/textures/dirt.png", sf::Color(133, 87, 35))
+    , sprites(tileSize, spriteSheetPath)
+    , background(window.getSize().x, window.getSize().y, dirtTexturePath, dirtColor)
+    , timeBetweenDraws((1./80) * 1000000)
     , timeSinceLastDraw(0)
-    , timeBetweenDraws((1./60) * 1000000)
 {}
 
 void PRender::registerEntity(Entity& entity)
@@ -36,15 +36,17 @@ void PRender::update(int timeStep)
 
     if (timeSinceLastDraw >= timeBetweenDraws)
     {
-          timeSinceLastDraw -= timeBetweenDraws;
+        timeSinceLastDraw -= timeBetweenDraws;
+        std::cout << "DRAWING NOW" << std::endl;
 
-         for (auto node = nodes.begin();
-              node != nodes.end(); ++node)
-         {
-             sprites.addSprite(node->position->pos.floor(),
-                               node->render->getTexCoords(),
-                               node->render->getColor());
-         }
+
+        for (auto node = nodes.begin();
+        node != nodes.end(); ++node)
+        {
+            sprites.addSprite(node->position->pos.floor(),
+                              node->render->getTexCoords(),
+                              node->render->getColor());
+        }
 
          rWindow.draw(background);
          rWindow.draw(sprites);

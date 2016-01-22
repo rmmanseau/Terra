@@ -19,10 +19,10 @@ class Grid
     int width;
     int height;
 
-    Grid() {}
     GridInfo& at(Vec2i v);
 
 public:
+    Grid() {}
     Grid(int w, int h);
 
     EntityId getIdAt(Vec2i v);
