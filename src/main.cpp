@@ -34,7 +34,7 @@ int main()
             t.update(timeStep);
             elapsed = sleepClock.restart().asMicroseconds();
 
-            int sleep = 200 - elapsed;
+            int sleep = 20000 - elapsed;
             
             std::cout << "elapsed: " << elapsed << " sleep: " << sleep << std::endl;
 

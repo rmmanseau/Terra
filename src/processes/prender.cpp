@@ -5,7 +5,7 @@ PRender::PRender(sf::RenderWindow& window, int tileSize, const std::string& spri
     : rWindow(window)
     , sprites(tileSize, spriteSheetPath)
     , background(window.getSize().x, window.getSize().y, dirtTexturePath, dirtColor)
-    , timeBetweenDraws((1./80) * 1000000)
+    , timeBetweenDraws((1./120) * 1000000)
     , timeSinceLastDraw(0)
 {}
 
@@ -37,21 +37,23 @@ void PRender::update(int timeStep)
     if (timeSinceLastDraw >= timeBetweenDraws)
     {
         timeSinceLastDraw -= timeBetweenDraws;
-        std::cout << "DRAWING NOW" << std::endl;
-
 
         for (auto node = nodes.begin();
         node != nodes.end(); ++node)
         {
-            sprites.addSprite(node->position->pos.floor(),
-                              node->render->getTexCoords(),
-                              node->render->getColor());
+            Vec2i pos = node->position->pos.floor();
+
+            for (int i = 0; i < node->render->layers.size(); ++i)
+            {
+                CRender::Layer& layer = node->render->layers[i];
+                sprites.addSprite(pos, layer.texCoords, layer.color);
+            }
         }
 
-         rWindow.draw(background);
-         rWindow.draw(sprites);
-         rWindow.display();
+        rWindow.draw(background);
+        rWindow.draw(sprites);
+        rWindow.display();
 
-         sprites.clearSprites();
+        sprites.clearSprites();
     }
 }

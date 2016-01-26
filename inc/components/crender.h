@@ -9,14 +9,20 @@ class CRender : public Component
 {
     INC_FACTORY_REGISTER(CRender);
 
-    Vec2i texCoords;
-    sf::Color color;
-
 public:
+
+    struct Layer
+    {
+        Vec2i texCoords;
+        sf::Color color;
+    };
+
+    std::vector<Layer> layers;
+
     virtual bool init(YAML::Node node);
 
-    Vec2i getTexCoords();
-    sf::Color getColor();
+    // Vec2i getTexCoords();
+    // sf::Color getColor();
 };
 
 #endif // CRENDER_H

@@ -1,8 +1,10 @@
 #   Component Catalouge
 #
 #   CRender:
-#       texpos: [0, 0]          #-tile position on sprite sheet           
-#       color: [255, 255, 255]  #-base rgb color applied to sprite
+#       - texpos: [0, 0]          #-tile position on sprite sheet           
+#         color: [255, 255, 255]  #-base rgb color applied to sprite
+#       - texpos:                 #-supports any number of layers
+#         color: 
 #
 #   CPosition:
 #       pos: [0, 0] #-inital position (usually overridden in code)
@@ -39,8 +41,8 @@
 
 Rock:
     CRender:
-        texpos: [0, 0]
-        color: [180, 170, 190]
+        - texpos: [0, 0]
+          color: [180, 170, 190]
     CPosition:
         pos: [0, 0]
 
@@ -48,8 +50,8 @@ Grass:
     CPlantBrain:
     CSurroundings:
     CRender:
-        texpos: [5, 0]
-        color: [96, 155, 73]
+        - texpos: [5, 0]
+          color: [96, 155, 73]
         # color: [77, 170, 180]
     CPosition:
         pos: [0, 0]
@@ -74,8 +76,14 @@ DumbBug:
     CPosition:
         pos: [0, 0]
     CRender:
-        texpos: [0, 1]
-        color: [213, 183, 148]
+        # - texpos: [4, 2]
+        #   color: [236, 200, 163]
+        # - texpos: [5, 2]
+        #   color: [28, 144, 30]
+        - texpos: [0, 2]
+          color: [232, 79, 69]
+        - texpos: [1, 2]
+          color: [223, 195, 140]
     CMovement:
         direction: 3
         velocity: 0.5
@@ -110,8 +118,8 @@ DumbBugEgg:
     CPosition:
         pos: [0, 0]
     CRender:
-        texpos: [0, 2]
-        color: [250, 128, 114]
+        - texpos: [6, 1]
+          color: [216, 161, 54]
     CSpawn:
         type: DumbBug
         can_spawn_on:
