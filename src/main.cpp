@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
+
 #include "terrarium.h"
 #include <cstdlib>
 #include <ctime>
@@ -10,8 +11,12 @@
 
 #include "cposition.h"
 
+#include <X11/Xlib.h>
+
 int main()
 {
+    XInitThreads();
+
     try
     {
         srand(time(0));
@@ -34,11 +39,11 @@ int main()
             t.update(timeStep);
             elapsed = sleepClock.restart().asMicroseconds();
 
-            int sleep = 20000 - elapsed;
+            int sleep = 2000 - elapsed;
             
-            std::cout << "elapsed: " << elapsed << " sleep: " << sleep << std::endl;
+            std::cout << "^^============elapsed: " << elapsed << " sleep: " << sleep << std::endl;
 
-            sf::sleep(sf::microseconds(sleep));
+            sf::sleep(sf::microseconds(0));
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
                 running = false;
@@ -48,8 +53,6 @@ int main()
     catch (YAML::Exception &e)
     {
         std::cout << e.what() << std::endl;
-        std::cout << "If error is at line 0 column 0, entities.yaml" 
-                  << " probably wasn't found" << std::endl;
     }
     catch (...)
     {

@@ -28,6 +28,7 @@ void PEggBrain::unregisterEntity(EntityId id)
 
 void PEggBrain::update(int timeStep)
 {
+    sf::Clock timer;
     for (auto node = nodes.begin();
          node != nodes.end(); ++node)
     {
@@ -39,4 +40,5 @@ void PEggBrain::update(int timeStep)
 
         node->alive->updateEnergy(1);
     }
+    std::cout << "PEggBrain: " << timer.restart().asMicroseconds() << std::endl;
 }

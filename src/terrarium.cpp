@@ -83,13 +83,16 @@ Terrarium::Terrarium(YAML::Node config)
 
 void Terrarium::update(int timeStep)
 {
-    china.update();
+    sf::Clock timer;
 
     for (auto itr = processes.begin();
          itr != processes.end(); ++itr)
     {
         (*itr)->update(timeStep);
     }
+    china.update();
+    
+    std::cout << "Main Update: " << timer.restart().asMicroseconds() << std::endl;
 }
 
 sf::RenderWindow& Terrarium::getWindow()

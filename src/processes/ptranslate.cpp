@@ -38,7 +38,9 @@ void PTranslate::unregisterEntity(EntityId id)
 }
 
 void PTranslate::update(int timeStep)
-{
+{    
+    sf::Clock timer;
+
     for (auto node = nodes.begin();
         node != nodes.end(); ++node)
     {        
@@ -60,4 +62,5 @@ void PTranslate::update(int timeStep)
             node->position->pos = newPos;
         }
     }
+    std::cout << "PTranslate: " << timer.restart().asMicroseconds() << std::endl;
 }

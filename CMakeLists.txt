@@ -18,4 +18,4 @@ file(GLOB_RECURSE SOURCES "src/*.cpp")
 add_executable(terra ${SOURCES})
 
 # Linked Libraries
-target_link_libraries(terra ${SFML_LIBS} ${YAML_LIBS})
+target_link_libraries(terra ${SFML_LIBS} ${YAML_LIBS} pthread X11)

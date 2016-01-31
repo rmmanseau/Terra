@@ -28,6 +28,7 @@ void PEat::unregisterEntity(EntityId id)
 
 void PEat::update(int timeStep)
 {
+    sf::Clock timer;
     for (auto node = nodes.begin();
          node != nodes.end(); ++node)
     {        
@@ -43,4 +44,5 @@ void PEat::update(int timeStep)
         }
         node->eat->active = false;
     }
+    std::cout << "PEat: " << timer.restart().asMicroseconds() << std::endl;
  }

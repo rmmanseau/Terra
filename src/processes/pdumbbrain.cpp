@@ -34,6 +34,8 @@ void PDumbBrain::unregisterEntity(EntityId id)
 
 void PDumbBrain::update(int timeStep)
 {
+    sf::Clock timer;
+
     for (auto node = nodes.begin();
          node != nodes.end(); ++node)
     {        
@@ -55,4 +57,5 @@ void PDumbBrain::update(int timeStep)
 
         node->alive->updateEnergy(-1);
     }
+    std::cout << "PDumbBrain: " << timer.restart().asMicroseconds() << std::endl;
 }

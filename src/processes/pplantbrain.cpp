@@ -31,6 +31,7 @@ void PPlantBrain::unregisterEntity(EntityId id)
 
 void PPlantBrain::update(int timeStep)
 {
+    sf::Clock timer;
     for (auto node = nodes.begin();
          node != nodes.end(); ++node)
     {        
@@ -55,4 +56,5 @@ void PPlantBrain::update(int timeStep)
                 node->alive->updateEnergy(-2);   
         }
     }
+    std::cout << "PPlantBrain: " << timer.restart().asMicroseconds() << std::endl;
 }

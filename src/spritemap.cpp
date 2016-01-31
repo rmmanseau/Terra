@@ -40,28 +40,11 @@ void SpriteMap::addSprite(Vec2f pos, Vec2i tex, const sf::Color& color)
     quad[1].color = color;
     quad[2].color = color * sf::Color(150, 150, 150);
     quad[3].color = color * sf::Color(50,50,50);
-
-    sf::Vertex quad2[4];
-
-    quad2[0].position = sf::Vector2f(200, 200);
-    quad2[1].position = sf::Vector2f(300, 200);
-    quad2[2].position = sf::Vector2f(300, 300);
-    quad2[3].position = sf::Vector2f(200, 300);
-    
-    quad2[0].color = sf::Color::White * sf::Color(200, 200, 200);
-    quad2[1].color = sf::Color::White;
-    quad2[2].color = sf::Color::White * sf::Color(150, 150, 150);
-    quad2[3].color = sf::Color::White * sf::Color(50, 50, 50);
     
     vertices.append(quad[0]);
     vertices.append(quad[1]);
     vertices.append(quad[2]);
     vertices.append(quad[3]);
-
-    vertices.append(quad2[0]);
-    vertices.append(quad2[1]);
-    vertices.append(quad2[2]);
-    vertices.append(quad2[3]);
 }
 
 void SpriteMap::clearSprites()

@@ -26,6 +26,7 @@ void PMovement::unregisterEntity(EntityId id)
 
 void PMovement::update(int timeStep)
 {
+    sf::Clock timer;
     for (auto node = nodes.begin();
         node != nodes.end(); ++node)
     {
@@ -36,4 +37,5 @@ void PMovement::update(int timeStep)
         }
         node->movement->active = false;
     }
+    std::cout << "PMovement: " << timer.restart().asMicroseconds() << std::endl;
 }

@@ -112,6 +112,8 @@ void Factory::disassembleEntity(EntityId id)
 
 void Factory::update()
 {
+    sf::Clock timer;
+
     // Remove Dead Entities
     for (auto itr = deadEntities.begin(); itr != deadEntities.end(); ++itr)
     {
@@ -151,6 +153,7 @@ void Factory::update()
         }
     }
     newEntities.clear();
+    std::cout << "Factory: " << timer.restart().asMicroseconds() << std::endl;
 }
 
 int Factory::newId()

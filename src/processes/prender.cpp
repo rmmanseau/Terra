@@ -7,7 +7,19 @@ PRender::PRender(sf::RenderWindow& window, int tileSize, const std::string& spri
     , background(window.getSize().x, window.getSize().y, dirtTexturePath, dirtColor)
     , timeBetweenDraws((1./120) * 1000000)
     , timeSinceLastDraw(0)
-{}
+    , draw(false)
+    , drawThreadRunning(true)
+    , drawThreadFinished(false)
+    , drawThread(&PRender::drawFunc, this)
+{
+    window.setActive(false);
+}
+
+PRender::~PRender()
+{
+    drawThreadRunning = false;
+    drawThread.join();
+}
 
 void PRender::registerEntity(Entity& entity)
 {
@@ -30,14 +42,44 @@ void PRender::unregisterEntity(EntityId id)
                 nodes.end());
 }
 
+void PRender::drawFunc()
+{
+    rWindow.setActive(true);
+
+    while(drawThreadRunning)
+    {
+        if (draw)
+        {
+            draw = false;
+
+            rWindow.draw(background);
+
+            {
+                std::lock_guard<std::mutex> guard(drawMutex);
+                rWindow.draw(sprites);
+            }
+
+            rWindow.display();
+        }
+        else
+        {
+            sf::sleep(sf::microseconds(10));
+        }
+    }
+}
+
 void PRender::update(int timeStep)
 {
-    timeSinceLastDraw += timeStep;
+    sf::Clock timer;
 
+    timeSinceLastDraw += timeStep;
     if (timeSinceLastDraw >= timeBetweenDraws)
     {
-        timeSinceLastDraw -= timeBetweenDraws;
+        timeSinceLastDraw = 0;
 
+        std::lock_guard<std::mutex> guard(drawMutex);
+        
+        sprites.clearSprites();
         for (auto node = nodes.begin();
         node != nodes.end(); ++node)
         {
@@ -50,10 +92,7 @@ void PRender::update(int timeStep)
             }
         }
 
-        rWindow.draw(background);
-        rWindow.draw(sprites);
-        rWindow.display();
-
-        sprites.clearSprites();
+        draw = true;
     }
+    std::cout << "PRender: " << timer.restart().asMicroseconds() << std::endl;
 }

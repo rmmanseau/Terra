@@ -30,6 +30,7 @@ void PSpawn::unregisterEntity(EntityId id)
 
 void PSpawn::update(int timeStep)
 {
+    sf::Clock timer;
     for (auto node = nodes.begin();
          node != nodes.end(); ++node)
     {        
@@ -48,4 +49,5 @@ void PSpawn::update(int timeStep)
         }
         node->spawn->active = false;
     }
+    std::cout << "PSpawn: " << timer.restart().asMicroseconds() << std::endl;
 }

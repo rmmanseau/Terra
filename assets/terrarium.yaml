@@ -1,6 +1,8 @@
 
-width: 158
-height: 88
+width: 80
+height: 80
+# width: 158
+# height: 88
 tile_size: 12
 sprite_sheet: assets/textures/sprite_sheet_12.png
 dirt_texture: assets/textures/dirt.png

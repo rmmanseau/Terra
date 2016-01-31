@@ -27,6 +27,7 @@ void PAlive::unregisterEntity(EntityId id)
 
 void PAlive::update(int timeStep)
 {
+    sf::Clock timer;
     for (auto node = nodes.begin();
          node != nodes.end(); ++node)
     {        
@@ -38,4 +39,5 @@ void PAlive::update(int timeStep)
             rFactory.disassembleEntity(node->id);
         }
     }
+    std::cout << "PAlive: " << timer.restart().asMicroseconds() << std::endl;
 }

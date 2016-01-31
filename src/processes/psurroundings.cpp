@@ -35,7 +35,9 @@ void PSurroundings::unregisterEntity(EntityId id)
 }
 
 void PSurroundings::update(int timeStep)
-{
+{    
+    sf::Clock timer;
+
     for (auto node = nodes.begin();
          node != nodes.end(); ++node)
     {   
@@ -47,4 +49,5 @@ void PSurroundings::update(int timeStep)
             node->surroundings->setInfo(i, id, type);
         }
     }
+    std::cout << "PSurroundings: " << timer.restart().asMicroseconds() << std::endl;
 }
