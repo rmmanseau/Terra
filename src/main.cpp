@@ -13,7 +13,33 @@
 
 #include <X11/Xlib.h>
 
-int main()
+void terrariumEditor()
+{
+    sf::RenderWindow window(sf::VideoMode(200, 200, 32),
+                            "Terra - Editor",
+                            sf::Style::Close);
+    sf::Event event;
+
+    while (window.isOpen())
+    {
+        while (window.pollEvent(event))
+        {
+            switch (event.type)
+            {
+                case sf::Event::Closed:
+                {
+                    window.close();
+                    break;
+                }
+            }
+        }
+
+        window.clear();
+        window.display();
+    }
+}
+
+void runTerrarium()
 {
     XInitThreads();
 
@@ -57,5 +83,22 @@ int main()
     catch (...)
     {
         std::cout << "Building terrarium failed, exiting." << std::endl;
+    }
+}
+
+int main(int argc, char* argv[])
+{
+    std::vector<std::string> args(argv, argv+argc);
+    
+    if (argc == 1)
+    {
+        runTerrarium();
+    }
+    else
+    {
+        if (args[1] == "--editor")
+        {
+            terrariumEditor();
+        }
     }
 }
