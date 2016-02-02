@@ -1,17 +1,32 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
-
+#include "globals.h"
+#include "helpers.h"
 #include "terrarium.h"
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
 
+#include <X11/Xlib.h>
 #include "yaml-cpp/yaml.h"
 
-#include "cposition.h"
+#define ROOT_DIR "../"
 
-#include <X11/Xlib.h>
+void populateEntityNameTypeMap()
+{
+    YAML::Node entitySheet = YAML::LoadFile((std::string)ROOT_DIR + "assets/entities.yaml");
+
+    int i = G_EntityNameTypeMap.size();
+    for (YAML::const_iterator itr = entitySheet.begin();
+         itr != entitySheet.end(); ++itr)
+    {
+        std::string name = itr->first.as<std::string>();
+        EntityType type = (EntityType)(i++);
+
+        G_EntityNameTypeMap.insert(std::make_pair(name, type));
+    }
+}
 
 void terrariumEditor()
 {
@@ -65,11 +80,12 @@ void runTerrarium()
             t.update(timeStep);
             elapsed = sleepClock.restart().asMicroseconds();
 
-            int sleep = 2000 - elapsed;
+            int targetTime = 2000;
+            int sleep = clamp(targetTime - elapsed, 0, targetTime);
             
             std::cout << "^^============elapsed: " << elapsed << " sleep: " << sleep << std::endl;
 
-            sf::sleep(sf::microseconds(0));
+            sf::sleep(sf::microseconds(sleep));
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
                 running = false;
@@ -89,6 +105,7 @@ void runTerrarium()
 int main(int argc, char* argv[])
 {
     std::vector<std::string> args(argv, argv+argc);
+    populateEntityNameTypeMap();
     
     if (argc == 1)
     {

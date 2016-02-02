@@ -2,6 +2,7 @@
 #define GRID_H
 
 #include "common.h"
+#include "globals.h"
 #include "vec2.h"
 #include <vector>
 
@@ -22,8 +23,8 @@ class Grid
     GridInfo& at(Vec2i v);
 
 public:
-    Grid() {}
-    Grid(int w, int h);
+    Grid();
+    void init(int w, int h);
 
     EntityId getIdAt(Vec2i v);
     EntityType getTypeAt(Vec2i v);

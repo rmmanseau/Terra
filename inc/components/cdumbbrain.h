@@ -3,9 +3,6 @@
 
 #include "common.h"
 #include "component.h"
-// Project Includes
-
-// Library Includes
 
 class CDumbBrain : public Component
 {

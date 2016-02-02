@@ -46,6 +46,13 @@ Rock:
     CPosition:
         pos: [0, 0]
 
+Rock2:
+    CRender:
+        - texpos: [2, 0]
+          color: [185, 160, 195]
+    CPosition:
+        pos: [0, 0]
+
 Grass:
     CPlantBrain:
     CSurroundings:

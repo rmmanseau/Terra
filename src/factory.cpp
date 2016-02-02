@@ -98,7 +98,7 @@ void Factory::assembleEntity(EntityType type, Vec2i pos)
     if (position)
     {
         position->pos = pos;
-        rGrid.setInfoAt(pos, id, EntityType::Reserved);
+        rGrid.setInfoAt(pos, id, G_EType_Reserved);
     }
     
     rEntities.insert(std::make_pair(id, entity));

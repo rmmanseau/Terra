@@ -14,10 +14,11 @@ std::map<Dir, Vec2i> G_DirVecMap =
 
 std::map<std::string, EntityType> G_EntityNameTypeMap =
 {
-    {"Null", EntityType::Null},
-    {"Empty", EntityType::Empty},
-    {"Rock", EntityType::Rock},
-    {"Grass", EntityType::Grass},
-    {"DumbBug", EntityType::DumbBug},
-    {"DumbBugEgg", EntityType::DumbBugEgg}
+    {"Null", 0},
+    {"Reserved", 1},
+    {"Empty", 2}
 };
+
+const EntityType G_EType_Null = 0;
+const EntityType G_EType_Reserved = 1;
+const EntityType G_EType_Empty = 2;

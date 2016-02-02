@@ -1,12 +1,20 @@
 #include "grid.h"
 
 Grid::GridInfo::GridInfo()
-    : id(-1), type(EntityType::Empty) {}
+    : id(-1)
+    , type(G_EType_Empty)
+{}
 
-Grid::Grid(int w, int h)
-    : width(w)
-    , height(h)
+Grid::Grid()
+    : width(0)
+    , height(0)
+{}
+
+void Grid::init(int w, int h)
 {
+    width = w;
+    height = h;
+
     int size = width*height;
     for (int i = 0; i < size; ++i)
         g.push_back(GridInfo());
@@ -35,7 +43,7 @@ EntityType Grid::getTypeAt(Vec2i v)
     if (inside(v))
         return at(v).type;
     else
-        return EntityType::Null;
+        return G_EType_Null;
 }
 
 void Grid::setInfoAt(Vec2i v, EntityId id, EntityType type)
@@ -49,13 +57,13 @@ void Grid::setInfoAt(Vec2i v, EntityId id, EntityType type)
 
 void Grid::erase(Vec2i v)
 {
-    setInfoAt(v, -1, EntityType::Empty);
+    setInfoAt(v, -1, G_EType_Empty);
 }
 
 bool Grid::empty(Vec2i v)
 {
     if (inside(v))
-        return at(v).type == EntityType::Empty;
+        return at(v).type == G_EType_Empty;
     else
         return false;
 }
