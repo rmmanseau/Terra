@@ -14,7 +14,7 @@ Factory::Factory(Terrarium& owner)
     , rEntities(owner.getEntities())
     , nextId(1)
 {   
-    YAML::Node entitySheet = YAML::LoadFile((std::string)ROOT_DIR + "assets/entities.yaml");
+    YAML::Node entitySheet = YAML::LoadFile((std::string)ROOT_DIR + "assets/yaml/entities.yaml");
     for (YAML::const_iterator itr = entitySheet.begin();
          itr != entitySheet.end(); ++itr)
     {

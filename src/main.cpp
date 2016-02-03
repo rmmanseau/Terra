@@ -1,21 +1,22 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+#include "yaml-cpp/yaml.h"
+#include <X11/Xlib.h>
 
-#include "globals.h"
-#include "helpers.h"
-#include "terrarium.h"
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
 
-#include <X11/Xlib.h>
-#include "yaml-cpp/yaml.h"
+#include "globals.h"
+#include "helpers.h"
+#include "terrarium.h"
+#include "terrariumeditor.h"
 
 #define ROOT_DIR "../"
 
 void populateEntityNameTypeMap()
 {
-    YAML::Node entitySheet = YAML::LoadFile((std::string)ROOT_DIR + "assets/entities.yaml");
+    YAML::Node entitySheet = YAML::LoadFile((std::string)ROOT_DIR + "assets/yaml/entities.yaml");
 
     int i = G_EntityNameTypeMap.size();
     for (YAML::const_iterator itr = entitySheet.begin();
@@ -28,32 +29,6 @@ void populateEntityNameTypeMap()
     }
 }
 
-void terrariumEditor()
-{
-    sf::RenderWindow window(sf::VideoMode(200, 200, 32),
-                            "Terra - Editor",
-                            sf::Style::Close);
-    sf::Event event;
-
-    while (window.isOpen())
-    {
-        while (window.pollEvent(event))
-        {
-            switch (event.type)
-            {
-                case sf::Event::Closed:
-                {
-                    window.close();
-                    break;
-                }
-            }
-        }
-
-        window.clear();
-        window.display();
-    }
-}
-
 void runTerrarium()
 {
     XInitThreads();
@@ -62,7 +37,8 @@ void runTerrarium()
     {
         srand(time(0));
 
-        YAML::Node terraConfig = YAML::LoadFile("../assets/terrarium.yaml");
+        YAML::Node terraConfig = YAML::LoadFile((std::string)ROOT_DIR +
+                                                "assets/yaml/terrariums/default.yaml");
 
         Terrarium t(terraConfig);
 
@@ -80,7 +56,7 @@ void runTerrarium()
             t.update(timeStep);
             elapsed = sleepClock.restart().asMicroseconds();
 
-            int targetTime = 2000;
+            int targetTime = 0;
             int sleep = clamp(targetTime - elapsed, 0, targetTime);
             
             std::cout << "^^============elapsed: " << elapsed << " sleep: " << sleep << std::endl;
@@ -115,7 +91,10 @@ int main(int argc, char* argv[])
     {
         if (args[1] == "--editor")
         {
-            terrariumEditor();
+            if (argc > 2)
+                runTerrariumBlueprintEditor(args[2]);
+            else
+                runTerrariumBlueprintEditor();
         }
     }
 }

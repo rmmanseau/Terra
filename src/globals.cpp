@@ -12,7 +12,7 @@ std::map<Dir, Vec2i> G_DirVecMap =
     {Dir::nw , Vec2i(-1, -1)}
 };
 
-std::map<std::string, EntityType> G_EntityNameTypeMap =
+std::unordered_map<std::string, EntityType> G_EntityNameTypeMap =
 {
     {"Null", 0},
     {"Reserved", 1},

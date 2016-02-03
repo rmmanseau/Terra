@@ -5,7 +5,7 @@
 #include "vec2.h"
 
 extern std::map<Dir, Vec2i> G_DirVecMap;
-extern std::map<std::string, EntityType> G_EntityNameTypeMap;
+extern std::unordered_map<std::string, EntityType> G_EntityNameTypeMap;
 extern const EntityType G_EType_Null;
 extern const EntityType G_EType_Reserved;
 extern const EntityType G_EType_Empty;

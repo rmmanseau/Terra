@@ -1,0 +1,13 @@
+# DO NOT CHANGE OR DELETE.
+# THIS IS THE DEFAULT TERRARIUM CONFIG FILE.
+width: 50
+height: 50
+tile_size: 12
+sprite_sheet: assets/textures/sprite_sheet_12.png
+dirt_texture: assets/textures/dirt.png
+dirt_color: [143, 97, 45]
+initial_entities:
+    - {type: Rock, pos: [0, 0]}
+    - {type: Rock, pos: [0, 1]}
+    - {type: Rock, pos: [1, 0]}
+    - {type: Rock, pos: [1, 1]}

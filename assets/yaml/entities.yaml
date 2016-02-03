@@ -59,7 +59,11 @@ Grass:
     CRender:
         - texpos: [5, 0]
           color: [96, 155, 73]
-        # color: [77, 170, 180]
+    # CRender:  # Purple Flower
+    #     - texpos: [10, 0]
+    #       color: [157, 86, 207]
+    #     - texpos: [11, 0]
+    #       color: [233, 218, 108]
     CPosition:
         pos: [0, 0]
     CAlive:
