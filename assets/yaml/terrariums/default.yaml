@@ -11,3 +11,7 @@ initial_entities:
     - {type: Rock, pos: [0, 1]}
     - {type: Rock, pos: [1, 0]}
     - {type: Rock, pos: [1, 1]}
+    - {type: DumbBug, pos: [10, 10]}
+    - {type: DumbBug, pos: [10, 11]}
+    - {type: DumbBug, pos: [11, 10]}
+    - {type: DumbBug, pos: [11, 11]}

@@ -10,6 +10,7 @@
 #include <string>
 
 #include "globals.h"
+#include "helpers.h"
 #include "vec2.h"
 #include "background.h"
 #include "spritemap.h"
@@ -24,6 +25,12 @@ struct TerrariumBlueprint
     std::string dirtTexturePath;
     sf::Color dirtColor;
     std::map<Vec2i, EntityType> entities;
+};
+
+struct CursorInfo
+{
+    Vec2i position;
+    EntityType type;
 };
 
 void runTerrariumBlueprintEditor(std::string blueprintPath = "NOPATH");

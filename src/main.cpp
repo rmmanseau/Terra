@@ -66,7 +66,6 @@ void runTerrarium()
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
                 running = false;
         }
-    
     }
     catch (YAML::Exception &e)
     {

@@ -79,14 +79,30 @@ void loadRenderComponents(std::unordered_map<int, CRender>& renderComponents,
     }
 }
 
-void updateSpriteMap(SpriteMap& spriteMap, TerrariumBlueprint& blueprint,
-                     std::unordered_map<int, CRender>& renderComponents)
+void addCursorToSpriteMap(SpriteMap& spriteMap, CursorInfo& cursor,
+                          std::unordered_map<int, CRender>& renderComponents)
 {
-    spriteMap.clearSprites();
+    Vec2i pos = cursor.position;
+    CRender& render = renderComponents.at((int)cursor.type);
+
+    for (int i = 0; i < render.layers.size(); ++i)
+    {
+        CRender::Layer& layer = render.layers[i];
+        spriteMap.addSprite(pos, layer.texCoords, layer.color);
+    }
+}
+
+void addEntitiesToSpriteMap(SpriteMap& spriteMap, TerrariumBlueprint& blueprint,
+                            CursorInfo& cursor, std::unordered_map<int, CRender>& renderComponents)
+{
     for (auto itr = blueprint.entities.begin();
          itr != blueprint.entities.end(); ++itr)
     {
         Vec2i pos = (itr->first);
+
+        if (pos == cursor.position)
+            continue;
+
         CRender& render = renderComponents.at((int)(itr->second));
 
         for (int i = 0; i < render.layers.size(); ++i)
@@ -108,11 +124,19 @@ void runTerrariumBlueprintEditor(std::string blueprintPath)
     std::unordered_map<int, CRender> renderComponents;
     loadRenderComponents(renderComponents, ENTITY_BLUEPRINTS_PATH);
 
+
     int winW = blueprint.width * blueprint.tileSize;
     int winH = blueprint.height * blueprint.tileSize;
     sf::RenderWindow window(sf::VideoMode(winW, winH, 32),
                             "Terra - Editor",
                             sf::Style::Close);
+    window.setMouseCursorVisible(false);
+
+    CursorInfo cursor;
+    cursor.type = (EntityType)3;
+    sf::Vector2i pos = sf::Mouse::getPosition(window);
+    cursor.position = Vec2i(pos.x / blueprint.tileSize,
+                            pos.y / blueprint.tileSize);
     sf::Event event;
 
     Background background(winW, winH, blueprint.dirtTexturePath, blueprint.dirtColor);
@@ -129,10 +153,28 @@ void runTerrariumBlueprintEditor(std::string blueprintPath)
                     window.close();
                     break;
                 }
+
+                case sf::Event::MouseMoved:
+                {
+                    cursor.position = Vec2i(event.mouseMove.x / blueprint.tileSize,
+                                            event.mouseMove.y / blueprint.tileSize);
+                    break;
+                }
+
+                case sf::Event::MouseWheelMoved:
+                {
+                    int typeInt = (int)cursor.type;
+                    typeInt = clamp(typeInt + event.mouseWheel.delta,
+                                    3, (int)G_EntityNameTypeMap.size() - 1);
+                    std::cout << "type: " << typeInt << std::endl;
+                    cursor.type = (EntityType)typeInt;
+                }
             }
         }
 
-        updateSpriteMap(spriteMap, blueprint, renderComponents);
+        spriteMap.clearSprites();
+        addCursorToSpriteMap(spriteMap, cursor, renderComponents);
+        addEntitiesToSpriteMap(spriteMap, blueprint, cursor, renderComponents);
 
         window.draw(background);
         window.draw(spriteMap);
