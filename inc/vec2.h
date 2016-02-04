@@ -45,6 +45,16 @@ inline Vec2<T> operator + (Vec2<T> u, Vec2<T> v)
 }
 
 template <typename T>
+inline Vec2<T> operator - (Vec2<T> u, Vec2<T> v)
+{
+    Vec2<T> result;
+    result.x = u.x - v.x;
+    result.y = u.y - v.y;
+
+    return result;
+}
+
+template <typename T>
 inline Vec2<T> operator += (Vec2<T> &u, Vec2<T> v)
 {
     u.x += v.x;

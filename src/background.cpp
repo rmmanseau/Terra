@@ -18,3 +18,8 @@ void Background::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(sprite, states);
 }
+
+void Background::setSize(int w, int h)
+{
+    sprite.setTextureRect(sf::IntRect(0, 0, w, h));
+}

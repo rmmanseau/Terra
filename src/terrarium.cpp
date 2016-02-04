@@ -56,35 +56,43 @@ Terrarium::Terrarium(YAML::Node config)
         }
     }
 
-    china.assembleEntity(G_EntityNameTypeMap["DumbBugEgg"], Vec2i(2, 2));
-    china.assembleEntity(G_EntityNameTypeMap["DumbBugEgg"], Vec2i(3, 3));
-    china.assembleEntity(G_EntityNameTypeMap["DumbBugEgg"], Vec2i(4, 4));
-    china.assembleEntity(G_EntityNameTypeMap["DumbBugEgg"], Vec2i(80, 20));
-    china.assembleEntity(G_EntityNameTypeMap["DumbBugEgg"], Vec2i(81, 20));
-    china.assembleEntity(G_EntityNameTypeMap["DumbBugEgg"], Vec2i(82, 20));
-    china.assembleEntity(G_EntityNameTypeMap["DumbBugEgg"], Vec2i(83, 20));
-    china.assembleEntity(G_EntityNameTypeMap["DumbBugEgg"], Vec2i(84, 20));
-    china.assembleEntity(G_EntityNameTypeMap["DumbBugEgg"], Vec2i(85, 20));
-    china.assembleEntity(G_EntityNameTypeMap["DumbBugEgg"], Vec2i(86, 20));
-    china.assembleEntity(G_EntityNameTypeMap["DumbBugEgg"], Vec2i(87, 20));
-    china.assembleEntity(G_EntityNameTypeMap["DumbBugEgg"], Vec2i(88, 20));
-    china.assembleEntity(G_EntityNameTypeMap["DumbBugEgg"], Vec2i(89, 20));
-    china.assembleEntity(G_EntityNameTypeMap["DumbBugEgg"], Vec2i(90, 20));
-    china.assembleEntity(G_EntityNameTypeMap["DumbBugEgg"], Vec2i(91, 20));
-    china.assembleEntity(G_EntityNameTypeMap["Grass"], Vec2i(9, 10));
-    china.assembleEntity(G_EntityNameTypeMap["Grass"], Vec2i(10, 10));
-    china.assembleEntity(G_EntityNameTypeMap["Grass"], Vec2i(9, 11));
-    china.assembleEntity(G_EntityNameTypeMap["Grass"], Vec2i(10, 11));
-    china.assembleEntity(G_EntityNameTypeMap["Grass"], Vec2i(11, 11));
-    china.assembleEntity(G_EntityNameTypeMap["Grass"], Vec2i(12, 11));
-    china.assembleEntity(G_EntityNameTypeMap["Grass"], Vec2i(13, 11));
-    china.assembleEntity(G_EntityNameTypeMap["Grass"], Vec2i(10, 12));
-    china.assembleEntity(G_EntityNameTypeMap["Rock"], Vec2i(21, 30));
-    china.assembleEntity(G_EntityNameTypeMap["Rock"], Vec2i(21, 31));
-    china.assembleEntity(G_EntityNameTypeMap["Rock"], Vec2i(20, 30));
-    china.assembleEntity(G_EntityNameTypeMap["Rock"], Vec2i(20, 31));
-    china.assembleEntity(G_EntityNameTypeMap["Rock"], Vec2i(22, 31));
-    china.assembleEntity(G_EntityNameTypeMap["BlueRock"], Vec2i(50, 51));
+    YAML::const_iterator itr = config["initial_entities"].begin();
+    YAML::const_iterator end = config["initial_entities"].end();
+    for (itr; itr != end; ++itr)
+    {
+        EntityType type = G_EntityNameTypeMap[(*itr)["type"].as<std::string>()];
+        Vec2i pos((*itr)["pos"][0].as<int>(), (*itr)["pos"][1].as<int>());
+        china.assembleEntity(type, pos);
+    }
+    // china.assembleEntity(G_EntityNameTypeMap["DumbBugEgg"], Vec2i(2, 2));
+    // china.assembleEntity(G_EntityNameTypeMap["DumbBugEgg"], Vec2i(3, 3));
+    // china.assembleEntity(G_EntityNameTypeMap["DumbBugEgg"], Vec2i(4, 4));
+    // china.assembleEntity(G_EntityNameTypeMap["DumbBugEgg"], Vec2i(80, 20));
+    // china.assembleEntity(G_EntityNameTypeMap["DumbBugEgg"], Vec2i(81, 20));
+    // china.assembleEntity(G_EntityNameTypeMap["DumbBugEgg"], Vec2i(82, 20));
+    // china.assembleEntity(G_EntityNameTypeMap["DumbBugEgg"], Vec2i(83, 20));
+    // china.assembleEntity(G_EntityNameTypeMap["DumbBugEgg"], Vec2i(84, 20));
+    // china.assembleEntity(G_EntityNameTypeMap["DumbBugEgg"], Vec2i(85, 20));
+    // china.assembleEntity(G_EntityNameTypeMap["DumbBugEgg"], Vec2i(86, 20));
+    // china.assembleEntity(G_EntityNameTypeMap["DumbBugEgg"], Vec2i(87, 20));
+    // china.assembleEntity(G_EntityNameTypeMap["DumbBugEgg"], Vec2i(88, 20));
+    // china.assembleEntity(G_EntityNameTypeMap["DumbBugEgg"], Vec2i(89, 20));
+    // china.assembleEntity(G_EntityNameTypeMap["DumbBugEgg"], Vec2i(90, 20));
+    // china.assembleEntity(G_EntityNameTypeMap["DumbBugEgg"], Vec2i(91, 20));
+    // china.assembleEntity(G_EntityNameTypeMap["Grass"], Vec2i(9, 10));
+    // china.assembleEntity(G_EntityNameTypeMap["Grass"], Vec2i(10, 10));
+    // china.assembleEntity(G_EntityNameTypeMap["Grass"], Vec2i(9, 11));
+    // china.assembleEntity(G_EntityNameTypeMap["Grass"], Vec2i(10, 11));
+    // china.assembleEntity(G_EntityNameTypeMap["Grass"], Vec2i(11, 11));
+    // china.assembleEntity(G_EntityNameTypeMap["Grass"], Vec2i(12, 11));
+    // china.assembleEntity(G_EntityNameTypeMap["Grass"], Vec2i(13, 11));
+    // china.assembleEntity(G_EntityNameTypeMap["Grass"], Vec2i(10, 12));
+    // china.assembleEntity(G_EntityNameTypeMap["Rock"], Vec2i(21, 30));
+    // china.assembleEntity(G_EntityNameTypeMap["Rock"], Vec2i(21, 31));
+    // china.assembleEntity(G_EntityNameTypeMap["Rock"], Vec2i(20, 30));
+    // china.assembleEntity(G_EntityNameTypeMap["Rock"], Vec2i(20, 31));
+    // china.assembleEntity(G_EntityNameTypeMap["Rock"], Vec2i(22, 31));
+    // china.assembleEntity(G_EntityNameTypeMap["BlueRock"], Vec2i(50, 51));
 }
 
 void Terrarium::update(int timeStep)

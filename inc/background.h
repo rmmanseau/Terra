@@ -12,6 +12,7 @@ class Background : public sf::Drawable
 
 public:
     Background(int width, int height, const std::string& fileName, const sf::Color& color);
+    void setSize(int w, int h);
 };
 
 #endif // BACKGROUND_H

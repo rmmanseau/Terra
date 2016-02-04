@@ -7,6 +7,30 @@
 #include <cstdlib>
 
 template <typename T>
+void getInput(T& input)
+{
+    for (;;)
+    {
+        std::cout << "> ";
+        std::cin >> input;
+        std::cout << std::endl;
+
+        if (std::cin.fail())
+        {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "Bad Input, try again." << std::endl;
+        }
+        else
+        {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            return;
+        }
+    }
+}
+
+template <typename T>
 T clamp(T x, T lower, T upper)
 {
     x = (x > upper) ? upper : x;

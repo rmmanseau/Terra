@@ -7,6 +7,7 @@
 
 #include <unordered_map>
 #include <iostream>
+#include <fstream>
 #include <string>
 
 #include "globals.h"
@@ -31,6 +32,7 @@ struct CursorInfo
 {
     Vec2i position;
     EntityType type;
+    bool resizingWindow;
 };
 
 void runTerrariumBlueprintEditor(std::string blueprintPath = "NOPATH");

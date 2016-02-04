@@ -38,7 +38,7 @@ void runTerrarium()
         srand(time(0));
 
         YAML::Node terraConfig = YAML::LoadFile((std::string)ROOT_DIR +
-                                                "assets/yaml/terrariums/default.yaml");
+                                                "assets/yaml/terrariums/shard.yaml");
 
         Terrarium t(terraConfig);
 
@@ -56,7 +56,7 @@ void runTerrarium()
             t.update(timeStep);
             elapsed = sleepClock.restart().asMicroseconds();
 
-            int targetTime = 0;
+            int targetTime = 10000;
             int sleep = clamp(targetTime - elapsed, 0, targetTime);
             
             std::cout << "^^============elapsed: " << elapsed << " sleep: " << sleep << std::endl;
