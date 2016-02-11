@@ -113,7 +113,7 @@ DumbBug:
         health: 10
         health_variance: 0
         health_max: 10
-        energy: 180
+        energy: 100
         energy_variance: 50
         energy_max: 250
 
