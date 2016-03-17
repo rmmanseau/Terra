@@ -38,7 +38,7 @@ void runTerrarium()
         srand(time(0));
 
         YAML::Node terraConfig = YAML::LoadFile((std::string)ROOT_DIR +
-                                                "assets/yaml/terrariums/shard.yaml");
+                                                "assets/yaml/terrariums/long.yaml");
 
         Terrarium t(terraConfig);
 

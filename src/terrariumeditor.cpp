@@ -6,8 +6,7 @@
 #define DEFAULT_TERRARIUM_BLUEPRINT_PATH "assets/yaml/terrariums/default.yaml"
 #define ENTITY_BLUEPRINTS_PATH "assets/yaml/entities.yaml"
 
-void loadTerrariumBlueprint(TerrariumBlueprint& blueprint,
-                            const std::string& blueprintPath)
+void TerrariumEditor::loadBlueprint(const std::string& blueprintPath)
 {
     try
     {
@@ -19,8 +18,8 @@ void loadTerrariumBlueprint(TerrariumBlueprint& blueprint,
         blueprint.spriteSheetPath = blueprintNode["sprite_sheet"].as<std::string>();
         blueprint.dirtTexturePath = blueprintNode["dirt_texture"].as<std::string>();
         blueprint.dirtColor = sf::Color(blueprintNode["dirt_color"][0].as<int>(),
-                                     blueprintNode["dirt_color"][1].as<int>(),
-                                     blueprintNode["dirt_color"][2].as<int>());
+                                        blueprintNode["dirt_color"][1].as<int>(),
+                                        blueprintNode["dirt_color"][2].as<int>());
 
         YAML::const_iterator itr = blueprintNode["initial_entities"].begin();
         YAML::const_iterator end = blueprintNode["initial_entities"].end();
@@ -38,7 +37,7 @@ void loadTerrariumBlueprint(TerrariumBlueprint& blueprint,
         std::cout << e.what() << std::endl;
         std::cout << "Starting editor with basic values." << std::endl;
 
-        TerrariumBlueprint defaultBlueprint;
+        Blueprint defaultBlueprint;
         defaultBlueprint.width = 20;
         defaultBlueprint.height = 20;
         defaultBlueprint.tileSize = 12;
@@ -50,8 +49,7 @@ void loadTerrariumBlueprint(TerrariumBlueprint& blueprint,
     }
 }
 
-void saveTerrariumBlueprint(TerrariumBlueprint& blueprint,
-                            const std::string& blueprintName)
+void TerrariumEditor::saveBlueprint(const std::string& blueprintName)
 {
     std::ofstream savefile;
     savefile.open("../assets/yaml/terrariums/" + blueprintName + ".yaml");
@@ -87,18 +85,16 @@ void saveTerrariumBlueprint(TerrariumBlueprint& blueprint,
         if (pos.x >= 0 && pos.x < blueprint.width &&
             pos.y >= 0 && pos.y < blueprint.height)
         {
-
-
-        out << YAML::Flow << YAML::BeginMap
-            << YAML::Key << "type"
-            << YAML::Value << EntityTypeToNameMap.at(itr->second)
-            << YAML::Key << "pos"
-            << YAML::Value
-                << YAML::Flow << YAML::BeginSeq
-                << pos.x
-                << pos.y
-                << YAML::EndSeq
-            << YAML::EndMap;
+            out << YAML::Flow << YAML::BeginMap
+                << YAML::Key << "type"
+                << YAML::Value << EntityTypeToNameMap.at(itr->second)
+                << YAML::Key << "pos"
+                << YAML::Value
+                    << YAML::Flow << YAML::BeginSeq
+                    << pos.x
+                    << pos.y
+                    << YAML::EndSeq
+                << YAML::EndMap;
         }
     }
 
@@ -108,14 +104,12 @@ void saveTerrariumBlueprint(TerrariumBlueprint& blueprint,
     savefile.close();
 }
 
-void loadRenderComponents(std::unordered_map<int, CRender>& renderComponents,
-                          const std::string& renderComponentsPath)
+void TerrariumEditor::loadRenderComponents(const std::string& renderComponentsPath)
 {
     try
     {
         YAML::Node entitiesNode = YAML::LoadFile((std::string)ROOT_DIR +
                                                  renderComponentsPath);
-
         for (YAML::const_iterator itr = entitiesNode.begin();
              itr != entitiesNode.end(); ++itr)
         {
@@ -135,8 +129,7 @@ void loadRenderComponents(std::unordered_map<int, CRender>& renderComponents,
     }
 }
 
-void addCursorToSpriteMap(SpriteMap& spriteMap, CursorInfo& cursor,
-                          std::unordered_map<int, CRender>& renderComponents)
+void TerrariumEditor::addCursorToSpriteMap()
 {
     Vec2i pos = cursor.position;
     CRender& render = renderComponents.at((int)cursor.type);
@@ -150,8 +143,7 @@ void addCursorToSpriteMap(SpriteMap& spriteMap, CursorInfo& cursor,
     spriteMap.addSprite(pos, Vec2i(11, 11), sf::Color::White);
 }
 
-void addEntitiesToSpriteMap(SpriteMap& spriteMap, TerrariumBlueprint& blueprint,
-                            CursorInfo& cursor, std::unordered_map<int, CRender>& renderComponents)
+void TerrariumEditor::addEntitiesToSpriteMap()
 {
     for (auto itr = blueprint.entities.begin();
          itr != blueprint.entities.end(); ++itr)
@@ -171,20 +163,45 @@ void addEntitiesToSpriteMap(SpriteMap& spriteMap, TerrariumBlueprint& blueprint,
     }
 }
 
-void resizeEditor(Vec2i delta, sf::RenderWindow& window,
-                  TerrariumBlueprint& blueprint, Background& background)
+void resizeEditor(Vec2i delta, TerrariumEditor& editor, sf::RenderWindow& window)
 {
-    blueprint.width += delta.x;
-    blueprint.height += delta.y;
+    editor.blueprint.width += delta.x;
+    editor.blueprint.height += delta.y;
 
-    int winW = blueprint.width * blueprint.tileSize;
-    int winH = blueprint.height * blueprint.tileSize;
+    int winW = editor.blueprint.width * editor.blueprint.tileSize;
+    int winH = editor.blueprint.height * editor.blueprint.tileSize;
 
-    background.setSize(winW, winH);
+    editor.background.setSize(winW, winH);
 
     sf::FloatRect visibleArea(0, 0, winW, winH);
     window.setView(sf::View(visibleArea));
     window.setSize(sf::Vector2u(winW, winH));
+}
+
+TerrariumEditor::TerrariumEditor(const std::string& blueprintPath, const std::string& entityBlueprintsPath)
+{
+    loadBlueprint(blueprintPath);
+    loadRenderComponents(entityBlueprintsPath);
+    int winW = blueprint.width * blueprint.tileSize;
+    int winH = blueprint.height * blueprint.tileSize;
+    background.init(winW, winH, blueprint.dirtTexturePath, blueprint.dirtColor);
+    spriteMap.init(blueprint.tileSize, blueprint.spriteSheetPath);
+
+    cursor.type = (EntityType)3;
+    cursor.resizingWindow = false;
+}
+
+void TerrariumEditor::updateSpriteMap()
+{
+    spriteMap.clearSprites();
+    addEntitiesToSpriteMap();
+    addCursorToSpriteMap();
+}
+
+void TerrariumEditor::drawBlueprint(sf::RenderWindow& window)
+{
+    window.draw(background);
+    window.draw(spriteMap);
 }
 
 void runTerrariumBlueprintEditor(std::string blueprintPath)
@@ -192,29 +209,20 @@ void runTerrariumBlueprintEditor(std::string blueprintPath)
     if (blueprintPath == "NOPATH")
         blueprintPath = DEFAULT_TERRARIUM_BLUEPRINT_PATH;
 
-    TerrariumBlueprint blueprint;
-    loadTerrariumBlueprint(blueprint, blueprintPath);
+    TerrariumEditor editor(blueprintPath, ENTITY_BLUEPRINTS_PATH);
 
-    std::unordered_map<int, CRender> renderComponents;
-    loadRenderComponents(renderComponents, ENTITY_BLUEPRINTS_PATH);
+    WindowState windowState = WindowState::idle; 
 
-
-    int winW = blueprint.width * blueprint.tileSize;
-    int winH = blueprint.height * blueprint.tileSize;
+    int winW = editor.blueprint.width * editor.blueprint.tileSize;
+    int winH = editor.blueprint.height * editor.blueprint.tileSize;
     sf::RenderWindow window(sf::VideoMode(winW, winH, 32),
                             "Terra - Editor",
                             sf::Style::Close);
     window.setMouseCursorVisible(false);
 
-    CursorInfo cursor;
-    cursor.type = (EntityType)3;
     sf::Vector2i pos = sf::Mouse::getPosition(window);
-    cursor.position = Vec2i(pos.x / blueprint.tileSize,
-                            pos.y / blueprint.tileSize);
-    cursor.resizingWindow = false;
-
-    Background background(winW, winH, blueprint.dirtTexturePath, blueprint.dirtColor);
-    SpriteMap spriteMap(blueprint.tileSize, blueprint.spriteSheetPath);
+    editor.cursor.position = Vec2i(pos.x / editor.blueprint.tileSize,
+                                   pos.y / editor.blueprint.tileSize);
 
     sf::Event event;
     
@@ -229,65 +237,65 @@ void runTerrariumBlueprintEditor(std::string blueprintPath)
 
             if(event.type == sf::Event::MouseMoved)
             {
-                Vec2i newPosition(event.mouseMove.x / blueprint.tileSize,
-                                  event.mouseMove.y / blueprint.tileSize);
+                Vec2i newPosition(event.mouseMove.x / editor.blueprint.tileSize,
+                                  event.mouseMove.y / editor.blueprint.tileSize);
 
-                if (cursor.resizingWindow)
+                if (editor.cursor.resizingWindow)
                 {
-                    Vec2i delta = newPosition - cursor.position;
-                    resizeEditor(delta, window, blueprint, background);
-                    winW = blueprint.width * blueprint.tileSize;
-                    winH = blueprint.height * blueprint.tileSize;
+                    Vec2i delta = newPosition - editor.cursor.position;
+                    resizeEditor(delta, editor, window);
+                    winW = editor.blueprint.width * editor.blueprint.tileSize;
+                    winH = editor.blueprint.height * editor.blueprint.tileSize;
                 }
 
-                if (!cursor.resizingWindow &&
+                if (!editor.cursor.resizingWindow &&
                     sf::Mouse::isButtonPressed(sf::Mouse::Left))
                 {
-                    blueprint.entities[cursor.position] = cursor.type;
+                    editor.blueprint.entities[editor.cursor.position] = editor.cursor.type;
                 }
 
-                if (!cursor.resizingWindow &&
+                if (!editor.cursor.resizingWindow &&
                     sf::Mouse::isButtonPressed(sf::Mouse::Right))
                 {
-                    blueprint.entities.erase(cursor.position);
+                    editor.blueprint.entities.erase(editor.cursor.position);
                 }
 
-                cursor.position = newPosition;
+                editor.cursor.position = newPosition;
             }
 
             if(event.type == sf::Event::MouseWheelMoved)
             {
-                int typeInt = (int)cursor.type;
+                int typeInt = (int)editor.cursor.type;
                 typeInt = clamp(typeInt + event.mouseWheel.delta,
                                 3, (int)G_EntityNameTypeMap.size() - 1);
-                cursor.type = (EntityType)typeInt;
+                editor.cursor.type = (EntityType)typeInt;
             }
 
             if (event.type == sf::Event::MouseButtonPressed)
             {
                 if (event.mouseButton.button == sf::Mouse::Left &&
                     sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) &&
-                    cursor.resizingWindow == false)
+                    editor.cursor.resizingWindow == false)
                 {
-                    cursor.resizingWindow = true;
+                    editor.cursor.resizingWindow = true;
                 }
 
-                if (!cursor.resizingWindow &&
+                if (!editor.cursor.resizingWindow &&
                     sf::Mouse::isButtonPressed(sf::Mouse::Left))
                 {
-                    blueprint.entities[cursor.position] = cursor.type;
+                    editor.blueprint.entities[editor.cursor.position] = editor.cursor.type;
                 }
 
-                if (!cursor.resizingWindow &&
+                if (!editor.cursor.resizingWindow &&
                     sf::Mouse::isButtonPressed(sf::Mouse::Right))
                 {
-                    blueprint.entities.erase(cursor.position);
+                    editor.blueprint.entities.erase(editor.cursor.position);
                 }
             }
 
             if (event.type == sf::Event::MouseButtonReleased)
             {
-                cursor.resizingWindow = false;
+                editor.cursor.resizingWindow = false;
             }
 
             if (event.type == sf::Event::KeyPressed)
@@ -297,16 +305,13 @@ void runTerrariumBlueprintEditor(std::string blueprintPath)
                     std::string blueprintName;
                     getInput(blueprintName);
 
-                    saveTerrariumBlueprint(blueprint, blueprintName);
+                    editor.saveBlueprint(blueprintName);
                 }
             }
         
-            spriteMap.clearSprites();
-            addCursorToSpriteMap(spriteMap, cursor, renderComponents);
-            addEntitiesToSpriteMap(spriteMap, blueprint, cursor, renderComponents);
+            editor.updateSpriteMap();
+            editor.drawBlueprint(window);
 
-            window.draw(background);
-            window.draw(spriteMap);
             window.display();
         }
         sf::sleep(sf::microseconds(100));

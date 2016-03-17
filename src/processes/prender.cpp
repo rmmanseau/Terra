@@ -3,15 +3,15 @@
 PRender::PRender(sf::RenderWindow& window, int tileSize, const std::string& spriteSheetPath,
                  const std::string& dirtTexturePath, sf::Color dirtColor)
     : rWindow(window)
-    , sprites(tileSize, spriteSheetPath)
-    , background(window.getSize().x, window.getSize().y, dirtTexturePath, dirtColor)
-    , timeBetweenDraws((1./120) * 1000000)
+    , timeBetweenDraws((1./60) * 1000000)
     , timeSinceLastDraw(0)
     , draw(false)
     , drawThreadRunning(true)
     , drawThreadFinished(false)
     , drawThread(&PRender::drawFunc, this)
 {
+    sprites.init(tileSize, spriteSheetPath);
+    background.init(window.getSize().x, window.getSize().y, dirtTexturePath, dirtColor);
     window.setActive(false);
 }
 
@@ -42,6 +42,7 @@ void PRender::unregisterEntity(EntityId id)
                 nodes.end());
 }
 
+// Seperate Thread
 void PRender::drawFunc()
 {
     rWindow.setActive(true);
@@ -75,6 +76,8 @@ void PRender::update(int timeStep)
     timeSinceLastDraw += timeStep;
     if (timeSinceLastDraw >= timeBetweenDraws)
     {
+        std::cout << "this is a draw cycle" << std::endl;
+
         timeSinceLastDraw = 0;
 
         std::lock_guard<std::mutex> guard(drawMutex);

@@ -10,13 +10,14 @@ void SpriteMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
     target.draw(vertices, states);
 }
 
-SpriteMap::SpriteMap(int _tileSize, const std::string& fileName)
+SpriteMap::SpriteMap() {}
+void SpriteMap::init(int _tileSize, const std::string& fileName)
 {
     if (!spriteSheet.loadFromFile(ROOT_DIR + fileName))
         throw std::invalid_argument(fileName + " could not be found.");
 
     tileSize = _tileSize;
-    vertices.setPrimitiveType(sf::Quads);
+    vertices.setPrimitiveType(sf::Quads);    
 }
 
 void SpriteMap::addSprite(Vec2f pos, Vec2i tex, const sf::Color& color)
