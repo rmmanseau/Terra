@@ -17,16 +17,16 @@
 #include "spritemap.h"
 #include "crender.h"
 
-enum class WindowState
-{
-    idle,
-    resizing,
-    drawing,
-    erasing
-};
-
 class TerrariumEditor
 {
+    enum class State
+    {
+        idle,
+        resizing,
+        drawing,
+        erasing
+    };
+
     struct Blueprint
     {
         int width;
@@ -40,18 +40,25 @@ class TerrariumEditor
 
     struct Cursor
     {
+        Vec2i previousPosition;
         Vec2i position;
         EntityType type;
         bool resizingWindow;
     };
 
+    State state;
     std::unordered_map<int, CRender> renderComponents;
-    
     SpriteMap spriteMap;
 
     void addCursorToSpriteMap();
     void addEntitiesToSpriteMap();
     
+    void changeCursorType(int change);
+    void setState(State newState);
+    void placeEntityAtCursor();
+    void removeEntityAtCursor();
+
+
 public:
     
     Blueprint blueprint;
@@ -66,6 +73,10 @@ public:
 
     void updateSpriteMap();
     void drawBlueprint(sf::RenderWindow& window);
+    void resize(Vec2i delta, sf::RenderWindow& window);
+
+
+    void update(sf::RenderWindow& window, sf::Event& event);
 };
 
 void runTerrariumBlueprintEditor(std::string blueprintPath = "NOPATH");

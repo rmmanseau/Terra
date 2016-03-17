@@ -82,6 +82,25 @@ inline Vec2<T> operator *= (Vec2<T> &u, S s)
     return u;
 }
 
+template <typename T, typename S>
+inline Vec2<T> operator / (Vec2<T> u, S s)
+{
+    Vec2<T> result;
+    result.x = u.x / s;
+    result.y = u.y / s;
+
+    return result;
+}
+
+template <typename T, typename S>
+inline Vec2<T> operator /= (Vec2<T> &u, S s)
+{
+    u.x /= s;
+    u.y /= s;
+
+    return u;
+}
+
 template <typename T>
 inline bool operator < (const Vec2<T> &u, const Vec2<T> &v)
 {

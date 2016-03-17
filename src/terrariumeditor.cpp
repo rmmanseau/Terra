@@ -6,6 +6,20 @@
 #define DEFAULT_TERRARIUM_BLUEPRINT_PATH "assets/yaml/terrariums/default.yaml"
 #define ENTITY_BLUEPRINTS_PATH "assets/yaml/entities.yaml"
 
+TerrariumEditor::TerrariumEditor(const std::string& blueprintPath, const std::string& entityBlueprintsPath)
+{
+    loadBlueprint(blueprintPath);
+    loadRenderComponents(entityBlueprintsPath);
+    int winW = blueprint.width * blueprint.tileSize;
+    int winH = blueprint.height * blueprint.tileSize;
+    background.init(winW, winH, blueprint.dirtTexturePath, blueprint.dirtColor);
+    spriteMap.init(blueprint.tileSize, blueprint.spriteSheetPath);
+    state = State::idle;
+
+    cursor.type = (EntityType)3;
+    cursor.resizingWindow = false;
+}
+
 void TerrariumEditor::loadBlueprint(const std::string& blueprintPath)
 {
     try
@@ -163,32 +177,19 @@ void TerrariumEditor::addEntitiesToSpriteMap()
     }
 }
 
-void resizeEditor(Vec2i delta, TerrariumEditor& editor, sf::RenderWindow& window)
+void TerrariumEditor::resize(Vec2i delta, sf::RenderWindow& window)
 {
-    editor.blueprint.width += delta.x;
-    editor.blueprint.height += delta.y;
+    blueprint.width += delta.x;
+    blueprint.height += delta.y;
 
-    int winW = editor.blueprint.width * editor.blueprint.tileSize;
-    int winH = editor.blueprint.height * editor.blueprint.tileSize;
+    int winW = blueprint.width * blueprint.tileSize;
+    int winH = blueprint.height * blueprint.tileSize;
 
-    editor.background.setSize(winW, winH);
+    background.setSize(winW, winH);
 
     sf::FloatRect visibleArea(0, 0, winW, winH);
     window.setView(sf::View(visibleArea));
     window.setSize(sf::Vector2u(winW, winH));
-}
-
-TerrariumEditor::TerrariumEditor(const std::string& blueprintPath, const std::string& entityBlueprintsPath)
-{
-    loadBlueprint(blueprintPath);
-    loadRenderComponents(entityBlueprintsPath);
-    int winW = blueprint.width * blueprint.tileSize;
-    int winH = blueprint.height * blueprint.tileSize;
-    background.init(winW, winH, blueprint.dirtTexturePath, blueprint.dirtColor);
-    spriteMap.init(blueprint.tileSize, blueprint.spriteSheetPath);
-
-    cursor.type = (EntityType)3;
-    cursor.resizingWindow = false;
 }
 
 void TerrariumEditor::updateSpriteMap()
@@ -204,14 +205,140 @@ void TerrariumEditor::drawBlueprint(sf::RenderWindow& window)
     window.draw(spriteMap);
 }
 
+void TerrariumEditor::changeCursorType(int change)
+{
+    int type = clamp((int)cursor.type + change,
+                     3,
+                     (int)G_EntityNameTypeMap.size() - 1);
+    
+    cursor.type = (EntityType)type;
+}
+
+void TerrariumEditor::setState(State newState)
+{
+    state = newState;
+}
+
+void TerrariumEditor::placeEntityAtCursor()
+{
+    blueprint.entities[cursor.position] = cursor.type;
+}
+
+void TerrariumEditor::removeEntityAtCursor()
+{
+    blueprint.entities.erase(cursor.position);
+}
+
+void TerrariumEditor::update(sf::RenderWindow& window, sf::Event& event)
+{
+    if (event.type == sf::Event::Closed)
+    {
+        window.close();
+    }
+
+    sf::Vector2i rawPos = sf::Mouse::getPosition(window);
+    cursor.previousPosition = cursor.position;
+    cursor.position = Vec2i(rawPos.x, rawPos.y) / blueprint.tileSize;
+
+    switch (state)
+    {
+        case State::idle:
+        {
+            if (event.type == sf::Event::MouseWheelMoved)
+            {
+                changeCursorType(event.mouseWheel.delta);
+            }
+
+            if (event.type == sf::Event::MouseButtonPressed)
+            {
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Left) &&
+                    sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+                {
+                    setState(State::resizing);
+                }
+                else if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+                {
+                    placeEntityAtCursor();
+                    setState(State::drawing);
+                }
+                else if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+                {
+                    removeEntityAtCursor();
+                    setState(State::erasing);
+                }
+            }
+
+            if (event.type == sf::Event::KeyPressed)
+            {
+                if (event.key.code == sf::Keyboard::S)
+                {
+                    std::string blueprintName;
+                    getInput(blueprintName);
+
+                    saveBlueprint(blueprintName);
+                }
+            }
+
+        } break;
+
+        case State::resizing:
+        {
+            if (event.type == sf::Event::MouseButtonReleased)
+            {
+                setState(State::idle);
+            }
+
+            if (event.type == sf::Event::MouseMoved)
+            {
+                Vec2i delta = cursor.position - cursor.previousPosition;
+                resize(delta, window);
+            }
+
+        } break;
+
+        case State::drawing:
+        {
+            if (event.type == sf::Event::MouseButtonReleased)
+            {
+                setState(State::idle);
+            }
+
+            if (event.type == sf::Event::MouseMoved)
+            {
+                placeEntityAtCursor();
+            }
+
+        } break;
+
+        case State::erasing:
+        {
+            if (event.type == sf::Event::MouseButtonReleased)
+            {
+                setState(State::idle);
+            }
+
+            if (event.type == sf::Event::MouseMoved)
+            {
+                removeEntityAtCursor();
+            }
+
+        } break;
+    }
+    
+    updateSpriteMap();
+    drawBlueprint(window);
+
+    window.display();  
+
+    std::cout << (int)state << std::endl;
+}
+
 void runTerrariumBlueprintEditor(std::string blueprintPath)
 {
     if (blueprintPath == "NOPATH")
         blueprintPath = DEFAULT_TERRARIUM_BLUEPRINT_PATH;
 
     TerrariumEditor editor(blueprintPath, ENTITY_BLUEPRINTS_PATH);
-
-    WindowState windowState = WindowState::idle; 
 
     int winW = editor.blueprint.width * editor.blueprint.tileSize;
     int winH = editor.blueprint.height * editor.blueprint.tileSize;
@@ -230,90 +357,9 @@ void runTerrariumBlueprintEditor(std::string blueprintPath)
     {
         while (window.pollEvent(event))
         {
-            if(event.type == sf::Event::Closed)
-            {
-                window.close();
-            }
-
-            if(event.type == sf::Event::MouseMoved)
-            {
-                Vec2i newPosition(event.mouseMove.x / editor.blueprint.tileSize,
-                                  event.mouseMove.y / editor.blueprint.tileSize);
-
-                if (editor.cursor.resizingWindow)
-                {
-                    Vec2i delta = newPosition - editor.cursor.position;
-                    resizeEditor(delta, editor, window);
-                    winW = editor.blueprint.width * editor.blueprint.tileSize;
-                    winH = editor.blueprint.height * editor.blueprint.tileSize;
-                }
-
-                if (!editor.cursor.resizingWindow &&
-                    sf::Mouse::isButtonPressed(sf::Mouse::Left))
-                {
-                    editor.blueprint.entities[editor.cursor.position] = editor.cursor.type;
-                }
-
-                if (!editor.cursor.resizingWindow &&
-                    sf::Mouse::isButtonPressed(sf::Mouse::Right))
-                {
-                    editor.blueprint.entities.erase(editor.cursor.position);
-                }
-
-                editor.cursor.position = newPosition;
-            }
-
-            if(event.type == sf::Event::MouseWheelMoved)
-            {
-                int typeInt = (int)editor.cursor.type;
-                typeInt = clamp(typeInt + event.mouseWheel.delta,
-                                3, (int)G_EntityNameTypeMap.size() - 1);
-                editor.cursor.type = (EntityType)typeInt;
-            }
-
-            if (event.type == sf::Event::MouseButtonPressed)
-            {
-                if (event.mouseButton.button == sf::Mouse::Left &&
-                    sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) &&
-                    editor.cursor.resizingWindow == false)
-                {
-                    editor.cursor.resizingWindow = true;
-                }
-
-                if (!editor.cursor.resizingWindow &&
-                    sf::Mouse::isButtonPressed(sf::Mouse::Left))
-                {
-                    editor.blueprint.entities[editor.cursor.position] = editor.cursor.type;
-                }
-
-                if (!editor.cursor.resizingWindow &&
-                    sf::Mouse::isButtonPressed(sf::Mouse::Right))
-                {
-                    editor.blueprint.entities.erase(editor.cursor.position);
-                }
-            }
-
-            if (event.type == sf::Event::MouseButtonReleased)
-            {
-                editor.cursor.resizingWindow = false;
-            }
-
-            if (event.type == sf::Event::KeyPressed)
-            {
-                if (event.key.code == sf::Keyboard::S)
-                {
-                    std::string blueprintName;
-                    getInput(blueprintName);
-
-                    editor.saveBlueprint(blueprintName);
-                }
-            }
-        
-            editor.updateSpriteMap();
-            editor.drawBlueprint(window);
-
-            window.display();
+            editor.update(window, event);
         }
+        
         sf::sleep(sf::microseconds(100));
     }
 }
