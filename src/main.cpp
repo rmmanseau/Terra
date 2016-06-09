@@ -132,9 +132,9 @@ void runTerrarium(std::string terrariumName)
     }
 }
 
-void runTerrariumBlueprintEditor(std::string blueprintPath)
+void runTerrariumBlueprintEditor(std::string blueprintName)
 {
-    TerrariumEditor editor(blueprintPath, G_Paths["entities"]);
+    TerrariumEditor editor(G_Paths["terrariums"] + blueprintName + ".yaml", G_Paths["entities"]);
 
     int winW = editor.blueprint.width * editor.blueprint.tileSize;
     int winH = editor.blueprint.height * editor.blueprint.tileSize;
