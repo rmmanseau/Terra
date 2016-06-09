@@ -17,7 +17,8 @@ TerrariumEditor::TerrariumEditor(const std::string& blueprintPath, const std::st
     state = State::idle;
 
     cursor.type = (EntityType)3;
-    cursor.resizingWindow = false;
+    cursor.locker.xAxisLocked = false;
+    cursor.locker.yAxisLocked = false;
 }
 
 void TerrariumEditor::loadBlueprint(const std::string& blueprintPath)
@@ -229,6 +230,25 @@ void TerrariumEditor::removeEntityAtCursor()
     blueprint.entities.erase(cursor.position);
 }
 
+void TerrariumEditor::lockXAxis()
+{
+    cursor.locker.xAxisLocked = true;
+    cursor.locker.lockPosition = cursor.position;
+}
+
+void TerrariumEditor::lockYAxis()
+{
+    cursor.locker.yAxisLocked = true;
+    cursor.locker.lockPosition = cursor.position;
+}
+
+void TerrariumEditor::unlockAxis()
+{
+    cursor.locker.yAxisLocked = false;
+    cursor.locker.xAxisLocked = false;
+    cursor.locker.lockBias = Vec2i(0, 0);
+}
+
 void TerrariumEditor::update(sf::RenderWindow& window, sf::Event& event)
 {
     if (event.type == sf::Event::Closed)
@@ -236,23 +256,46 @@ void TerrariumEditor::update(sf::RenderWindow& window, sf::Event& event)
         window.close();
     }
 
-    sf::Vector2i rawPos = sf::Mouse::getPosition(window);
+    sf::Vector2i sfmlRawPos = sf::Mouse::getPosition(window);
+    cursor.previousRawPosition = cursor.rawPosition;
+    cursor.rawPosition = Vec2i(sfmlRawPos.x, sfmlRawPos.y);
     cursor.previousPosition = cursor.position;
-    cursor.position = Vec2i(rawPos.x, rawPos.y) / blueprint.tileSize;
+    cursor.position = cursor.rawPosition / blueprint.tileSize;
+
+    if (cursor.locker.xAxisLocked)
+    {
+        cursor.position.y = cursor.locker.lockPosition.y;
+        // sf::Mouse::setPosition(sf::Vector2i(cursor.))
+    }
+    else if (cursor.locker.yAxisLocked)
+    {
+        cursor.position.x = cursor.locker.lockPosition.x;
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)
+        && !(cursor.locker.xAxisLocked || cursor.locker.yAxisLocked))
+    {
+        Vec2i cursorDelta = cursor.rawPosition - cursor.previousRawPosition;
+        cursor.locker.lockBias += cursorDelta;
+
+        if (abs(cursor.locker.lockBias.x) >= 10)
+        {
+            lockXAxis();
+        }
+        else if (abs(cursor.locker.lockBias.y) >= 10)
+        {
+            lockYAxis();
+        }
+    }
 
     switch (state)
     {
         case State::idle:
         {
-            if (event.type == sf::Event::MouseWheelMoved)
-            {
-                changeCursorType(event.mouseWheel.delta);
-            }
-
             if (event.type == sf::Event::MouseButtonPressed)
             {
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Left) &&
-                    sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+                    sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
                 {
                     setState(State::resizing);
                 }
@@ -276,6 +319,23 @@ void TerrariumEditor::update(sf::RenderWindow& window, sf::Event& event)
                     getInput(blueprintName);
 
                     saveBlueprint(blueprintName);
+                }
+                else if (event.key.code == sf::Keyboard::Equal)
+                {
+                    changeCursorType(1);
+                }
+
+                else if (event.key.code == sf::Keyboard::Dash)
+                {
+                    changeCursorType(-1);
+                }
+            }
+
+            if (event.type == sf::Event::KeyReleased)
+            {
+                if (event.key.code = sf::Keyboard::LShift)
+                {
+                    unlockAxis();
                 }
             }
 
@@ -329,8 +389,6 @@ void TerrariumEditor::update(sf::RenderWindow& window, sf::Event& event)
     drawBlueprint(window);
 
     window.display();  
-
-    std::cout << (int)state << std::endl;
 }
 
 void runTerrariumBlueprintEditor(std::string blueprintPath)

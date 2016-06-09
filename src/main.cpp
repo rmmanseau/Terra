@@ -56,7 +56,7 @@ void runTerrarium()
             t.update(timeStep);
             elapsed = sleepClock.restart().asMicroseconds();
 
-            int targetTime = 0;
+            int targetTime = 30000;
             int sleep = clamp(targetTime - elapsed, 0, targetTime);
             
             std::cout << "^^============elapsed: " << elapsed << " sleep: " << sleep << std::endl;

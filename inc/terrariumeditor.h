@@ -38,13 +38,24 @@ class TerrariumEditor
         std::map<Vec2i, EntityType> entities;
     };
 
+    struct CursorLocker
+    {
+        bool xAxisLocked;
+        bool yAxisLocked;
+        Vec2i lockPosition;
+        Vec2i lockBias;
+    };
+    
     struct Cursor
     {
+        Vec2i previousRawPosition;
+        Vec2i rawPosition;
         Vec2i previousPosition;
         Vec2i position;
         EntityType type;
-        bool resizingWindow;
+        CursorLocker locker;
     };
+
 
     State state;
     std::unordered_map<int, CRender> renderComponents;
@@ -57,6 +68,10 @@ class TerrariumEditor
     void setState(State newState);
     void placeEntityAtCursor();
     void removeEntityAtCursor();
+
+    void lockXAxis();
+    void lockYAxis();
+    void unlockAxis();
 
 
 public:
