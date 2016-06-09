@@ -1,0 +1,3 @@
+textures_path: "assets/textures/"
+terrariums_path: "assets/terrariums/"
+entities_conf_path: "assets/entities.yaml"

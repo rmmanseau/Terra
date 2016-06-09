@@ -37,5 +37,5 @@ void PMovement::update(int timeStep)
         }
         node->movement->active = false;
     }
-    std::cout << "PMovement: " << timer.restart().asMicroseconds() << std::endl;
+    std::cout << "PMovement:\t" << timer.restart().asMicroseconds() << std::endl;
 }

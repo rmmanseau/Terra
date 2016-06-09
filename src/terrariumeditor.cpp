@@ -1,10 +1,6 @@
 #include "terrariumeditor.h"
 
 #define ROOT_DIR "../"
-#define SPRITE_SHEET_12_PATH "assets/textures/sprite_sheet_12.png"
-#define DIRT_TEXTURE_PATH "assets/textures/dirt.png"
-#define DEFAULT_TERRARIUM_BLUEPRINT_PATH "assets/yaml/terrariums/default.yaml"
-#define ENTITY_BLUEPRINTS_PATH "assets/yaml/entities.yaml"
 
 TerrariumEditor::TerrariumEditor(const std::string& blueprintPath, const std::string& entityBlueprintsPath)
 {
@@ -56,9 +52,9 @@ void TerrariumEditor::loadBlueprint(const std::string& blueprintPath)
         defaultBlueprint.width = 20;
         defaultBlueprint.height = 20;
         defaultBlueprint.tileSize = 12;
-        defaultBlueprint.spriteSheetPath = SPRITE_SHEET_12_PATH;
-        defaultBlueprint.dirtTexturePath = DIRT_TEXTURE_PATH;
-        defaultBlueprint.dirtColor = sf::Color(143, 97, 45);
+        defaultBlueprint.spriteSheetPath = G_Paths["textures"] + "sprite_sheet_12.png";
+        defaultBlueprint.dirtTexturePath = G_Paths["textures"] + "dirt.png";
+        defaultBlueprint.dirtColor = sf::Color(79, 49, 10);
 
         blueprint = defaultBlueprint;
     }
@@ -67,7 +63,7 @@ void TerrariumEditor::loadBlueprint(const std::string& blueprintPath)
 void TerrariumEditor::saveBlueprint(const std::string& blueprintName)
 {
     std::ofstream savefile;
-    savefile.open("../assets/yaml/terrariums/" + blueprintName + ".yaml");
+    savefile.open(G_Paths["terrariums"] + blueprintName + ".yaml");
 
     std::map<int, std::string> EntityTypeToNameMap;
     for (auto itr = G_EntityNameTypeMap.begin();
@@ -389,35 +385,4 @@ void TerrariumEditor::update(sf::RenderWindow& window, sf::Event& event)
     drawBlueprint(window);
 
     window.display();  
-}
-
-void runTerrariumBlueprintEditor(std::string blueprintPath)
-{
-    if (blueprintPath == "NOPATH")
-        blueprintPath = DEFAULT_TERRARIUM_BLUEPRINT_PATH;
-
-    TerrariumEditor editor(blueprintPath, ENTITY_BLUEPRINTS_PATH);
-
-    int winW = editor.blueprint.width * editor.blueprint.tileSize;
-    int winH = editor.blueprint.height * editor.blueprint.tileSize;
-    sf::RenderWindow window(sf::VideoMode(winW, winH, 32),
-                            "Terra - Editor",
-                            sf::Style::Close);
-    window.setMouseCursorVisible(false);
-
-    sf::Vector2i pos = sf::Mouse::getPosition(window);
-    editor.cursor.position = Vec2i(pos.x / editor.blueprint.tileSize,
-                                   pos.y / editor.blueprint.tileSize);
-
-    sf::Event event;
-    
-    while (window.isOpen())
-    {
-        while (window.pollEvent(event))
-        {
-            editor.update(window, event);
-        }
-        
-        sf::sleep(sf::microseconds(100));
-    }
 }

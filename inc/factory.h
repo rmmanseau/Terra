@@ -1,6 +1,7 @@
 #ifndef FACTORY_H
 #define FACTORY_H
 
+#include "globals.h"
 #include "common.h"
 #include "entity.h"
 #include "component.h"

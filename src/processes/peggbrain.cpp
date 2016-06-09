@@ -40,5 +40,5 @@ void PEggBrain::update(int timeStep)
 
         node->alive->updateEnergy(1);
     }
-    std::cout << "PEggBrain: " << timer.restart().asMicroseconds() << std::endl;
+    std::cout << "PEggBrain:\t" << timer.restart().asMicroseconds() << std::endl;
 }

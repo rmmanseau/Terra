@@ -49,5 +49,5 @@ void PSpawn::update(int timeStep)
         }
         node->spawn->active = false;
     }
-    std::cout << "PSpawn: " << timer.restart().asMicroseconds() << std::endl;
+    std::cout << "PSpawn:\t\t" << timer.restart().asMicroseconds() << std::endl;
 }

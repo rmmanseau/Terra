@@ -45,17 +45,6 @@ Terrarium::Terrarium(YAML::Node config)
     processes.push_back(std::make_shared<PEat>(entities));
     processes.push_back(std::make_shared<PAlive>(china));
     
-
-    // Assemble Initial entities
-    for (int i = 0; i < width*height; ++i)
-    {
-        if ((i+1)%width == 0 || i%width == 0 || i/width == 0 || i/width == (height-1))
-        {
-            EntityType type = G_EntityNameTypeMap[(rand() % 2) ? "Rock" : "Rock2"];
-            china.assembleEntity(type, Vec2i(i%width, i/width));
-        }
-    }
-
     YAML::const_iterator itr = config["initial_entities"].begin();
     YAML::const_iterator end = config["initial_entities"].end();
     for (itr; itr != end; ++itr)
@@ -77,7 +66,7 @@ void Terrarium::update(int timeStep)
     }
     china.update();
     
-    std::cout << "Main Update: " << timer.restart().asMicroseconds() << std::endl;
+    std::cout << "Main Update:\t" << timer.restart().asMicroseconds() << std::endl;
 }
 
 sf::RenderWindow& Terrarium::getWindow()

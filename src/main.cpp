@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include "yaml-cpp/yaml.h"
+#include <boost/filesystem.hpp>
 #include <X11/Xlib.h>
 
 #include <cstdlib>
@@ -12,11 +13,21 @@
 #include "terrarium.h"
 #include "terrariumeditor.h"
 
-#define ROOT_DIR "../"
+const std::string ROOT_DIR = "../";
+// #define ROOT_DIR "../"
+
+void loadGlobalSettings()
+{
+    YAML::Node globalConfig = YAML::LoadFile(ROOT_DIR + "assets/global_conf.yaml");
+
+    G_Paths.insert(std::make_pair("textures", globalConfig["textures_path"].as<std::string>()));
+    G_Paths.insert(std::make_pair("entities", globalConfig["entities_conf_path"].as<std::string>()));
+    G_Paths.insert(std::make_pair("terrariums", globalConfig["terrariums_path"].as<std::string>()));
+}
 
 void populateEntityNameTypeMap()
 {
-    YAML::Node entitySheet = YAML::LoadFile((std::string)ROOT_DIR + "assets/yaml/entities.yaml");
+    YAML::Node entitySheet = YAML::LoadFile(ROOT_DIR + G_Paths["entities"]);
 
     int i = G_EntityNameTypeMap.size();
     for (YAML::const_iterator itr = entitySheet.begin();
@@ -29,7 +40,45 @@ void populateEntityNameTypeMap()
     }
 }
 
-void runTerrarium()
+void listTerrariums()
+{
+    using namespace boost::filesystem;
+    path terrariumDir(ROOT_DIR + G_Paths["terrariums"]);
+
+    try
+    {
+        if (exists(terrariumDir) && is_directory(terrariumDir))
+        {            
+            std::vector<path> terrariums;
+            copy(directory_iterator(terrariumDir), directory_iterator(), back_inserter(terrariums));
+            sort(terrariums.begin(), terrariums.end());
+
+            for (auto itr = terrariums.begin(); itr != terrariums.end(); ++itr)
+            {
+                std::cout << itr->stem().string() << std::endl;
+            }
+        }
+    }
+    catch(const filesystem_error& fe)
+    {
+        std::cout << fe.what() << std::endl;
+    }
+}
+
+void printTerraDetails()
+{
+    std::cout << "\nTerra lets you create and watch the interactions between creatures in a virtual terrarium.\n\n"
+              << "Usage:\n\n"
+              << "./terra <terrarium>\n"
+              << "./terra --editor <terrarium>\n\n"
+              << "Existing terrariums:\n\n";
+
+    listTerrariums();
+
+    std::cout << std::endl;
+}
+
+void runTerrarium(std::string terrariumName)
 {
     XInitThreads();
 
@@ -37,8 +86,10 @@ void runTerrarium()
     {
         srand(time(0));
 
-        YAML::Node terraConfig = YAML::LoadFile((std::string)ROOT_DIR +
-                                    "assets/yaml/terrariums/coolcave.yaml");
+        std::string terrariumPath
+            = ROOT_DIR + G_Paths["terrariums"] + terrariumName + ".yaml";
+
+        YAML::Node terraConfig = YAML::LoadFile(terrariumPath);
 
         Terrarium t(terraConfig);
 
@@ -59,7 +110,9 @@ void runTerrarium()
             int targetTime = 30000;
             int sleep = clamp(targetTime - elapsed, 0, targetTime);
             
-            std::cout << "^^============elapsed: " << elapsed << " sleep: " << sleep << std::endl;
+            std::cout << "-\n"
+                      << "Elapsed:\t" << elapsed << "\n"
+                      << "Sleep:\t\t" << sleep   << "\n\n";
 
             sf::sleep(sf::microseconds(sleep));
 
@@ -69,7 +122,9 @@ void runTerrarium()
     }
     catch (YAML::Exception &e)
     {
-        std::cout << e.what() << std::endl;
+        std::cout << "\nInvalid map. Choose from the existing maps:\n" << std::endl;
+        listTerrariums();
+        std::cout << "\nYaml error message:\n" << e.what() << "\n" << std::endl;
     }
     catch (...)
     {
@@ -77,14 +132,44 @@ void runTerrarium()
     }
 }
 
+void runTerrariumBlueprintEditor(std::string blueprintPath)
+{
+    TerrariumEditor editor(blueprintPath, G_Paths["entities"]);
+
+    int winW = editor.blueprint.width * editor.blueprint.tileSize;
+    int winH = editor.blueprint.height * editor.blueprint.tileSize;
+    sf::RenderWindow window(sf::VideoMode(winW, winH, 32),
+                            "Terra - Editor",
+                            sf::Style::Close);
+    window.setMouseCursorVisible(false);
+
+    sf::Vector2i pos = sf::Mouse::getPosition(window);
+    editor.cursor.position = Vec2i(pos.x / editor.blueprint.tileSize,
+                                   pos.y / editor.blueprint.tileSize);
+
+    sf::Event event;
+    
+    while (window.isOpen())
+    {
+        while (window.pollEvent(event))
+        {
+            editor.update(window, event);
+        }
+        
+        sf::sleep(sf::microseconds(100));
+    }
+}
+
 int main(int argc, char* argv[])
 {
     std::vector<std::string> args(argv, argv+argc);
+
+    loadGlobalSettings();
     populateEntityNameTypeMap();
-    
+
     if (argc == 1)
     {
-        runTerrarium();
+        printTerraDetails();
     }
     else
     {
@@ -93,7 +178,11 @@ int main(int argc, char* argv[])
             if (argc > 2)
                 runTerrariumBlueprintEditor(args[2]);
             else
-                runTerrariumBlueprintEditor();
+                runTerrariumBlueprintEditor("default");
+        }
+        else
+        {
+            runTerrarium(args[1]);
         }
     }
 }

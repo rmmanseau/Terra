@@ -39,5 +39,5 @@ void PAlive::update(int timeStep)
             rFactory.disassembleEntity(node->id);
         }
     }
-    std::cout << "PAlive: " << timer.restart().asMicroseconds() << std::endl;
+    std::cout << "PAlive:\t\t" << timer.restart().asMicroseconds() << std::endl;
 }

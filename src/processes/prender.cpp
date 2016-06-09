@@ -76,7 +76,7 @@ void PRender::update(int timeStep)
     timeSinceLastDraw += timeStep;
     if (timeSinceLastDraw >= timeBetweenDraws)
     {
-        std::cout << "this is a draw cycle" << std::endl;
+        std::cout << "*";
 
         timeSinceLastDraw = 0;
 
@@ -97,5 +97,5 @@ void PRender::update(int timeStep)
 
         draw = true;
     }
-    std::cout << "PRender: " << timer.restart().asMicroseconds() << std::endl;
+    std::cout << "PRender:\t" << timer.restart().asMicroseconds() << std::endl;
 }

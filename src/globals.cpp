@@ -19,6 +19,8 @@ std::unordered_map<std::string, EntityType> G_EntityNameTypeMap =
     {"Empty", 2}
 };
 
+std::unordered_map<std::string, std::string> G_Paths;
+
 const EntityType G_EType_Null = 0;
 const EntityType G_EType_Reserved = 1;
 const EntityType G_EType_Empty = 2;

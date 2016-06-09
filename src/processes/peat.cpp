@@ -44,5 +44,5 @@ void PEat::update(int timeStep)
         }
         node->eat->active = false;
     }
-    std::cout << "PEat: " << timer.restart().asMicroseconds() << std::endl;
+    std::cout << "PEat:\t\t" << timer.restart().asMicroseconds() << std::endl;
  }

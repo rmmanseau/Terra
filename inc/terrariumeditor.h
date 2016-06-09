@@ -94,6 +94,4 @@ public:
     void update(sf::RenderWindow& window, sf::Event& event);
 };
 
-void runTerrariumBlueprintEditor(std::string blueprintPath = "NOPATH");
-
 #endif // TERRARIUMEDITOR_H

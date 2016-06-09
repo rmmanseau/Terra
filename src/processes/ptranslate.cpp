@@ -62,5 +62,5 @@ void PTranslate::update(int timeStep)
             node->position->pos = newPos;
         }
     }
-    std::cout << "PTranslate: " << timer.restart().asMicroseconds() << std::endl;
+    std::cout << "PTranslate:\t" << timer.restart().asMicroseconds() << std::endl;
 }

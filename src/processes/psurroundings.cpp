@@ -49,5 +49,5 @@ void PSurroundings::update(int timeStep)
             node->surroundings->setInfo(i, id, type);
         }
     }
-    std::cout << "PSurroundings: " << timer.restart().asMicroseconds() << std::endl;
+    std::cout << "PSurroundings:\t" << timer.restart().asMicroseconds() << std::endl;
 }

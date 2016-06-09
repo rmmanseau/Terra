@@ -57,5 +57,5 @@ void PDumbBrain::update(int timeStep)
 
         node->alive->updateEnergy(-1);
     }
-    std::cout << "PDumbBrain: " << timer.restart().asMicroseconds() << std::endl;
+    std::cout << "PDumbBrain:\t" << timer.restart().asMicroseconds() << std::endl;
 }

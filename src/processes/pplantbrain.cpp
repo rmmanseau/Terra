@@ -56,5 +56,5 @@ void PPlantBrain::update(int timeStep)
                 node->alive->updateEnergy(-2);   
         }
     }
-    std::cout << "PPlantBrain: " << timer.restart().asMicroseconds() << std::endl;
+    std::cout << "PPlantBrain:\t" << timer.restart().asMicroseconds() << std::endl;
 }
