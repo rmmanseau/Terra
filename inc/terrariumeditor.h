@@ -54,6 +54,7 @@ class TerrariumEditor
         Vec2i position;
         EntityType type;
         CursorLocker locker;
+        int size;
     };
 
 
@@ -65,7 +66,9 @@ class TerrariumEditor
     void addEntitiesToSpriteMap();
     
     void changeCursorType(int change);
+    void changeCursorSize(int change);
     void setState(State newState);
+    void placeEntityAt(Vec2i);
     void placeEntityAtCursor();
     void removeEntityAtCursor();
 

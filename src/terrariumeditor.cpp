@@ -1,6 +1,6 @@
 #include "terrariumeditor.h"
 
-#define ROOT_DIR "../"
+const std::string ROOT_DIR = "../";
 
 TerrariumEditor::TerrariumEditor(const std::string& blueprintPath, const std::string& entityBlueprintsPath)
 {
@@ -15,13 +15,14 @@ TerrariumEditor::TerrariumEditor(const std::string& blueprintPath, const std::st
     cursor.type = (EntityType)3;
     cursor.locker.xAxisLocked = false;
     cursor.locker.yAxisLocked = false;
+    cursor.size = 2;
 }
 
 void TerrariumEditor::loadBlueprint(const std::string& blueprintPath)
 {
     try
     {
-        YAML::Node blueprintNode = YAML::LoadFile((std::string)ROOT_DIR + blueprintPath);
+        YAML::Node blueprintNode = YAML::LoadFile(ROOT_DIR + blueprintPath);
 
         blueprint.width = blueprintNode["width"].as<int>();
         blueprint.height = blueprintNode["height"].as<int>();
@@ -63,7 +64,9 @@ void TerrariumEditor::loadBlueprint(const std::string& blueprintPath)
 void TerrariumEditor::saveBlueprint(const std::string& blueprintName)
 {
     std::ofstream savefile;
-    savefile.open(G_Paths["terrariums"] + blueprintName + ".yaml");
+    std::string path = ROOT_DIR + G_Paths["terrariums"] + blueprintName + ".yaml";
+    savefile.open(path);
+    std::cout << path << std::endl;
 
     std::map<int, std::string> EntityTypeToNameMap;
     for (auto itr = G_EntityNameTypeMap.begin();
@@ -113,13 +116,15 @@ void TerrariumEditor::saveBlueprint(const std::string& blueprintName)
 
     savefile << out.c_str() << std::endl;
     savefile.close();
+
+    std::cout << "Terrarium saved!" << std::endl;
 }
 
 void TerrariumEditor::loadRenderComponents(const std::string& renderComponentsPath)
 {
     try
     {
-        YAML::Node entitiesNode = YAML::LoadFile((std::string)ROOT_DIR +
+        YAML::Node entitiesNode = YAML::LoadFile(ROOT_DIR +
                                                  renderComponentsPath);
         for (YAML::const_iterator itr = entitiesNode.begin();
              itr != entitiesNode.end(); ++itr)
@@ -211,19 +216,42 @@ void TerrariumEditor::changeCursorType(int change)
     cursor.type = (EntityType)type;
 }
 
+void TerrariumEditor::changeCursorSize(int change)
+{
+    int size = clamp(cursor.size + change, 1, 10);
+    cursor.size = size;
+}
+
 void TerrariumEditor::setState(State newState)
 {
     state = newState;
 }
 
+void TerrariumEditor::placeEntityAt(Vec2i pos)
+{
+    blueprint.entities[pos] = cursor.type;
+}
+
 void TerrariumEditor::placeEntityAtCursor()
 {
-    blueprint.entities[cursor.position] = cursor.type;
+    for (int i = 0; i < cursor.size; ++i)
+    {
+        for (int j = 0; j < cursor.size; ++j)
+        {
+            placeEntityAt(cursor.position + Vec2i(i, j));
+        }
+    }
 }
 
 void TerrariumEditor::removeEntityAtCursor()
 {
-    blueprint.entities.erase(cursor.position);
+    for (int i = 0; i < cursor.size; ++i)
+    {
+        for (int j = 0; j < cursor.size; ++j)
+        {
+            blueprint.entities.erase(cursor.position + Vec2i(i, j));
+        }
+    }
 }
 
 void TerrariumEditor::lockXAxis()
@@ -261,7 +289,6 @@ void TerrariumEditor::update(sf::RenderWindow& window, sf::Event& event)
     if (cursor.locker.xAxisLocked)
     {
         cursor.position.y = cursor.locker.lockPosition.y;
-        // sf::Mouse::setPosition(sf::Vector2i(cursor.))
     }
     else if (cursor.locker.yAxisLocked)
     {
@@ -313,17 +340,29 @@ void TerrariumEditor::update(sf::RenderWindow& window, sf::Event& event)
                 {
                     std::string blueprintName;
                     getInput(blueprintName);
-
                     saveBlueprint(blueprintName);
                 }
                 else if (event.key.code == sf::Keyboard::Equal)
                 {
-                    changeCursorType(1);
+                    if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+                    {
+                        changeCursorSize(1);
+                    }
+                    else
+                    {
+                        changeCursorType(1);
+                    }
                 }
-
                 else if (event.key.code == sf::Keyboard::Dash)
                 {
-                    changeCursorType(-1);
+                    if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+                    {
+                        changeCursorSize(-1);
+                    }
+                    else
+                    {
+                        changeCursorType(-1);
+                    }
                 }
             }
 
