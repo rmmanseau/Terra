@@ -69,8 +69,8 @@ class TerrariumEditor
     void changeCursorSize(int change);
     void setState(State newState);
     void placeEntityAt(Vec2i);
-    void placeEntityAtCursor();
-    void removeEntityAtCursor();
+    void placeEntitiesAtCursor();
+    void removeEntitiesAtCursor();
 
     void lockXAxis();
     void lockYAxis();

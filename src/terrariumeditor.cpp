@@ -232,22 +232,39 @@ void TerrariumEditor::placeEntityAt(Vec2i pos)
     blueprint.entities[pos] = cursor.type;
 }
 
-void TerrariumEditor::placeEntityAtCursor()
+
+// cursor.size = 1
+
+// i = -1/2    
+
+// 2
+
+void TerrariumEditor::placeEntitiesAtCursor()
 {
-    for (int i = 0; i < cursor.size; ++i)
+
+    int start = (-cursor.size/2) + !(cursor.size%2);
+    int end = start + cursor.size;
+
+    std::cout << "cursor size: " << cursor.size << "\n"
+              << "i = " << start << "\n";
+
+    for (int i = start; i < end; ++i)
     {
-        for (int j = 0; j < cursor.size; ++j)
+        for (int j = start; j < end; ++j)
         {
             placeEntityAt(cursor.position + Vec2i(i, j));
         }
     }
 }
 
-void TerrariumEditor::removeEntityAtCursor()
+void TerrariumEditor::removeEntitiesAtCursor()
 {
-    for (int i = 0; i < cursor.size; ++i)
+    int start = (-cursor.size/2) + !(cursor.size%2);
+    int end = start + cursor.size;
+
+    for (int i = start; i < end; ++i)
     {
-        for (int j = 0; j < cursor.size; ++j)
+        for (int j = start; j < end; ++j)
         {
             blueprint.entities.erase(cursor.position + Vec2i(i, j));
         }
@@ -324,12 +341,12 @@ void TerrariumEditor::update(sf::RenderWindow& window, sf::Event& event)
                 }
                 else if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
                 {
-                    placeEntityAtCursor();
+                    placeEntitiesAtCursor();
                     setState(State::drawing);
                 }
                 else if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
                 {
-                    removeEntityAtCursor();
+                    removeEntitiesAtCursor();
                     setState(State::erasing);
                 }
             }
@@ -400,7 +417,7 @@ void TerrariumEditor::update(sf::RenderWindow& window, sf::Event& event)
 
             if (event.type == sf::Event::MouseMoved)
             {
-                placeEntityAtCursor();
+                placeEntitiesAtCursor();
             }
 
         } break;
@@ -414,7 +431,7 @@ void TerrariumEditor::update(sf::RenderWindow& window, sf::Event& event)
 
             if (event.type == sf::Event::MouseMoved)
             {
-                removeEntityAtCursor();
+                removeEntitiesAtCursor();
             }
 
         } break;
