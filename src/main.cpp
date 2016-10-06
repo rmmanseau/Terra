@@ -22,7 +22,9 @@ void loadGlobalSettings()
     G_Paths.insert(std::make_pair("textures", globalConfig["textures_path"].as<std::string>()));
     G_Paths.insert(std::make_pair("entities", globalConfig["entities_conf_path"].as<std::string>()));
     G_Paths.insert(std::make_pair("terrariums", globalConfig["terrariums_path"].as<std::string>()));
-    G_TargetCycleTime = globalConfig["target_cycle_time"].as<int>();
+    glbl::constants.init();
+
+    // G_TargetCycleTime = globalConfig["target_cycle_time"].as<int>();
 }
 
 void populateEntityNameTypeMap()
@@ -107,7 +109,7 @@ void runTerrarium(std::string terrariumName)
             t.update(timeStep);
             elapsed = sleepClock.restart().asMicroseconds();
 
-            int targetTime = G_TargetCycleTime;
+            int targetTime = glbl::constants.targetCycleTime();
             int sleep = clamp(targetTime - elapsed, 0, targetTime);
             
             std::cout << "-\n"

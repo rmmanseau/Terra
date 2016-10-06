@@ -1,4 +1,4 @@
 textures_path: "assets/textures/"
 terrariums_path: "assets/terrariums/"
 entities_conf_path: "assets/entities.yaml"
-target_cycle_time: 80000
+target_cycle_time: 2000

@@ -2,7 +2,7 @@
 
 Grid::GridInfo::GridInfo()
     : id(-1)
-    , type(G_EType_Empty)
+    , type(glbl::constants.eTypeEmpty())
 {}
 
 Grid::Grid()
@@ -43,7 +43,7 @@ EntityType Grid::getTypeAt(Vec2i v)
     if (inside(v))
         return at(v).type;
     else
-        return G_EType_Null;
+        return glbl::constants.eTypeNull();
 }
 
 void Grid::setInfoAt(Vec2i v, EntityId id, EntityType type)
@@ -57,13 +57,13 @@ void Grid::setInfoAt(Vec2i v, EntityId id, EntityType type)
 
 void Grid::erase(Vec2i v)
 {
-    setInfoAt(v, -1, G_EType_Empty);
+    setInfoAt(v, -1, glbl::constants.eTypeEmpty());
 }
 
 bool Grid::empty(Vec2i v)
 {
     if (inside(v))
-        return at(v).type == G_EType_Empty;
+        return at(v).type == glbl::constants.eTypeEmpty();
     else
         return false;
 }

@@ -38,7 +38,7 @@ void PSpawn::update(int timeStep)
             vectorContains(node->spawn->canSpawnOn,
                            rGrid.getTypeAt(node->spawn->pos)))
         {
-            if (rGrid.getTypeAt(node->spawn->pos) != G_EType_Empty)
+            if (rGrid.getTypeAt(node->spawn->pos) != glbl::constants.eTypeEmpty())
             {
                 EntityId id = rGrid.getIdAt(node->spawn->pos);
                 rEntities.at(id).getComponent<CAlive>()->kill();

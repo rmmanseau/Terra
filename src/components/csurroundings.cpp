@@ -7,7 +7,7 @@ bool CSurroundings::init(YAML::Node node)
     for (int i = 0; i < 8; ++i)
     {
         ids.push_back(0);
-        types.push_back(G_EType_Null);
+        types.push_back(glbl::constants.eTypeNull());
     }
 
     return true;
@@ -50,7 +50,7 @@ int CSurroundings::numberOf(std::vector<EntityType> otherTypes)
 
 int CSurroundings::numberFull()
 {
-    return 8 - numberOf(G_EType_Empty);
+    return 8 - numberOf(glbl::constants.eTypeEmpty());
 }
 
 Dir CSurroundings::directionTowards(EntityType type)

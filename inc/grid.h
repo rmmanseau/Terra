@@ -2,7 +2,8 @@
 #define GRID_H
 
 #include "common.h"
-#include "globals.h"
+// #include "globals.h"
+#include "glbl_constants.h"
 #include "vec2.h"
 #include <vector>
 

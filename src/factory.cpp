@@ -1,5 +1,6 @@
 #include "factory.h"
-#include "globals.h"
+// #include "globals.h"
+#include "glbl_constants.h"
 #include "terrarium.h"
 #include "process.h"
 #include "cposition.h"
@@ -98,7 +99,7 @@ void Factory::assembleEntity(EntityType type, Vec2i pos)
     if (position)
     {
         position->pos = pos;
-        rGrid.setInfoAt(pos, id, G_EType_Reserved);
+        rGrid.setInfoAt(pos, id, glbl::constants.eTypeReserved());
     }
     
     rEntities.insert(std::make_pair(id, entity));
