@@ -1,13 +1,11 @@
 #include "factory.h"
-// #include "globals.h"
 #include "glbl_constants.h"
+#include "glbl_assets.h"
 #include "terrarium.h"
 #include "process.h"
 #include "cposition.h"
 
 #include <string>
-
-#define ROOT_DIR "../"
 
 Factory::Factory(Terrarium& owner)
     : rGrid(owner.getGrid())
@@ -15,7 +13,7 @@ Factory::Factory(Terrarium& owner)
     , rEntities(owner.getEntities())
     , nextId(1)
 {   
-    YAML::Node entitySheet = YAML::LoadFile((std::string)ROOT_DIR + G_Paths["entities"]);
+    YAML::Node entitySheet = glbl::assets.loadEntities();
     for (YAML::const_iterator itr = entitySheet.begin();
          itr != entitySheet.end(); ++itr)
     {

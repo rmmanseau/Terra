@@ -1,11 +1,9 @@
 #include "terrariumeditor.h"
 
-const std::string ROOT_DIR = "../";
-
-TerrariumEditor::TerrariumEditor(const std::string& blueprintPath, const std::string& entityBlueprintsPath)
+TerrariumEditor::TerrariumEditor(const std::string& blueprintName)
 {
-    loadBlueprint(blueprintPath);
-    loadRenderComponents(entityBlueprintsPath);
+    loadBlueprint(blueprintName);
+    loadRenderComponents();
     int winW = blueprint.width * blueprint.tileSize;
     int winH = blueprint.height * blueprint.tileSize;
     background.init(winW, winH, blueprint.dirtTexturePath, blueprint.dirtColor);
@@ -18,11 +16,11 @@ TerrariumEditor::TerrariumEditor(const std::string& blueprintPath, const std::st
     cursor.size = 2;
 }
 
-void TerrariumEditor::loadBlueprint(const std::string& blueprintPath)
+void TerrariumEditor::loadBlueprint(const std::string& blueprintName)
 {
     try
     {
-        YAML::Node blueprintNode = YAML::LoadFile(ROOT_DIR + blueprintPath);
+        YAML::Node blueprintNode = glbl::assets.loadTerrariumBlueprint(blueprintName);
 
         blueprint.width = blueprintNode["width"].as<int>();
         blueprint.height = blueprintNode["height"].as<int>();
@@ -45,7 +43,7 @@ void TerrariumEditor::loadBlueprint(const std::string& blueprintPath)
     }
     catch (const YAML::Exception &e)
     {
-        std::cout << "Error with file: " << blueprintPath << std::endl;
+        std::cout << "Error with terrarium blueprint: " << blueprintName << std::endl;
         std::cout << e.what() << std::endl;
         std::cout << "Starting editor with basic values." << std::endl;
 
@@ -53,8 +51,8 @@ void TerrariumEditor::loadBlueprint(const std::string& blueprintPath)
         defaultBlueprint.width = 20;
         defaultBlueprint.height = 20;
         defaultBlueprint.tileSize = 12;
-        defaultBlueprint.spriteSheetPath = G_Paths["textures"] + "sprite_sheet_12.png";
-        defaultBlueprint.dirtTexturePath = G_Paths["textures"] + "dirt.png";
+        defaultBlueprint.spriteSheetPath = "sprite_sheet_12.png";
+        defaultBlueprint.dirtTexturePath = "dirt.png";
         defaultBlueprint.dirtColor = sf::Color(79, 49, 10);
 
         blueprint = defaultBlueprint;
@@ -63,11 +61,6 @@ void TerrariumEditor::loadBlueprint(const std::string& blueprintPath)
 
 void TerrariumEditor::saveBlueprint(const std::string& blueprintName)
 {
-    std::ofstream savefile;
-    std::string path = ROOT_DIR + G_Paths["terrariums"] + blueprintName + ".yaml";
-    savefile.open(path);
-    std::cout << path << std::endl;
-
     YAML::Emitter out;
     out.SetIndent(4);
     out << YAML::BeginMap
@@ -107,18 +100,17 @@ void TerrariumEditor::saveBlueprint(const std::string& blueprintName)
 
     out << YAML::EndSeq << YAML::EndMap;
 
-    savefile << out.c_str() << std::endl;
-    savefile.close();
+    glbl::assets.writeTerrariumBlueprint(blueprintName, out);
 
     std::cout << "Terrarium saved!" << std::endl;
 }
 
-void TerrariumEditor::loadRenderComponents(const std::string& renderComponentsPath)
+void TerrariumEditor::loadRenderComponents()
 {
     try
     {
-        YAML::Node entitiesNode = YAML::LoadFile(ROOT_DIR +
-                                                 renderComponentsPath);
+        YAML::Node entitiesNode = glbl::assets.loadEntities();
+
         for (YAML::const_iterator itr = entitiesNode.begin();
              itr != entitiesNode.end(); ++itr)
         {
@@ -130,7 +122,7 @@ void TerrariumEditor::loadRenderComponents(const std::string& renderComponentsPa
     }
     catch (const YAML::Exception &e)
     {
-        std::cout << "Error with file: " << renderComponentsPath << std::endl;
+        std::cout << "Error with entities yaml file" << std::endl;
         std::cout << e.what() << std::endl;
         std::cout << "Exiting editor" << std::endl;
 

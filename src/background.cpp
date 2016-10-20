@@ -1,12 +1,11 @@
 #include "background.h"
-
-#define ROOT_DIR "../"
+#include "glbl_assets.h"
 
 Background::Background() {}
 
 void Background::init(int width, int height, const std::string& fileName, const sf::Color& color)
 {
-    if (!texture.loadFromFile(ROOT_DIR + fileName))
+    if (!glbl::assets.loadTexture(fileName, texture))
         throw std::invalid_argument(fileName + " could not be found.");
 
     texture.setRepeated(true);

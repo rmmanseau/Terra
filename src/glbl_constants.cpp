@@ -1,4 +1,5 @@
 #include "glbl_constants.h"
+#include "glbl_assets.h"
 #include "yaml-cpp/yaml.h"
 
 const std::string CONFIG_DIR = "../";
@@ -15,10 +16,11 @@ void Constants::init()
     m_entityTypeToEntityNameMap.insert(std::make_pair(m_entityTypeReserved, "Reserved"));
     m_entityTypeToEntityNameMap.insert(std::make_pair(m_entityTypeEmpty, "Empty"));
 
-    YAML::Node globalConfig = YAML::LoadFile(CONFIG_DIR + "assets/global_conf.yaml");
+
+    YAML::Node globalConfig = glbl::assets.loadConfig();
     m_targetCycleTime = globalConfig["target_cycle_time"].as<int>();
 
-    YAML::Node entitySheet = YAML::LoadFile(CONFIG_DIR + globalConfig["entities_conf_path"].as<std::string>());
+    YAML::Node entitySheet = glbl::assets.loadEntities();
     int i = m_entityNameToEntityTypeMap.size();
     for (YAML::const_iterator itr = entitySheet.begin();
          itr != entitySheet.end(); ++itr)

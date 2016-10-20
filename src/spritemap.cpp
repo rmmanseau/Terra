@@ -1,6 +1,5 @@
 #include "spritemap.h"
-
-#define ROOT_DIR "../"
+#include "glbl_assets.h"
 
 void SpriteMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
@@ -13,7 +12,7 @@ void SpriteMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
 SpriteMap::SpriteMap() {}
 void SpriteMap::init(int _tileSize, const std::string& fileName)
 {
-    if (!spriteSheet.loadFromFile(ROOT_DIR + fileName))
+    if (!glbl::assets.loadTexture(fileName, spriteSheet))
         throw std::invalid_argument(fileName + " could not be found.");
 
     tileSize = _tileSize;

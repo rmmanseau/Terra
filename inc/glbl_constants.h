@@ -6,7 +6,6 @@
 
 class Constants {
     // std::map<Dir, Vec2i> G_DirVecMap;
-    // std::unordered_map<std::string, EntityType> G_EntityNameTypeMap;
     // std::unordered_map<std::string, std::string> G_Paths;
     EntityType m_entityTypeNull;
     EntityType m_entityTypeReserved;
@@ -20,7 +19,6 @@ public:
     void init();
 
     // Vec2i dirToVec(Dir dir);
-    // EntityType eNameToType(std::string name);
     // std::string getPath(std::string);
     int eAmount();
     std::string eName(EntityType type);

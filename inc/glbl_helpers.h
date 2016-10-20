@@ -6,4 +6,9 @@ class Helpers
     
 };
 
+namespace glbl
+{
+    extern Helpers helpers;
+}
+
 #endif // GLBL_HELPERS_H

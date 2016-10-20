@@ -11,19 +11,3 @@ std::map<Dir, Vec2i> G_DirVecMap =
     {Dir::w  , Vec2i(-1,  0)},
     {Dir::nw , Vec2i(-1, -1)}
 };
-
-// std::unordered_map<std::string, EntityType> G_EntityNameTypeMap =
-// {
-//     {"Null", 0},
-//     {"Reserved", 1},
-//     {"Empty", 2}
-// };
-
-std::unordered_map<std::string, std::string> G_Paths;
-
-// int G_TargetCycleTime;
-
-// const EntityType G_EType_Null = 0;
-// const EntityType G_EType_Reserved = 1;
-// const EntityType G_EType_Empty = 2;
-

@@ -12,6 +12,7 @@
 
 #include "globals.h"
 #include "glbl_constants.h"
+#include "glbl_assets.h"
 #include "helpers.h"
 #include "vec2.h"
 #include "background.h"
@@ -84,11 +85,11 @@ public:
     Cursor cursor;
     Background background;
 
-    TerrariumEditor(const std::string& blueprintPath, const std::string& entityBlueprintsPath);
+    TerrariumEditor(const std::string& blueprintName);
 
-    void loadBlueprint(const std::string& blueprintPath);
+    void loadBlueprint(const std::string& blueprintName);
     void saveBlueprint(const std::string& blueprintName);
-    void loadRenderComponents(const std::string& renderComponentsPath);
+    void loadRenderComponents();
 
     void updateSpriteMap();
     void drawBlueprint(sf::RenderWindow& window);

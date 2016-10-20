@@ -1,8 +1,8 @@
 width: 97
 height: 57
 tile_size: 12
-sprite_sheet: assets/textures/sprite_sheet_12.png
-dirt_texture: assets/textures/dirt.png
+sprite_sheet: sprite_sheet_12.png
+dirt_texture: dirt.png
 dirt_color: [79, 49, 10]
 initial_entities:
     -   {type: Rock, pos: [0, 0]}

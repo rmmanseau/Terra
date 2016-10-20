@@ -9,45 +9,23 @@
 #include <iostream>
 
 #include "globals.h"
+#include "glbl_assets.h"
 #include "helpers.h"
 #include "terrarium.h"
 #include "terrariumeditor.h"
 
-const std::string ROOT_DIR = "../";
-
 void loadGlobalSettings()
 {
-    YAML::Node globalConfig = YAML::LoadFile(ROOT_DIR + "assets/global_conf.yaml");
-
-    G_Paths.insert(std::make_pair("textures", globalConfig["textures_path"].as<std::string>()));
-    G_Paths.insert(std::make_pair("entities", globalConfig["entities_conf_path"].as<std::string>()));
-    G_Paths.insert(std::make_pair("terrariums", globalConfig["terrariums_path"].as<std::string>()));
-    
+    glbl::assets.init("/home/ryan/cs/projects/terra/conf/");
     glbl::constants.init();
 }
 
 void listTerrariums()
 {
-    using namespace boost::filesystem;
-    path terrariumDir(ROOT_DIR + G_Paths["terrariums"]);
-
-    try
+    std::vector<std::string> terrariums = glbl::assets.getTerrariumNames();
+    for (int i = 0; i < terrariums.size(); ++i)
     {
-        if (exists(terrariumDir) && is_directory(terrariumDir))
-        {            
-            std::vector<path> terrariums;
-            copy(directory_iterator(terrariumDir), directory_iterator(), back_inserter(terrariums));
-            sort(terrariums.begin(), terrariums.end());
-
-            for (auto itr = terrariums.begin(); itr != terrariums.end(); ++itr)
-            {
-                std::cout << itr->stem().string() << std::endl;
-            }
-        }
-    }
-    catch(const filesystem_error& fe)
-    {
-        std::cout << fe.what() << std::endl;
+        std::cout << terrariums.at(i) << std::endl;
     }
 }
 
@@ -72,11 +50,7 @@ void runTerrarium(std::string terrariumName)
     {
         srand(time(0));
 
-        std::string terrariumPath
-            = ROOT_DIR + G_Paths["terrariums"] + terrariumName + ".yaml";
-
-        YAML::Node terraConfig = YAML::LoadFile(terrariumPath);
-
+        YAML::Node terraConfig = glbl::assets.loadTerrariumBlueprint(terrariumName);
         Terrarium t(terraConfig);
 
         sf::Clock gameClock;
@@ -120,7 +94,7 @@ void runTerrarium(std::string terrariumName)
 
 void runTerrariumBlueprintEditor(std::string blueprintName)
 {
-    TerrariumEditor editor(G_Paths["terrariums"] + blueprintName + ".yaml", G_Paths["entities"]);
+    TerrariumEditor editor(blueprintName);
 
     int winW = editor.blueprint.width * editor.blueprint.tileSize;
     int winH = editor.blueprint.height * editor.blueprint.tileSize;
