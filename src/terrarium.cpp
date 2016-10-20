@@ -49,7 +49,7 @@ Terrarium::Terrarium(YAML::Node config)
     YAML::const_iterator end = config["initial_entities"].end();
     for (itr; itr != end; ++itr)
     {
-        EntityType type = G_EntityNameTypeMap[(*itr)["type"].as<std::string>()];
+        EntityType type = glbl::constants.eType((*itr)["type"].as<std::string>());
         Vec2i pos((*itr)["pos"][0].as<int>(), (*itr)["pos"][1].as<int>());
         china.assembleEntity(type, pos);
     }

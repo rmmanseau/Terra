@@ -22,24 +22,8 @@ void loadGlobalSettings()
     G_Paths.insert(std::make_pair("textures", globalConfig["textures_path"].as<std::string>()));
     G_Paths.insert(std::make_pair("entities", globalConfig["entities_conf_path"].as<std::string>()));
     G_Paths.insert(std::make_pair("terrariums", globalConfig["terrariums_path"].as<std::string>()));
+    
     glbl::constants.init();
-
-    // G_TargetCycleTime = globalConfig["target_cycle_time"].as<int>();
-}
-
-void populateEntityNameTypeMap()
-{
-    YAML::Node entitySheet = YAML::LoadFile(ROOT_DIR + G_Paths["entities"]);
-
-    int i = G_EntityNameTypeMap.size();
-    for (YAML::const_iterator itr = entitySheet.begin();
-         itr != entitySheet.end(); ++itr)
-    {
-        std::string name = itr->first.as<std::string>();
-        EntityType type = (EntityType)(i++);
-
-        G_EntityNameTypeMap.insert(std::make_pair(name, type));
-    }
 }
 
 void listTerrariums()
@@ -167,7 +151,6 @@ int main(int argc, char* argv[])
     std::vector<std::string> args(argv, argv+argc);
 
     loadGlobalSettings();
-    populateEntityNameTypeMap();
 
     if (argc == 1)
     {

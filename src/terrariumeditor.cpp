@@ -38,7 +38,7 @@ void TerrariumEditor::loadBlueprint(const std::string& blueprintPath)
         for (itr; itr != end; ++itr)
         {
             Vec2i position((*itr)["pos"][0].as<int>(), (*itr)["pos"][1].as<int>());
-            EntityType type = G_EntityNameTypeMap[(*itr)["type"].as<std::string>()];
+            EntityType type = glbl::constants.eType((*itr)["type"].as<std::string>());
 
             blueprint.entities.insert(std::make_pair(position, type));
         }
@@ -68,13 +68,6 @@ void TerrariumEditor::saveBlueprint(const std::string& blueprintName)
     savefile.open(path);
     std::cout << path << std::endl;
 
-    std::map<int, std::string> EntityTypeToNameMap;
-    for (auto itr = G_EntityNameTypeMap.begin();
-         itr != G_EntityNameTypeMap.end(); ++itr)
-    {
-        EntityTypeToNameMap.insert(std::make_pair(itr->second, itr->first));
-    }
-
     YAML::Emitter out;
     out.SetIndent(4);
     out << YAML::BeginMap
@@ -101,7 +94,7 @@ void TerrariumEditor::saveBlueprint(const std::string& blueprintName)
         {
             out << YAML::Flow << YAML::BeginMap
                 << YAML::Key << "type"
-                << YAML::Value << EntityTypeToNameMap.at(itr->second)
+                << YAML::Value << glbl::constants.eName(itr->second)
                 << YAML::Key << "pos"
                 << YAML::Value
                     << YAML::Flow << YAML::BeginSeq
@@ -129,7 +122,7 @@ void TerrariumEditor::loadRenderComponents(const std::string& renderComponentsPa
         for (YAML::const_iterator itr = entitiesNode.begin();
              itr != entitiesNode.end(); ++itr)
         {
-            EntityType type = G_EntityNameTypeMap[itr->first.as<std::string>()];
+            EntityType type = glbl::constants.eType(itr->first.as<std::string>());
             CRender render;
             render.init((itr->second)["CRender"]);
             renderComponents.insert(std::make_pair((int)type, render));
@@ -211,7 +204,7 @@ void TerrariumEditor::changeCursorType(int change)
 {
     int type = clamp((int)cursor.type + change,
                      3,
-                     (int)G_EntityNameTypeMap.size() - 1);
+                     (int)glbl::constants.eAmount() - 1);
     
     cursor.type = (EntityType)type;
 }

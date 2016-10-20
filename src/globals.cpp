@@ -1,6 +1,5 @@
 #include "globals.h"
 
-
 std::map<Dir, Vec2i> G_DirVecMap =
 {
     {Dir::n  , Vec2i( 0, -1)},
@@ -13,12 +12,12 @@ std::map<Dir, Vec2i> G_DirVecMap =
     {Dir::nw , Vec2i(-1, -1)}
 };
 
-std::unordered_map<std::string, EntityType> G_EntityNameTypeMap =
-{
-    {"Null", 0},
-    {"Reserved", 1},
-    {"Empty", 2}
-};
+// std::unordered_map<std::string, EntityType> G_EntityNameTypeMap =
+// {
+//     {"Null", 0},
+//     {"Reserved", 1},
+//     {"Empty", 2}
+// };
 
 std::unordered_map<std::string, std::string> G_Paths;
 

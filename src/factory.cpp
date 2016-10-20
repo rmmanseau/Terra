@@ -19,7 +19,7 @@ Factory::Factory(Terrarium& owner)
     for (YAML::const_iterator itr = entitySheet.begin();
          itr != entitySheet.end(); ++itr)
     {
-        EntityType type = G_EntityNameTypeMap[itr->first.as<std::string>()];
+        EntityType type = glbl::constants.eType(itr->first.as<std::string>());
         YAML::Node node = itr->second;
         blueprints.insert(std::make_pair(type, node));
     }

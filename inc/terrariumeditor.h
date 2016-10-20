@@ -11,6 +11,7 @@
 #include <string>
 
 #include "globals.h"
+#include "glbl_constants.h"
 #include "helpers.h"
 #include "vec2.h"
 #include "background.h"

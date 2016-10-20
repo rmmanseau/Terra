@@ -8,9 +8,11 @@ class Constants {
     // std::map<Dir, Vec2i> G_DirVecMap;
     // std::unordered_map<std::string, EntityType> G_EntityNameTypeMap;
     // std::unordered_map<std::string, std::string> G_Paths;
-    EntityType m_eTypeNull;
-    EntityType m_eTypeReserved;
-    EntityType m_eTypeEmpty;
+    EntityType m_entityTypeNull;
+    EntityType m_entityTypeReserved;
+    EntityType m_entityTypeEmpty;
+    std::unordered_map<std::string, EntityType> m_entityNameToEntityTypeMap;
+    std::unordered_map<EntityType, std::string> m_entityTypeToEntityNameMap;
     int m_targetCycleTime;
 
 public:
@@ -20,9 +22,12 @@ public:
     // Vec2i dirToVec(Dir dir);
     // EntityType eNameToType(std::string name);
     // std::string getPath(std::string);
-    EntityType eTypeNull() {return m_eTypeNull; }
-    EntityType eTypeReserved() {return m_eTypeReserved; }
-    EntityType eTypeEmpty() {return m_eTypeEmpty; }
+    int eAmount();
+    std::string eName(EntityType type);
+    EntityType eType(std::string name);
+    EntityType eTypeNull() {return m_entityTypeNull; }
+    EntityType eTypeReserved() {return m_entityTypeReserved; }
+    EntityType eTypeEmpty() {return m_entityTypeEmpty; }
     int targetCycleTime() {return m_targetCycleTime; }
 };
 
