@@ -2,14 +2,13 @@
 #define CSURROUNDINGS_H
 
 #include "common.h"
-// #include "globals.h"
 #include "glbl_constants.h"
 #include "component.h"
 
 class CSurroundings : public Component
 {
     INC_FACTORY_REGISTER(CSurroundings);
-
+    
     std::vector<EntityId> ids;
     std::vector<EntityType> types;
 

@@ -1,4 +1,5 @@
 #include "terrariumeditor.h"
+#include "glbl_helpers.h"
 
 TerrariumEditor::TerrariumEditor(const std::string& blueprintName)
 {
@@ -194,16 +195,16 @@ void TerrariumEditor::drawBlueprint(sf::RenderWindow& window)
 
 void TerrariumEditor::changeCursorType(int change)
 {
-    int type = clamp((int)cursor.type + change,
-                     3,
-                     (int)glbl::constants.eAmount() - 1);
+    int type = glbl::helpers.clamp((int)cursor.type + change,
+                                   3,
+                                   (int)glbl::constants.eAmount() - 1);
     
     cursor.type = (EntityType)type;
 }
 
 void TerrariumEditor::changeCursorSize(int change)
 {
-    int size = clamp(cursor.size + change, 1, 10);
+    int size = glbl::helpers.clamp(cursor.size + change, 1, 10);
     cursor.size = size;
 }
 
@@ -216,13 +217,6 @@ void TerrariumEditor::placeEntityAt(Vec2i pos)
 {
     blueprint.entities[pos] = cursor.type;
 }
-
-
-// cursor.size = 1
-
-// i = -1/2    
-
-// 2
 
 void TerrariumEditor::placeEntitiesAtCursor()
 {
@@ -341,7 +335,7 @@ void TerrariumEditor::update(sf::RenderWindow& window, sf::Event& event)
                 if (event.key.code == sf::Keyboard::S)
                 {
                     std::string blueprintName;
-                    getInput(blueprintName);
+                    glbl::helpers.getInput(blueprintName);
                     saveBlueprint(blueprintName);
                 }
                 else if (event.key.code == sf::Keyboard::Equal)

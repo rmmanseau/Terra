@@ -1,7 +1,5 @@
 #include "pdumbbrain.h"
-
-#include "helpers.h"
-#include "globals.h"
+#include "glbl_helpers.h"
 
 PDumbBrain::PDumbBrain()
 {}
@@ -42,7 +40,7 @@ void PDumbBrain::update(int timeStep)
         if (node->alive->energy >= node->spawn->energyRequired)
         {
             node->spawn->active = true;
-            node->spawn->pos = randomAdjacentTile(node->position->pos.floor());
+            node->spawn->pos = glbl::helpers.randomAdjacentTile(node->position->pos.floor());
         }
         else if (node->alive->energy < node->alive->energyMax &&
                  node->surroundings->numberOf(node->eat->food) > 0)

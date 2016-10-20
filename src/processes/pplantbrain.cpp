@@ -1,6 +1,6 @@
 #include "pplantbrain.h"
 
-#include "helpers.h"
+#include "glbl_helpers.h"
 
 PPlantBrain::PPlantBrain()
 {}
@@ -41,7 +41,7 @@ void PPlantBrain::update(int timeStep)
             if (node->alive->energy >= node->spawn->energyRequired && surroundingEntities <= 4)
             {
                 node->spawn->active = true;
-                node->spawn->pos = randomAdjacentTile(node->position->pos.floor());
+                node->spawn->pos = glbl::helpers.randomAdjacentTile(node->position->pos.floor());
             }
 
             if      (surroundingEntities <= 0)

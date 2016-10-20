@@ -1,5 +1,4 @@
 #include "cspawn.h"
-#include "globals.h"
 #include "glbl_constants.h"
 
 SRC_FACTORY_REGISTER(CSpawn);

@@ -1,7 +1,6 @@
 #ifndef FACTORY_H
 #define FACTORY_H
 
-#include "globals.h"
 #include "common.h"
 #include "entity.h"
 #include "component.h"
@@ -9,6 +8,9 @@
 
 #include <map>
 #include "yaml-cpp/yaml.h"
+
+typedef std::vector<std::shared_ptr<Process> > ProcessVec;
+typedef std::unordered_map<EntityId, Entity> EntityMap;
 
 template <typename T>
 std::shared_ptr<Component> createComponent()

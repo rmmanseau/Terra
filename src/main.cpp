@@ -1,16 +1,14 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include "yaml-cpp/yaml.h"
-#include <boost/filesystem.hpp>
 #include <X11/Xlib.h>
 
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
 
-#include "globals.h"
 #include "glbl_assets.h"
-#include "helpers.h"
+#include "glbl_helpers.h"
 #include "terrarium.h"
 #include "terrariumeditor.h"
 
@@ -18,6 +16,7 @@ void loadGlobalSettings()
 {
     glbl::assets.init("/home/ryan/cs/projects/terra/conf/");
     glbl::constants.init();
+    glbl::helpers.init();
 }
 
 void listTerrariums()
@@ -68,7 +67,7 @@ void runTerrarium(std::string terrariumName)
             elapsed = sleepClock.restart().asMicroseconds();
 
             int targetTime = glbl::constants.targetCycleTime();
-            int sleep = clamp(targetTime - elapsed, 0, targetTime);
+            int sleep = glbl::helpers.clamp(targetTime - elapsed, 0, targetTime);
             
             std::cout << "-\n"
                       << "Elapsed:\t" << elapsed << "\n"

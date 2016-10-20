@@ -1,5 +1,5 @@
 #include "pspawn.h"
-#include "helpers.h"
+#include "glbl_helpers.h"
 
 PSpawn::PSpawn(Grid& grid, Factory& factory, EntityMap& entities)
     : rFactory(factory)
@@ -35,8 +35,8 @@ void PSpawn::update(int timeStep)
          node != nodes.end(); ++node)
     {        
         if (node->spawn->active &&
-            vectorContains(node->spawn->canSpawnOn,
-                           rGrid.getTypeAt(node->spawn->pos)))
+            glbl::helpers.vecContains(node->spawn->canSpawnOn,
+                                   rGrid.getTypeAt(node->spawn->pos)))
         {
             if (rGrid.getTypeAt(node->spawn->pos) != glbl::constants.eTypeEmpty())
             {

@@ -21,17 +21,6 @@ enum class Dir
     nw
 };
 
-// enum class EntityType
-// {
-//     Null,
-//     Reserved,
-//     Empty,
-//     Rock,
-//     Grass,
-//     DumbBug,
-//     DumbBugEgg
-// };
-
 // Forward Declarations
 class Terrarium;
 class Grid;
@@ -43,10 +32,5 @@ class Process;
 // Id Typedefs
 typedef unsigned long EntityId;
 typedef unsigned long EntityType;
-
-// Map Typedefs
-typedef std::vector<std::shared_ptr<Process> > ProcessVec;
-typedef std::unordered_map<EntityId, Entity> EntityMap;
-typedef std::unordered_map<std::type_index, std::shared_ptr<Component> > ComponentMap;
 
 #endif // COMMON_H

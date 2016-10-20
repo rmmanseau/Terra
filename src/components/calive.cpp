@@ -1,5 +1,5 @@
 #include "calive.h"
-#include "helpers.h"
+#include "glbl_helpers.h"
 
 #include <cstdlib>
 
@@ -33,11 +33,11 @@ bool CAlive::init(YAML::Node node)
 
 void CAlive::updateEnergy(int amount)
 {
-    energy = clamp(energy + amount, 0, energyMax);
+    energy = glbl::helpers.clamp(energy + amount, 0, energyMax);
 }
 void CAlive::updateHealth(int amount)
 {
-    health = clamp(health + amount, 0, healthMax);
+    health = glbl::helpers.clamp(health + amount, 0, healthMax);
 }
 void CAlive::kill()
 {

@@ -1,4 +1,5 @@
 #include "csurroundings.h"
+#include "glbl_helpers.h"
 
 SRC_FACTORY_REGISTER(CSurroundings);
 
@@ -21,31 +22,12 @@ void CSurroundings::setInfo(int dir, EntityId id, EntityType type)
 
 int CSurroundings::numberOf(EntityType type)
 {
-    int amount = 0;
-    for (int i = 0; i < types.size(); ++i)
-    {
-        if (types[i] == type)
-            ++amount;
-    }
-    return amount;
+    return glbl::helpers.vecContains(types, type);
 }
 
 int CSurroundings::numberOf(std::vector<EntityType> otherTypes)
 {
-    int amount = 0;
-    for (int i = 0; i < types.size(); ++i)
-    {
-        for (int j = 0; j < otherTypes.size(); ++j)
-        {
-            if (types[i] == otherTypes[j])
-            {
-                ++amount;
-                break;
-            }
-        }
-    }
-
-    return amount;
+    return glbl::helpers.vecContains(types, otherTypes);
 }
 
 int CSurroundings::numberFull()

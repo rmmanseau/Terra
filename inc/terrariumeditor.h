@@ -10,10 +10,8 @@
 #include <fstream>
 #include <string>
 
-#include "globals.h"
 #include "glbl_constants.h"
 #include "glbl_assets.h"
-#include "helpers.h"
 #include "vec2.h"
 #include "background.h"
 #include "spritemap.h"

@@ -6,6 +6,8 @@
 #include <unordered_map>
 #include <string>
 
+typedef std::unordered_map<std::type_index, std::shared_ptr<Component> > ComponentMap;
+
 class Entity
 {
     EntityId id;
