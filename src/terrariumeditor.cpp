@@ -14,7 +14,7 @@ TerrariumEditor::TerrariumEditor(const std::string& blueprintName)
     cursor.type = (EntityType)3;
     cursor.locker.xAxisLocked = false;
     cursor.locker.yAxisLocked = false;
-    cursor.size = 2;
+    cursor.size = 1;
 }
 
 void TerrariumEditor::loadBlueprint(const std::string& blueprintName)
@@ -224,9 +224,6 @@ void TerrariumEditor::placeEntitiesAtCursor()
     int start = (-cursor.size/2) + !(cursor.size%2);
     int end = start + cursor.size;
 
-    std::cout << "cursor size: " << cursor.size << "\n"
-              << "i = " << start << "\n";
-
     for (int i = start; i < end; ++i)
     {
         for (int j = start; j < end; ++j)
@@ -340,25 +337,22 @@ void TerrariumEditor::update(sf::RenderWindow& window, sf::Event& event)
                 }
                 else if (event.key.code == sf::Keyboard::Equal)
                 {
-                    if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
-                    {
-                        changeCursorSize(1);
-                    }
-                    else
-                    {
-                        changeCursorType(1);
-                    }
+                    changeCursorType(1);
                 }
                 else if (event.key.code == sf::Keyboard::Dash)
                 {
-                    if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
-                    {
-                        changeCursorSize(-1);
-                    }
-                    else
-                    {
-                        changeCursorType(-1);
-                    }
+                    changeCursorType(-1);
+                }
+                else if (event.key.code == sf::Keyboard::RBracket)
+                {
+                    changeCursorSize(1);
+                    std::cout << "cursor size: " << cursor.size << "\n";
+                }
+                else if (event.key.code == sf::Keyboard::LBracket)
+                {
+                    changeCursorSize(-1);
+                    std::cout << "cursor size: " << cursor.size << "\n";
+
                 }
             }
 

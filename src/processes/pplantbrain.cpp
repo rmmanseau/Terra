@@ -38,7 +38,8 @@ void PPlantBrain::update(int timeStep)
         int surroundingEntities = node->surroundings->numberFull();
         if (surroundingEntities != 7 && surroundingEntities != 6)
         {
-            if (node->alive->energy >= node->spawn->energyRequired && surroundingEntities <= 4)
+            int surroundingGrass = node->surroundings->numberOf(glbl::constants.eType("Grass"));
+            if (node->alive->energy >= node->spawn->energyRequired && surroundingGrass <= 4)
             {
                 node->spawn->active = true;
                 node->spawn->pos = glbl::helpers.randomAdjacentTile(node->position->pos.floor());

@@ -123,9 +123,9 @@ DumbBugEgg:
         health: 10
         health_variance: 0
         health_max: 10
-        energy: 20
-        energy_variance: 20
-        energy_max: 150
+        energy: 100
+        energy_variance: 100
+        energy_max: 300
     CPosition:
         pos: [0, 0]
     CRender:
@@ -135,5 +135,5 @@ DumbBugEgg:
         type: DumbBug
         can_spawn_on:
             - DumbBugEgg
-        energy_required: 150
-        energy_cost: 150
+        energy_required: 300
+        energy_cost: 300

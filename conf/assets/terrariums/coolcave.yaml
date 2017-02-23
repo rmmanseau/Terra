@@ -489,8 +489,8 @@ initial_entities:
     -   {type: Rock, pos: [19, 34]}
     -   {type: Rock, pos: [19, 35]}
     -   {type: Rock, pos: [19, 36]}
-    -   {type: DumbBugEgg, pos: [19, 37]}
-    -   {type: DumbBugEgg, pos: [19, 38]}
+    -   {type: Rock, pos: [19, 37]}
+    -   {type: Rock, pos: [19, 38]}
     -   {type: Rock, pos: [19, 39]}
     -   {type: Rock, pos: [19, 45]}
     -   {type: Rock, pos: [19, 46]}
@@ -510,8 +510,8 @@ initial_entities:
     -   {type: Rock, pos: [20, 35]}
     -   {type: Rock, pos: [20, 36]}
     -   {type: Rock, pos: [20, 37]}
-    -   {type: DumbBugEgg, pos: [20, 38]}
-    -   {type: DumbBugEgg, pos: [20, 39]}
+    -   {type: Rock, pos: [20, 38]}
+    -   {type: Rock, pos: [20, 39]}
     -   {type: Rock, pos: [20, 46]}
     -   {type: Rock, pos: [20, 47]}
     -   {type: Rock, pos: [20, 48]}
@@ -533,7 +533,7 @@ initial_entities:
     -   {type: Rock, pos: [21, 38]}
     -   {type: Rock, pos: [21, 46]}
     -   {type: Rock, pos: [21, 47]}
-    -   {type: Rock, pos: [21, 48]}
+    -   {type: DumbBugEgg, pos: [21, 48]}
     -   {type: Rock, pos: [21, 49]}
     -   {type: Rock, pos: [21, 56]}
     -   {type: Rock, pos: [22, 0]}
@@ -546,15 +546,14 @@ initial_entities:
     -   {type: Rock, pos: [22, 35]}
     -   {type: Rock, pos: [22, 46]}
     -   {type: Rock, pos: [22, 47]}
-    -   {type: Rock, pos: [22, 48]}
-    -   {type: Rock, pos: [22, 49]}
+    -   {type: DumbBugEgg, pos: [22, 48]}
+    -   {type: DumbBugEgg, pos: [22, 49]}
     -   {type: Rock, pos: [22, 56]}
     -   {type: Rock, pos: [23, 0]}
     -   {type: Rock, pos: [23, 1]}
     -   {type: Rock, pos: [23, 2]}
     -   {type: Rock, pos: [23, 47]}
     -   {type: Rock, pos: [23, 48]}
-    -   {type: Rock, pos: [23, 49]}
     -   {type: Rock, pos: [23, 56]}
     -   {type: Rock, pos: [24, 0]}
     -   {type: Rock, pos: [24, 1]}
@@ -1052,7 +1051,7 @@ initial_entities:
     -   {type: Rock, pos: [82, 56]}
     -   {type: Rock, pos: [83, 0]}
     -   {type: Rock2, pos: [83, 49]}
-    -   {type: Grass, pos: [83, 50]}
+    -   {type: Rock, pos: [83, 50]}
     -   {type: Rock, pos: [83, 56]}
     -   {type: Rock, pos: [84, 0]}
     -   {type: Rock, pos: [84, 49]}
