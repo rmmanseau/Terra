@@ -13,7 +13,7 @@ class Terrarium
     sf::RenderWindow window;
     sf::Event event;
 
-    Factory china;
+    Factory factory;
     Grid grid;
 
     EntityMap entities;

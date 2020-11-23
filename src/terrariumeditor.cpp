@@ -51,8 +51,8 @@ void TerrariumEditor::loadBlueprint(const std::string& blueprintName)
         Blueprint defaultBlueprint;
         defaultBlueprint.width = 20;
         defaultBlueprint.height = 20;
-        defaultBlueprint.tileSize = 12;
-        defaultBlueprint.spriteSheetPath = "sprite_sheet_12.png";
+        defaultBlueprint.tileSize = 24;
+        defaultBlueprint.spriteSheetPath = "sprite_sheet_24.png";
         defaultBlueprint.dirtTexturePath = "dirt.png";
         defaultBlueprint.dirtColor = sf::Color(79, 49, 10);
 
@@ -335,11 +335,11 @@ void TerrariumEditor::update(sf::RenderWindow& window, sf::Event& event)
                     glbl::helpers.getInput(blueprintName);
                     saveBlueprint(blueprintName);
                 }
-                else if (event.key.code == sf::Keyboard::Equal)
+                else if (event.key.code == sf::Keyboard::P)
                 {
                     changeCursorType(1);
                 }
-                else if (event.key.code == sf::Keyboard::Dash)
+                else if (event.key.code == sf::Keyboard::O)
                 {
                     changeCursorType(-1);
                 }
@@ -358,7 +358,7 @@ void TerrariumEditor::update(sf::RenderWindow& window, sf::Event& event)
 
             if (event.type == sf::Event::KeyReleased)
             {
-                if (event.key.code = sf::Keyboard::LShift)
+                if (event.key.code == sf::Keyboard::LShift)
                 {
                     unlockAxis();
                 }

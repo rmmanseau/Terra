@@ -12,7 +12,7 @@
 #include "palive.h"
 
 Terrarium::Terrarium(YAML::Node config)
-    : china(*this)
+    : factory(*this)
     , grid()
 {
     // Pull values from config
@@ -41,9 +41,9 @@ Terrarium::Terrarium(YAML::Node config)
     processes.push_back(std::make_shared<PPlantBrain>());
     processes.push_back(std::make_shared<PDumbBrain>());
     processes.push_back(std::make_shared<PMovement>());
-    processes.push_back(std::make_shared<PSpawn>(grid, china, entities));
+    processes.push_back(std::make_shared<PSpawn>(grid, factory, entities));
     processes.push_back(std::make_shared<PEat>(entities));
-    processes.push_back(std::make_shared<PAlive>(china));
+    processes.push_back(std::make_shared<PAlive>(factory));
     
     YAML::const_iterator itr = config["initial_entities"].begin();
     YAML::const_iterator end = config["initial_entities"].end();
@@ -51,7 +51,7 @@ Terrarium::Terrarium(YAML::Node config)
     {
         EntityType type = glbl::constants.eType((*itr)["type"].as<std::string>());
         Vec2i pos((*itr)["pos"][0].as<int>(), (*itr)["pos"][1].as<int>());
-        china.assembleEntity(type, pos);
+        factory.assembleEntity(type, pos);
     }
 }
 
@@ -59,12 +59,14 @@ void Terrarium::update(int timeStep)
 {
     sf::Clock timer;
 
+    while (window.pollEvent(event)){}
+
     for (auto itr = processes.begin();
          itr != processes.end(); ++itr)
     {
         (*itr)->update(timeStep);
     }
-    china.update();
+    factory.update();
     
     std::cout << "Main Update:\t" << timer.restart().asMicroseconds() << std::endl;
 }
@@ -83,7 +85,7 @@ Grid& Terrarium::getGrid()
 }
 Factory& Terrarium::getFactory()
 {
-    return china;
+    return factory;
 }
 EntityMap& Terrarium::getEntities()
 {

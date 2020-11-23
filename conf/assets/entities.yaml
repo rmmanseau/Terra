@@ -117,6 +117,43 @@ DumbBug:
         energy_variance: 50
         energy_max: 250
 
+RockBug:
+    CDumbBrain:
+    CSurroundings:
+    CTranslate:
+    CPosition:
+        pos: [0, 0]
+    CRender:
+        # - texpos: [4, 2]
+        #   color: [236, 200, 163]
+        # - texpos: [5, 2]
+        #   color: [28, 144, 30]
+        - texpos: [2, 2]
+          color: [79, 232, 69]
+        - texpos: [3, 2]
+          color: [ 195, 223,140]
+    CMovement:
+        direction: 3
+        velocity: 0.5
+        turn_angle: 2
+    CSpawn:
+        type: Rock
+        can_spawn_on:
+            - Empty
+            - Grass
+        energy_required: 250
+        energy_cost: 20
+    CEat:
+        food:
+            Grass: 20
+    CAlive:
+        health: 10
+        health_variance: 0
+        health_max: 10
+        energy: 100
+        energy_variance: 50
+        energy_max: 250
+
 DumbBugEgg:
     CEggBrain:
     CAlive:

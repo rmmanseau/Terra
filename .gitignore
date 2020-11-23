@@ -4,3 +4,5 @@ bld/CMakeCache.txt
 bld/cmake_install.cmake
 bld/nohup.out
 bld/terra
+.DS_Store
+

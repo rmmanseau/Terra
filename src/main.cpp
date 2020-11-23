@@ -14,7 +14,7 @@
 
 void loadGlobalSettings()
 {
-    glbl::assets.init("/home/ryan/cs/projects/terra/conf/");
+    glbl::assets.init("/Users/ryan/cut/code/terra/conf/");
     glbl::constants.init();
     glbl::helpers.init();
 }
@@ -43,7 +43,7 @@ void printTerraDetails()
 
 void runTerrarium(std::string terrariumName)
 {
-    XInitThreads();
+    // XInitThreads();
 
     try
     {

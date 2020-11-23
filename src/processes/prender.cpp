@@ -10,9 +10,9 @@ PRender::PRender(sf::RenderWindow& window, int tileSize, const std::string& spri
     , drawThreadFinished(false)
     , drawThread(&PRender::drawFunc, this)
 {
+    window.setActive(false);
     sprites.init(tileSize, spriteSheetPath);
     background.init(window.getSize().x, window.getSize().y, dirtTexturePath, dirtColor);
-    window.setActive(false);
 }
 
 PRender::~PRender()
@@ -94,6 +94,10 @@ void PRender::update(int timeStep)
                 sprites.addSprite(pos, layer.texCoords, layer.color);
             }
         }
+
+        // rWindow.draw(background);
+        // rWindow.draw(sprites);
+        // rWindow.display();
 
         draw = true;
     }

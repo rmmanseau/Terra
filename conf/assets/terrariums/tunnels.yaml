@@ -1,7 +1,7 @@
 width: 50
 height: 50
-tile_size: 12
-sprite_sheet: sprite_sheet_12.png
+tile_size: 24
+sprite_sheet: sprite_sheet_24.png
 dirt_texture: dirt.png
 dirt_color: [79, 49, 10]
 initial_entities:
@@ -188,6 +188,7 @@ initial_entities:
     -   {type: Rock, pos: [6, 14]}
     -   {type: Rock, pos: [6, 15]}
     -   {type: Rock, pos: [6, 16]}
+    -   {type: Grass, pos: [6, 19]}
     -   {type: Rock, pos: [6, 30]}
     -   {type: Rock, pos: [6, 31]}
     -   {type: Rock, pos: [6, 32]}
@@ -213,6 +214,7 @@ initial_entities:
     -   {type: Rock, pos: [7, 14]}
     -   {type: Rock, pos: [7, 15]}
     -   {type: Rock, pos: [7, 16]}
+    -   {type: Grass, pos: [7, 19]}
     -   {type: Rock, pos: [7, 29]}
     -   {type: Rock, pos: [7, 30]}
     -   {type: Rock, pos: [7, 31]}
@@ -238,6 +240,7 @@ initial_entities:
     -   {type: Rock, pos: [8, 14]}
     -   {type: Rock, pos: [8, 15]}
     -   {type: Rock, pos: [8, 16]}
+    -   {type: Grass, pos: [8, 19]}
     -   {type: Rock, pos: [8, 20]}
     -   {type: Rock, pos: [8, 24]}
     -   {type: Rock, pos: [8, 25]}
@@ -270,6 +273,7 @@ initial_entities:
     -   {type: Rock, pos: [9, 14]}
     -   {type: Rock, pos: [9, 15]}
     -   {type: Rock, pos: [9, 16]}
+    -   {type: Grass, pos: [9, 19]}
     -   {type: Rock, pos: [9, 20]}
     -   {type: Rock, pos: [9, 21]}
     -   {type: Rock, pos: [9, 22]}
@@ -527,6 +531,7 @@ initial_entities:
     -   {type: Rock, pos: [18, 16]}
     -   {type: Rock, pos: [18, 17]}
     -   {type: Rock, pos: [18, 18]}
+    -   {type: Grass, pos: [18, 25]}
     -   {type: Rock, pos: [18, 30]}
     -   {type: Rock, pos: [18, 31]}
     -   {type: Rock, pos: [18, 32]}
@@ -577,6 +582,7 @@ initial_entities:
     -   {type: Rock, pos: [20, 19]}
     -   {type: Rock, pos: [20, 20]}
     -   {type: Rock, pos: [20, 21]}
+    -   {type: RockBug, pos: [20, 31]}
     -   {type: Rock, pos: [20, 32]}
     -   {type: Rock, pos: [20, 33]}
     -   {type: Rock, pos: [20, 34]}
@@ -644,6 +650,9 @@ initial_entities:
     -   {type: Rock, pos: [23, 19]}
     -   {type: Rock, pos: [23, 20]}
     -   {type: Rock, pos: [23, 21]}
+    -   {type: Grass, pos: [23, 24]}
+    -   {type: Grass, pos: [23, 25]}
+    -   {type: Grass, pos: [23, 26]}
     -   {type: Rock, pos: [23, 35]}
     -   {type: Rock, pos: [23, 36]}
     -   {type: Rock, pos: [23, 37]}
@@ -668,6 +677,9 @@ initial_entities:
     -   {type: Rock, pos: [24, 17]}
     -   {type: Rock, pos: [24, 18]}
     -   {type: Rock, pos: [24, 19]}
+    -   {type: DumbBugEgg, pos: [24, 21]}
+    -   {type: Grass, pos: [24, 24]}
+    -   {type: Grass, pos: [24, 25]}
     -   {type: Rock, pos: [24, 35]}
     -   {type: Rock, pos: [24, 36]}
     -   {type: Rock, pos: [24, 37]}
@@ -694,6 +706,7 @@ initial_entities:
     -   {type: Rock, pos: [25, 18]}
     -   {type: Rock, pos: [25, 19]}
     -   {type: Grass, pos: [25, 24]}
+    -   {type: Grass, pos: [25, 25]}
     -   {type: Rock, pos: [25, 37]}
     -   {type: Rock, pos: [25, 38]}
     -   {type: Rock, pos: [25, 43]}
